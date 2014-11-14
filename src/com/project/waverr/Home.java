@@ -137,7 +137,7 @@ public class Home extends ActionBarActivity implements OnClickListener{
 	    } catch (IOException e) {
 	        
 	    	e.printStackTrace();
-	    	return "No location";
+	    	return "Location unavailable";
 	        
 	    }
 	    return result;
