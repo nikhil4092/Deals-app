@@ -140,7 +140,6 @@ public class Home extends ActionBarActivity implements OnClickListener{
 	    	return "No location";
 	        
 	    }
-	    
 	    return result;
 	}
 	
