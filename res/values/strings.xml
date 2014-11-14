@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">.Waverr.</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_home">Home</string>
+    <string name="search_hint">Search for new exciting deals.</string>
+    <string name="title_activity_chinese_deal">ChineseDeal</string>
+    <string name="title_activity_indian_cuisine">IndianCuisine</string>
+    <string name="title_activity_deal_page">DealPage</string>
+
+</resources>
