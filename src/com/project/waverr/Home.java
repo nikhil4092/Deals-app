@@ -103,9 +103,11 @@ public class Home extends ActionBarActivity implements OnClickListener{
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		location = locationManager.getLastKnownLocation(provider);
-		
-		String city = getLocationName(location.getLatitude(), location.getLongitude());
+		String city=null;
+		if(provider!=null) {
+			location = locationManager.getLastKnownLocation(provider);
+			city = getLocationName(location.getLatitude(), location.getLongitude());
+		}
 		tv = (TextView) findViewById(R.id.cityname);
 		tv.setText(city);
 	}
