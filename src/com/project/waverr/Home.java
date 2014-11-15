@@ -112,7 +112,7 @@ public class Home extends ActionBarActivity implements OnClickListener{
 		tv.setText(city);
 	}
 	private String getLocationName(double latitude, double longitude) {
-		String result = null;
+		String result = "Unavailable";
 		
 		Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
 	    try {
@@ -125,7 +125,6 @@ public class Home extends ActionBarActivity implements OnClickListener{
 	                String city = adrs.getLocality();
 	                if (city != null && !city.equals("")) {
 	                    result = city;
-	                    System.out.println("city ::  " + result);
 	                } else {
 
 	                }
@@ -137,10 +136,13 @@ public class Home extends ActionBarActivity implements OnClickListener{
 	    } catch (IOException e) {
 	        
 	    	e.printStackTrace();
-	    	return "Location unavailable";
+	    	result="Unavailable";
 	        
 	    }
+	    
+	    {
 	    return result;
+	    }
 	}
 	
 }
