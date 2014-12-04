@@ -12,8 +12,8 @@
         android:layout_height="0dp"
         android:weightSum="10"
         android:orientation="horizontal"
-        android:layout_weight="10"
-        android:background="#ff3f3f" >
+        android:layout_weight="12"
+        android:background="#fe5335" >
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -71,7 +71,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        android:layout_weight="130"
+        android:layout_weight="128"
         android:background="#f1f1f1" >
         
         <TabHost 
@@ -94,7 +94,8 @@
 			    
 			<TabWidget 
 			    android:layout_width="match_parent"
-				android:layout_height="wrap_content" 
+				android:layout_height="wrap_content"
+				android:layout_margin="4dp" 
 				android:id="@android:id/tabs"></TabWidget>
 			</HorizontalScrollView>
 			<FrameLayout android:layout_width="match_parent"
@@ -106,36 +107,45 @@
 				    android:layout_width="match_parent"
 				    android:layout_height="match_parent"
 				    android:orientation="vertical"
+				    android:layout_margin="4dp"
 				    android:weightSum="10" >
+
+					<ScrollView
+					    android:layout_width="wrap_content"
+					    android:layout_height="wrap_content" >
 
 					<LinearLayout
 					    android:layout_width="fill_parent"
 					    android:layout_height="0dp"
-					    android:layout_weight="2"
-					    android:orientation="horizontal" >
+					    android:weightSum="10"
+					    android:orientation="vertical" >
 					    
-					    <SearchView
+					<SearchView
 					    android:id="@+id/searchView1" 
 					    android:layout_width="fill_parent"
-					    android:layout_height="wrap_content" >
+					    android:layout_height="wrap_content"
+					    android:layout_weight="1"
+					    android:layout_marginLeft="4dp"
+					    android:layout_marginRight="4dp">
 					</SearchView>
-					    
-					</LinearLayout>
-
+				
 					<ImageButton
 					    android:id="@+id/cuisine1"
 					    android:layout_width="wrap_content"
 					    android:layout_height="0dp"
 					    android:layout_weight="2"
+					    android:layout_margin="4dp"
 					    android:src="@drawable/chinese1" />
 
 					<ImageButton
 					    android:id="@+id/cuisine2"
 					    android:layout_width="wrap_content"
 					    android:layout_height="0dp"
+					    android:layout_margin="4dp"
 					    android:layout_weight="2"
 					    android:src="@drawable/chinese1" />
-				   
+					</LinearLayout>
+				   </ScrollView>
 					</LinearLayout>
 				<LinearLayout 
 				    android:layout_width="match_parent"

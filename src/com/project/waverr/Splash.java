@@ -18,7 +18,7 @@ public class Splash extends ActionBarActivity {
 		Thread timer = new Thread(){
 			public void run(){
 				try{
-					sleep(500);					
+					sleep(2000);					
 				} catch (InterruptedException e){
 					e.printStackTrace();
 				}finally{

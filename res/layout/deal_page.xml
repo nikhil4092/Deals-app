@@ -12,8 +12,8 @@
         android:layout_height="0dp"
         android:weightSum="2"
         android:orientation="horizontal"
-        android:layout_weight="10"
-        android:background="#ff3f3f" >
+        android:layout_weight="12"
+        android:background="#fe5335" >
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -47,10 +47,10 @@
     <TextView
         android:id="@+id/cityname"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_weight="8"
         android:text="Mangalore"
-        android:paddingTop="5dp"
+        android:gravity="right|center"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFFFFF" />
     
@@ -71,7 +71,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        android:layout_weight="130"
+        android:layout_weight="128"
         android:background="#f1f1f1" >
         
         <TabHost 
@@ -102,6 +102,7 @@
 				    android:layout_width="match_parent"
 				    android:layout_height="match_parent"
 				    android:orientation="vertical"
+				    android:layout_margin="4dp"
 				    android:weightSum="10"
 				    >			
 				   
@@ -135,6 +136,7 @@
         android:orientation="horizontal"
         android:layout_weight="10"
         android:weightSum="2"
+        android:layout_margin="4dp"
         android:background="#f1f1f1"    
     
     
