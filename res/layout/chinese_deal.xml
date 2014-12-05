@@ -12,7 +12,8 @@
         android:weightSum="2"
         android:orientation="horizontal"
         android:layout_weight="12"
-        android:background="#fe5335" >
+        android:background="#fe5335"
+        android:baselineAligned="false">
 
 <LinearLayout
     android:layout_width="match_parent"

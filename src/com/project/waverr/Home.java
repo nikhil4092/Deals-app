@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
@@ -12,7 +13,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -21,7 +21,7 @@ import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
-public class Home extends ActionBarActivity implements OnClickListener{
+public class Home extends Activity implements OnClickListener{
 
 	int LAC;
 	ImageButton ib1,ib2;
@@ -94,7 +94,7 @@ public class Home extends ActionBarActivity implements OnClickListener{
 		case R.id.cuisine1:c1 = new Intent("com.project.waverr.CHINESECUISINE");
 		startActivity(c1);
 			break;
-		case R.id.cuisine2:c2= new Intent("come.project.waverr.INDIANCUISINE");
+		case R.id.cuisine2:c2= new Intent("com.project.waverr.INDIANCUISINE");
 		startActivity(c2);
 			break;
 		}

@@ -1,14 +1,14 @@
 package com.project.waverr;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Window;
 import android.widget.TabHost;
-import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
+import android.widget.TextView;
 
-public class DealPage extends ActionBarActivity {
+public class DealPage extends Activity {
 
 	TabHost th;
 	TextView x;
