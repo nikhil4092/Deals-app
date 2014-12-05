@@ -106,6 +106,7 @@ public final class R {
         public static final int title_activity_deal_page=0x7f050007;
         public static final int title_activity_home=0x7f050003;
         public static final int title_activity_indian_cuisine=0x7f050006;
+        public static final int unavailable=0x7f050008;
     }
     public static final class style {
         /** 

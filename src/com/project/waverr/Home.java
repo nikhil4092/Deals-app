@@ -1,16 +1,9 @@
 package com.project.waverr;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.location.Address;
 import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
@@ -23,32 +16,29 @@ import android.widget.TextView;
 
 public class Home extends Activity implements OnClickListener{
 
-	int LAC;
 	ImageButton ib1,ib2;
 	TabHost th;
 	TextView tv;
 	TextView x;
+	
 	String cityName;
 	LocationManager locationManager;
 	Criteria criteria;
-	String provider;
-	Location location;
-	@Override
+	LocationGiver provider;
 	
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
-		    
-		
 		setContentView(R.layout.home);
+		
+		provider = new LocationGiver(getBaseContext());
 		
 		ib1=(ImageButton)findViewById(R.id.cuisine1);
 		ib2=(ImageButton)findViewById(R.id.cuisine2);
 		th=(TabHost)findViewById(R.id.tabhost);
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		criteria = new Criteria();
-		provider = locationManager.getBestProvider(criteria, true);
 		
 		th.setup();
 		TabSpec specs = th.newTabSpec("Search");
@@ -103,46 +93,8 @@ public class Home extends Activity implements OnClickListener{
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		String city=null;
-		if(provider!=null) {
-			location = locationManager.getLastKnownLocation(provider);
-			city = getLocationName(location.getLatitude(), location.getLongitude());
-		}
+		String city = provider.getLocation(locationManager, criteria);
 		tv = (TextView) findViewById(R.id.cityname);
 		tv.setText(city);
 	}
-	private String getLocationName(double latitude, double longitude) {
-		String result = "Unavailable";
-		
-		Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
-	    try {
-
-	        List<Address> addresses = gcd.getFromLocation(latitude, longitude, 10);
-
-	        for (Address adrs : addresses) {
-	            if (adrs != null) {
-
-	                String city = adrs.getLocality();
-	                if (city != null && !city.equals("")) {
-	                    result = city;
-	                } else {
-
-	                }
-	                // // you should also try with addresses.get(0).toSring();
-
-	            }
-
-	        }
-	    } catch (IOException e) {
-	        
-	    	e.printStackTrace();
-	    	result="Unavailable";
-	        
-	    }
-	    
-	    {
-	    return result;
-	    }
-	}
-	
 }

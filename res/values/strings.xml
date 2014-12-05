@@ -9,5 +9,6 @@
     <string name="title_activity_chinese_deal">ChineseDeal</string>
     <string name="title_activity_indian_cuisine">IndianCuisine</string>
     <string name="title_activity_deal_page">DealPage</string>
+    <string name="unavailable">Location unavailable</string>
 
 </resources>
