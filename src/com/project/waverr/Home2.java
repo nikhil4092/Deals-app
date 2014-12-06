@@ -144,7 +144,18 @@ public class Home2 extends ActionBarActivity implements
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle("Home");
+		String city=null;
+		if(provider!=null) {
+			location = locationManager.getLastKnownLocation(provider);
+			city = getLocationName(location.getLatitude(), location.getLongitude());
+		}
+		actionBar.setCustomView(getLayoutInflater().inflate(R.layout.rightalign, null),
+		        new ActionBar.LayoutParams(
+		                ActionBar.LayoutParams.WRAP_CONTENT,
+		                ActionBar.LayoutParams.MATCH_PARENT,
+		                Gravity.RIGHT
+		        ));
+		actionBar.setTitle(city);
 	}
 
 	@Override
@@ -155,8 +166,6 @@ public class Home2 extends ActionBarActivity implements
 			// decide what to show in the action bar.
 			getMenuInflater().inflate(R.menu.home2, menu);
 			restoreActionBar();
-//abhishek			b2= findViewById(R.id.action_example);    this is the link to the button whos name we need to update
-//			b2.setText("Bang");
 			return true;
 		}
 		return super.onCreateOptionsMenu(menu);
