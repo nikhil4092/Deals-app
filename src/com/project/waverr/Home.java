@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
@@ -33,6 +34,7 @@ public class Home extends ActionBarActivity implements OnClickListener{
 	Criteria criteria;
 	String provider;
 	Location location;
+	Button b;
 	@Override
 	
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class Home extends ActionBarActivity implements OnClickListener{
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		criteria = new Criteria();
 		provider = locationManager.getBestProvider(criteria, true);
-		
+		b=(Button)findViewById(R.id.slidemenu);
 		th.setup();
 		TabSpec specs = th.newTabSpec("Search");
 		specs.setContent(R.id.tab1);
@@ -84,6 +86,7 @@ public class Home extends ActionBarActivity implements OnClickListener{
 	    x.setTextColor(Color.parseColor("#424242"));
 		ib1.setOnClickListener(this);
 		ib2.setOnClickListener(this);
+		b.setOnClickListener(this);
 	}
 	@Override
 	public void onClick(View arg0) {
@@ -91,6 +94,9 @@ public class Home extends ActionBarActivity implements OnClickListener{
 		Intent c1,c2;
 		switch(arg0.getId())
 		{
+		case R.id.slidemenu:
+			c1 = new Intent("com.project.waverr.HOMETWO");
+			startActivity(c1);break;
 		case R.id.cuisine1:c1 = new Intent("com.project.waverr.CHINESECUISINE");
 		startActivity(c1);
 			break;
