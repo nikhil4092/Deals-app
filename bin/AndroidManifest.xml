@@ -63,6 +63,7 @@
         </activity>
         <activity
             android:name=".Home2"
+            android:icon="@drawable/waverr_icon"
             android:label="@string/title_activity_home2" >
             <intent-filter>
                 <action android:name="com.project.waverr.HOMETWO" />

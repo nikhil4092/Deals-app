@@ -97,26 +97,286 @@
 			<FrameLayout android:layout_width="match_parent"
 				android:layout_height="match_parent" android:id="@android:id/tabcontent">
 
+				
+
 				<LinearLayout
-				    android:id="@+id/tab1"
+				    android:id="@+id/dealtab1"
 				    android:layout_width="match_parent"
 				    android:layout_height="match_parent"
 				    android:orientation="vertical"
 				    android:layout_margin="4dp"
 				    android:weightSum="10"
 				    >			
-				   
+				   <ScrollView
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content" >
+						<LinearLayout
+					    android:layout_width="fill_parent"
+					    android:layout_height="0dp"
+					    android:weightSum="10"
+					    android:orientation="vertical" >
+					    
+						    <ImageView
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+						        android:src="@drawable/chinese1"
+						        android:layout_weight="4" 
+						        android:scaleType="fitXY"
+						        android:adjustViewBounds="true"
+						        />
+
+						    
+
+						    <LinearLayout
+						        android:layout_width="fill_parent"
+						        android:layout_height="wrap_content"
+						        android:layout_weight="2"
+						         >
+
+						      <LinearLayout
+									    android:layout_width="fill_parent"
+									        android:layout_height="wrap_content"
+									        android:orientation="horizontal"
+									        android:layout_weight="2"
+									        android:weightSum="2"
+									        android:layout_margin="4dp"
+									        android:background="#f1f1f1" >
+									
+									    <Button
+									        android:id="@+id/namelocation"
+									        android:layout_width="wrap_content"
+									        android:layout_height="wrap_content"
+									        android:layout_weight="1"	
+									        android:background="@drawable/buttonborder"								        
+									        android:text="Hao Ming Mangalore" />
+									
+									    <Button
+									        android:id="@+id/timeleft"
+									        android:layout_width="wrap_content"
+									        android:layout_height="wrap_content"
+									        android:layout_weight="1"
+									        android:background="@drawable/buttonborder"
+									        android:text="Deal Ends in 2Hrs" />
+									
+									</LinearLayout>
+						    </LinearLayout>
+						    <LinearLayout
+						        android:layout_width="fill_parent"
+						        android:layout_height="wrap_content"
+						        android:layout_weight="2"
+						         >
+
+						      <LinearLayout
+									    android:layout_width="fill_parent"
+									        android:layout_height="wrap_content"
+									        android:layout_weight="2"
+									        android:weightSum="1"
+									        android:layout_margin="4dp"
+									        android:background="#f1f1f1" >
+									
+									    <Button
+									        android:id="@+id/Specialoffer"
+									        android:layout_width="fill_parent"
+									        android:layout_weight="1"
+									        android:background="@drawable/buttonborder"
+									        android:layout_height="wrap_content"
+									        android:text="15% off on purchase greater than 500Rs." />
+									
+									</LinearLayout>
+						    </LinearLayout>
+						    <LinearLayout
+						        android:layout_width="fill_parent"
+						        android:layout_height="wrap_content"
+						        android:layout_weight="2"
+						         >
+
+						      <LinearLayout
+									    android:layout_width="fill_parent"
+									        android:layout_height="wrap_content"
+									        android:layout_weight="2"
+									        android:weightSum="1"
+									        android:layout_margin="4dp"
+									        android:background="#f1f1f1" >
+									
+									    <Button
+									        android:id="@+id/tc"
+									        android:layout_width="fill_parent"
+									        android:layout_weight="1"
+									        android:background="@drawable/buttonborder"
+									        android:layout_height="wrap_content"
+									        android:text="terms and conditions" />
+									
+									</LinearLayout>
+						    </LinearLayout>
+				       </LinearLayout>
+				</ScrollView>
+				</LinearLayout>	
+				<LinearLayout android:layout_width="match_parent"
+				    android:layout_height="match_parent"
+				    android:orientation="vertical"
+				    android:layout_margin="4dp"
+				    android:weightSum="10" 
+				    android:id="@+id/dealtab2"					
+					>
+				   <ScrollView
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content" >
+						<LinearLayout
+					    android:layout_width="fill_parent"
+					    android:layout_height="0dp"
+					    android:weightSum="12"
+					    android:orientation="vertical" >
+					    
+						    <ImageView
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+						        android:src="@drawable/chinese1"
+						        android:layout_weight="4" 
+						        android:scaleType="fitXY"
+						        android:adjustViewBounds="true"
+						        />
+							<LinearLayout
+						        android:layout_width="fill_parent"
+						        android:layout_height="wrap_content"
+						        android:layout_weight="2"
+						         >
+
+						      <LinearLayout
+									    android:layout_width="fill_parent"
+									        android:layout_height="wrap_content"
+									        android:orientation="horizontal"
+									        android:layout_weight="2"
+									        android:weightSum="2"
+									        android:layout_margin="4dp"
+									        android:background="#f1f1f1" >
+
+						          <TextView
+						              android:id="@+id/Ratingtext"
+						              android:layout_width="wrap_content"
+						              android:layout_height="wrap_content"
+						              android:layout_weight="1"
+						              android:layout_gravity="center_vertical"
+						              android:text="Rating"
+						              android:textAppearance="?android:attr/textAppearanceLarge" />
+						    
+						    <RatingBar
+						        android:id="@+id/ratingBar1"
+						        android:layout_width="wrap_content"
+						        android:gravity="center_vertical"
+						        android:layout_height="wrap_content"
+						        android:layout_weight="1" />
+								</LinearLayout>
+								</LinearLayout>
+						    <LinearLayout
+						        android:layout_width="fill_parent"
+						        android:layout_height="wrap_content"
+						        android:layout_weight="2"
+						         >
+
+						      <LinearLayout
+									    android:layout_width="fill_parent"
+									        android:layout_height="wrap_content"
+									        android:orientation="horizontal"
+									        android:layout_weight="2"
+									        android:weightSum="2"
+									        android:layout_margin="4dp"
+									        android:background="#f1f1f1" >
+									
+									    <Button
+									        android:id="@+id/namefulladdress"
+									        android:layout_width="wrap_content"
+									        android:layout_height="wrap_content"
+									        android:layout_weight="2"	
+									        android:background="@drawable/buttonborder"								        
+									        android:text="Hao Ming \n Balmatta, Mangalore \n Ph.No:9008002002" />
+								
+									
+									</LinearLayout>
+						    </LinearLayout>
+						    <LinearLayout
+						        android:layout_width="fill_parent"
+						        android:layout_height="wrap_content"
+						        android:layout_weight="2"
+						         >
+
+						      <LinearLayout
+									    android:layout_width="fill_parent"
+									        android:layout_height="wrap_content"
+									        android:layout_weight="2"
+									        android:weightSum="1"
+									        android:layout_margin="4dp"
+									        android:background="#f1f1f1" >
+									
+									    <Button
+									        android:id="@+id/RestoIntro"
+									        android:layout_width="fill_parent"
+									        android:layout_weight="1"
+									        android:background="@drawable/buttonborder"
+									        android:layout_height="wrap_content"
+									        android:text="Started In the year bla bla bla" />
+									
+									</LinearLayout>
+						    </LinearLayout>
+						    <LinearLayout
+						        android:layout_width="fill_parent"
+						        android:layout_height="wrap_content"
+						        android:layout_weight="2"
+						         >
+
+						      <LinearLayout
+									    android:layout_width="fill_parent"
+									        android:layout_height="wrap_content"
+									        android:layout_weight="2"
+									        android:weightSum="1"
+									        android:layout_margin="4dp"
+									        android:background="#f1f1f1" >
+									
+									    <Button
+									        android:id="@+id/Info"
+									        android:layout_width="fill_parent"
+									        android:layout_weight="1"
+									        android:background="@drawable/buttonborder"
+									        android:layout_height="wrap_content"
+									        android:text="Cost for 2 : 500 \n Veg : Yes \n Non Veg : Yes \n Alcohol : No \n Delivery : Yes" />
+									
+									</LinearLayout>
+						    </LinearLayout>
+				       </LinearLayout>
+				</ScrollView>
 					</LinearLayout>
 				<LinearLayout android:layout_width="match_parent"
-					android:layout_height="match_parent" android:id="@+id/tab2"
+					android:layout_height="match_parent" android:id="@+id/dealtab3"
 					android:orientation="horizontal">
+				   <ScrollView
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content" >
+						<LinearLayout
+					    android:layout_width="fill_parent"
+					    android:layout_height="wrap_content"
+					    android:weightSum="2"
+					    android:orientation="vertical" >			       
+					    
+						<Gallery
+					        android:id="@+id/gallery1"
+					        android:layout_weight="1"
+					        android:layout_width="fill_parent"
+					        android:layout_height="wrap_content" />
+					 
+					    <ImageView
+					        android:id="@+id/showpic"
+					        android:layout_weight="1"
+					        android:layout_width="fill_parent"
+					        android:layout_height="wrap_content"
+					        android:scaleType="fitXY"
+					        android:adjustViewBounds="true"
+					        android:background="#cfcfcf"
+					        android:layout_margin="4dp"
+					         />
+						</LinearLayout>
+				</ScrollView>
 					</LinearLayout>
 				<LinearLayout android:layout_width="match_parent"
-					android:layout_height="match_parent" android:id="@+id/tab3"
-					android:orientation="horizontal">
-					</LinearLayout>
-				<LinearLayout android:layout_width="match_parent"
-					android:layout_height="match_parent" android:id="@+id/tab4"
+					android:layout_height="match_parent" android:id="@+id/dealtab4"
 					android:orientation="horizontal">
 					</LinearLayout>
 				
@@ -137,12 +397,7 @@
         android:layout_weight="10"
         android:weightSum="2"
         android:layout_margin="4dp"
-        android:background="#f1f1f1"    
-    
-    
-    
-    
-    >
+        android:background="#f1f1f1" >
 
     <Button
         android:id="@+id/button1"

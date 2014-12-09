@@ -149,12 +149,6 @@ public class Home2 extends ActionBarActivity implements
 			location = locationManager.getLastKnownLocation(provider);
 			city = getLocationName(location.getLatitude(), location.getLongitude());
 		}
-		actionBar.setCustomView(getLayoutInflater().inflate(R.layout.rightalign, null),
-		        new ActionBar.LayoutParams(
-		                ActionBar.LayoutParams.WRAP_CONTENT,
-		                ActionBar.LayoutParams.MATCH_PARENT,
-		                Gravity.RIGHT
-		        ));
 		actionBar.setTitle(city);
 	}
 
@@ -242,13 +236,7 @@ public class Home2 extends ActionBarActivity implements
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		String city=null;
-		if(provider!=null) {
-			location = locationManager.getLastKnownLocation(provider);
-			city = getLocationName(location.getLatitude(), location.getLongitude());
-		}
-		tv = (TextView) findViewById(R.id.cityname);
-		tv.setText(city);
+		
 		
 	}
 	private String getLocationName(double latitude, double longitude) {
@@ -266,7 +254,7 @@ public class Home2 extends ActionBarActivity implements
 	                if (city != null && !city.equals("")) {
 	                    result = city;
 	                } else {
-
+	                	result = "NA";
 	                }
 	                // // you should also try with addresses.get(0).toSring();
 

@@ -9,6 +9,6 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         android:icon="@drawable/city_select"
-        app:showAsAction="never"/>
+        app:showAsAction="always"/>
 
 </menu>
