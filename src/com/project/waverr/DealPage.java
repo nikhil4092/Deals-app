@@ -14,9 +14,8 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TabHost;
-import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
-import android.widget.Toast;
+import android.widget.TextView;
 
 public class DealPage extends ActionBarActivity {
 
