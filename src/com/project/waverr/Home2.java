@@ -1,40 +1,27 @@
 package com.project.waverr;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.content.ClipData.Item;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
 import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TabHost;
-import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
+import android.widget.TextView;
 
 public class Home2 extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener {
@@ -47,34 +34,34 @@ public class Home2 extends ActionBarActivity implements
 	String cityName;
 	LocationManager locationManager;
 	Criteria criteria;
-	String provider;
-	Location location;
+	/*String provider;
+	Location location;*/
 	Button b;
+	LocationGiver giver;
+	android.support.v7.app.ActionBar bar;
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
 	 * navigation drawer.
 	 */
 	private NavigationDrawerFragment mNavigationDrawerFragment;
 
-	/**
-	 * Used to store the last screen title. For use in
-	 * {@link #restoreActionBar()}.
-	 */
-	private CharSequence mTitle;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home2);
-		android.app.ActionBar bar = getActionBar();
+		bar = getSupportActionBar();
 		bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#fe5335")));
 		ib1=(ImageButton)findViewById(R.id.cuisine1);
 		ib2=(ImageButton)findViewById(R.id.cuisine2);
 		th=(TabHost)findViewById(R.id.tabhost);
+		
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		criteria = new Criteria();
-		provider = locationManager.getBestProvider(criteria, true);
+		/*provider = locationManager.getBestProvider(criteria, true);*/
+		giver = new LocationGiver(getBaseContext());
+		
 		b=(Button)findViewById(R.id.slidemenu);
+		
 		th.setup();
 		TabSpec specs = th.newTabSpec("Search");
 		specs.setContent(R.id.tab1);
@@ -113,7 +100,7 @@ public class Home2 extends ActionBarActivity implements
 
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
-		mTitle = getTitle();
+		getTitle();
 
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
@@ -129,13 +116,13 @@ public class Home2 extends ActionBarActivity implements
 	public void onSectionAttached(int number) {
 		switch (number) {
 		case 1:
-			mTitle = getString(R.string.title_section1);
+			getString(R.string.title_section1);
 			break;
 		case 2:
-			mTitle = getString(R.string.title_section2);
+			getString(R.string.title_section2);
 			break;
 		case 3:
-			mTitle = getString(R.string.title_section3);
+			getString(R.string.title_section3);
 			break;
 		}
 	}
@@ -144,12 +131,8 @@ public class Home2 extends ActionBarActivity implements
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowTitleEnabled(true);
-		String city=null;
-		if(provider!=null) {
-			location = locationManager.getLastKnownLocation(provider);
-			city = getLocationName(location.getLatitude(), location.getLongitude());
-		}
-		actionBar.setTitle(city);
+		cityName = giver.getLocation(locationManager, criteria);
+		actionBar.setTitle(cityName);
 	}
 
 	@Override
@@ -236,41 +219,7 @@ public class Home2 extends ActionBarActivity implements
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		
-		
+		cityName = giver.getLocation(locationManager, criteria);
+		bar.setTitle(cityName);
 	}
-	private String getLocationName(double latitude, double longitude) {
-		String result = "Unavailable";
-		
-		Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
-	    try {
-
-	        List<Address> addresses = gcd.getFromLocation(latitude, longitude, 10);
-
-	        for (Address adrs : addresses) {
-	            if (adrs != null) {
-
-	                String city = adrs.getLocality();
-	                if (city != null && !city.equals("")) {
-	                    result = city;
-	                } else {
-	                	result = "NA";
-	                }
-	                // // you should also try with addresses.get(0).toSring();
-
-	            }
-
-	        }
-	    } catch (IOException e) {
-	        
-	    	e.printStackTrace();
-	    	result="Unavailable";
-	        
-	    }
-	    
-	    {
-	    return result;
-	    }
-	}
-
 }
