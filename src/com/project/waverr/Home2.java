@@ -38,7 +38,10 @@ public class Home2 extends ActionBarActivity implements
 	Location location;*/
 	Button b;
 	LocationGiver giver;
+<<<<<<< HEAD
 	android.support.v7.app.ActionBar bar;
+=======
+>>>>>>> 707862d6681b8cefe188f2a3ebd9ecc21c3f82e6
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
 	 * navigation drawer.
@@ -219,7 +222,11 @@ public class Home2 extends ActionBarActivity implements
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+<<<<<<< HEAD
 		cityName = giver.getLocation(locationManager, criteria);
 		bar.setTitle(cityName);
+=======
+		
+>>>>>>> 707862d6681b8cefe188f2a3ebd9ecc21c3f82e6
 	}
 }
