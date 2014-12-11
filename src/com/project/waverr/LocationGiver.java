@@ -32,7 +32,7 @@ public class LocationGiver {
 	}
 	
 	public String getLocation(LocationManager locationManager, Criteria criteria) {
-<<<<<<< HEAD
+
 		city = "Location Unavailable";
 		if(locationManager!=null) {
 		provider = locationManager.getBestProvider(criteria, true);
@@ -44,22 +44,19 @@ public class LocationGiver {
 			if(!city.equals("NA") && !placeList.contains(city))
 				city="Invalid City";
 			}
-=======
+
 		provider = locationManager.getBestProvider(criteria, true);
 		if(provider!=null) {
 			location = locationManager.getLastKnownLocation(provider);
 			city = getLocationName(location.getLatitude(), location.getLongitude());
 			if(!city.equals("Location Unavailable") && !placeList.contains(city))
 				city="Invalid City";
->>>>>>> 707862d6681b8cefe188f2a3ebd9ecc21c3f82e6
 		}
 		else {
 			//TODO: Give a Prompt to enable Location
 		}
-<<<<<<< HEAD
 		}
-=======
->>>>>>> 707862d6681b8cefe188f2a3ebd9ecc21c3f82e6
+		}
 		return city;
 	}
 	private String getLocationName(double latitude, double longitude) {

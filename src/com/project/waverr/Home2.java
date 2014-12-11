@@ -38,21 +38,13 @@ public class Home2 extends ActionBarActivity implements
 	Location location;*/
 	Button b;
 	LocationGiver giver;
-<<<<<<< HEAD
-	android.support.v7.app.ActionBar bar;
-=======
->>>>>>> 707862d6681b8cefe188f2a3ebd9ecc21c3f82e6
-	/**
-	 * Fragment managing the behaviors, interactions and presentation of the
-	 * navigation drawer.
-	 */
 	private NavigationDrawerFragment mNavigationDrawerFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home2);
-		bar = getSupportActionBar();
+		android.app.ActionBar bar = getActionBar();
 		bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#fe5335")));
 		ib1=(ImageButton)findViewById(R.id.cuisine1);
 		ib2=(ImageButton)findViewById(R.id.cuisine2);
@@ -213,6 +205,7 @@ public class Home2 extends ActionBarActivity implements
 		case R.id.cuisine1:c1 = new Intent("com.project.waverr.CHINESECUISINE");
 		startActivity(c1);
 			break;
+			
 		case R.id.cuisine2:c2= new Intent("come.project.waverr.INDIANCUISINE");
 		startActivity(c2);
 			break;
@@ -222,11 +215,6 @@ public class Home2 extends ActionBarActivity implements
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-<<<<<<< HEAD
-		cityName = giver.getLocation(locationManager, criteria);
-		bar.setTitle(cityName);
-=======
 		
->>>>>>> 707862d6681b8cefe188f2a3ebd9ecc21c3f82e6
 	}
 }
