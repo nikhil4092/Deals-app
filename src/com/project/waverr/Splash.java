@@ -19,7 +19,7 @@ public class Splash extends ActionBarActivity {
 				} catch (InterruptedException e){
 					e.printStackTrace();
 				}finally{
-					Intent openStartingPoint = new Intent("com.iste.scotlandyard.MAINPAGE");
+					Intent openStartingPoint = new Intent("com.project.waverr.HOMETWO");
 					startActivity(openStartingPoint);
 				}
 			}
