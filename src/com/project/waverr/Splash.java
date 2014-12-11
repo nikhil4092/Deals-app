@@ -10,7 +10,11 @@ public class Splash extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+<<<<<<< HEAD
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
+=======
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+>>>>>>> 707862d6681b8cefe188f2a3ebd9ecc21c3f82e6
 		setContentView(R.layout.splash);
 		Thread timer = new Thread(){
 			public void run(){

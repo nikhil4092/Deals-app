@@ -16,11 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
         <LinearLayout 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="150"
-    tools:context="com.project.waverr.Home" >
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:orientation="vertical"
+    	android:weightSum="150"
+    	tools:context="com.project.waverr.Home" >
 
 <LinearLayout
         android:layout_width="fill_parent"
@@ -140,7 +140,9 @@
 					    android:layout_height="wrap_content"
 					    android:layout_weight="1"
 					    android:layout_marginLeft="4dp"
-					    android:layout_marginRight="4dp">
+					    android:layout_marginRight="4dp"
+					    android:background="#0000"
+					    >
 					</SearchView>
 				
 					<ImageButton
