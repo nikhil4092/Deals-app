@@ -235,38 +235,7 @@
 						        android:scaleType="fitXY"
 						        android:adjustViewBounds="true"
 						        />
-							<LinearLayout
-						        android:layout_width="fill_parent"
-						        android:layout_height="wrap_content"
-						        android:layout_weight="2"
-						         >
-
-						      <LinearLayout
-									    android:layout_width="fill_parent"
-									        android:layout_height="wrap_content"
-									        android:orientation="horizontal"
-									        android:layout_weight="2"
-									        android:weightSum="2"
-									        android:layout_margin="4dp"
-									        android:background="#f1f1f1" >
-
-						          <TextView
-						              android:id="@+id/Ratingtext"
-						              android:layout_width="wrap_content"
-						              android:layout_height="wrap_content"
-						              android:layout_weight="1"
-						              android:layout_gravity="center_vertical"
-						              android:text="Rating"
-						              android:textAppearance="?android:attr/textAppearanceLarge" />
-						    
-						    <RatingBar
-						        android:id="@+id/ratingBar1"
-						        android:layout_width="wrap_content"
-						        android:gravity="center_vertical"
-						        android:layout_height="wrap_content"
-						        android:layout_weight="1" />
-								</LinearLayout>
-								</LinearLayout>
+				
 						    <LinearLayout
 						        android:layout_width="fill_parent"
 						        android:layout_height="wrap_content"

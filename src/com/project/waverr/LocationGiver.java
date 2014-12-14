@@ -17,7 +17,7 @@ public class LocationGiver {
 	
 	String provider;
 	Location location;
-	String city = "NA";
+	String city = "Location Unavailable";
 	ArrayList<String> placeList;
 	Context context;
 	
@@ -28,11 +28,11 @@ public class LocationGiver {
 		// Update the list of valid places
 		placeList.add("Kudla");
 		placeList.add("Bangalore");
+		placeList.add("Bengaluru");
 		//done
 	}
 	
 	public String getLocation(LocationManager locationManager, Criteria criteria) {
-
 		city = "Location Unavailable";
 		if(locationManager!=null) {
 		provider = locationManager.getBestProvider(criteria, true);
@@ -40,27 +40,18 @@ public class LocationGiver {
 			location = locationManager.getLastKnownLocation(provider);
 			if(location!=null) {
 			city = getLocationName(location.getLatitude(), location.getLongitude());
-			
-			if(!city.equals("NA") && !placeList.contains(city))
-				city="Invalid City";
-			}
-
-		provider = locationManager.getBestProvider(criteria, true);
-		if(provider!=null) {
-			location = locationManager.getLastKnownLocation(provider);
-			city = getLocationName(location.getLatitude(), location.getLongitude());
 			if(!city.equals("Location Unavailable") && !placeList.contains(city))
 				city="Invalid City";
+			}
 		}
 		else {
 			//TODO: Give a Prompt to enable Location
 		}
 		}
-		}
 		return city;
 	}
 	private String getLocationName(double latitude, double longitude) {
-		String result = "NA";
+		String result = "Location Unavailable";
 		
 		Geocoder gcd = new Geocoder(context, Locale.getDefault());
 	    try {
@@ -73,11 +64,8 @@ public class LocationGiver {
 	            }
 	        }
 	    } catch (IOException e) {
-	    	result="N/A";
 	    	e.printStackTrace();
 	    }
 	    return result;
 	}
 }
-
-

@@ -18,11 +18,16 @@
         <item>Name</item>
         <item>Name</item>
     </string-array>
-
+<string-array name="city_array">
+        <item>Bangalore</item>
+        <item>Mangalore</item>
+        <item>Manipal</item>
+        <item>Udupi</item>
+    </string-array>
     <string name="title_activity_home2">Home2</string>
     <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_section2">Name</string>
+    <string name="title_section3">Email Id</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Mangalore</string>
