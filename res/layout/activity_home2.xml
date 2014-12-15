@@ -132,6 +132,7 @@
 					    android:layout_width="fill_parent"
 					    android:layout_height="0dp"
 					    android:weightSum="10"
+					    android:id="@+id/dealpage"
 					    android:orientation="vertical" >
 					    
 					<SearchView
@@ -147,21 +148,23 @@
 				
 					<ImageButton
 					    android:id="@+id/cuisine1"
-					    android:layout_width="match_parent"
+					    android:layout_width="fill_parent"
 					    android:layout_height="wrap_content"
+					    android:background="#0000"
+					    android:scaleType="fitXY"
 					    android:layout_weight="1"
 					    android:layout_margin="4dp"
 					    android:adjustViewBounds="true"
-					    android:scaleType="fitXY"
-					    android:src="@drawable/chinese1" />
+					    android:src="@drawable/cuisine2" />
 
 					<ImageButton
 					    android:id="@+id/cuisine2"
-					    android:layout_width="wrap_content"
+					    android:layout_width="fill_parent"
 					    android:layout_height="wrap_content"
 					    android:adjustViewBounds="true"
 					    android:layout_margin="4dp"
 					    android:scaleType="fitXY"
+					    android:background="#0000"
 					    android:layout_weight="1"
 					    android:src="@drawable/chinese1" />
 					</LinearLayout>

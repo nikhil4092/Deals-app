@@ -62,15 +62,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ShowPopUp"
-            android:label="ShowPopUp" >
-            <intent-filter>
-                <action android:name="com.project.waverr.SHOWPOPUP" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".Home2"
             android:icon="@drawable/waverr_icon"
             android:label="@string/title_activity_home2" >

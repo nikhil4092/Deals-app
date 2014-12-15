@@ -30,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -40,7 +41,7 @@ import android.widget.Toast;
  * implemented here.
  */
 public class NavigationDrawerFragment extends Fragment {
-	
+
 	/**
 	 * Remember the position of the selected item.
 	 */
@@ -107,6 +108,8 @@ public class NavigationDrawerFragment extends Fragment {
 			Bundle savedInstanceState) {
 		mDrawerListView = (ListView) inflater.inflate(
 				R.layout.fragment_navigation_drawer, container, false);
+	/*	TextView tv=(TextView)mDrawerListView.findViewById(android.R.id.text1);
+		tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.menu_icon, 0, 0, 0);*/
 		mDrawerListView
 				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 					@Override
@@ -115,6 +118,7 @@ public class NavigationDrawerFragment extends Fragment {
 						selectItem(position);
 					}
 				});
+		
 		mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar()
 				.getThemedContext(),
 				android.R.layout.simple_list_item_activated_1,
@@ -123,7 +127,7 @@ public class NavigationDrawerFragment extends Fragment {
 						getString(R.string.title_section2),
 						getString(R.string.title_section3), }));
 		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-		return mDrawerListView;
+				return mDrawerListView;
 	}
 
 	public boolean isDrawerOpen() {
