@@ -14,10 +14,11 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
-public class DealPage extends ActionBarActivity {
+public class DealPage extends ActionBarActivity implements OnTabChangeListener{
 
 	TabHost th;
 	TextView x;
@@ -74,6 +75,14 @@ public class DealPage extends ActionBarActivity {
 		x = (TextView) th.getTabWidget().getChildAt(3).findViewById(android.R.id.title);
 	    x.setTextSize(15);
 	    x.setTextColor(Color.parseColor("#424242"));
+	    
+	    for(int i=0;i<th.getTabWidget().getChildCount();i++){
+	    	th.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_unselected_waverraccent);
+	    	th.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_unselected_pressed_waverraccent);
+	    }
+	    th.getTabWidget().setCurrentTab(1);
+	    th.getTabWidget().getChildAt(1).setBackgroundResource(R.drawable.tab_selected_waverraccent);
+	    th.getTabWidget().getChildAt(1).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
 	}
 
 	public class ImageAdapter extends BaseAdapter {
@@ -108,4 +117,15 @@ public class DealPage extends ActionBarActivity {
 		 return imageView;
 		 }
 		 }
+
+	@Override
+	public void onTabChanged(String tabId) {
+		// TODO Auto-generated method stub
+		for(int i=0;i<th.getTabWidget().getChildCount();i++){
+			th.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_unselected_waverraccent);
+			th.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_unselected_pressed_waverraccent);
+		}
+		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_waverraccent);
+		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
+	}
 }

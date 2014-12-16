@@ -20,11 +20,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
 public class Home2 extends ActionBarActivity implements
-		NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener {
+		NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChangeListener{
 
 	int LAC;
 	ImageButton ib1,ib2;
@@ -105,7 +106,18 @@ public class Home2 extends ActionBarActivity implements
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
+		
+		for(int i=0;i<th.getTabWidget().getChildCount();i++){
+			th.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_unselected_pressed_waverraccent);
+			th.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_unselected_waverraccent);			
+		}
+		th.getTabWidget().setCurrentTab(1);
+		th.getTabWidget().getChildAt(1).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
+		th.getTabWidget().getChildAt(1).setBackgroundResource(R.drawable.tab_selected_waverraccent);
+		
 	}
+
+	
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
@@ -221,5 +233,22 @@ public class Home2 extends ActionBarActivity implements
 		super.onResume();
 		cityName = giver.getLocation(locationManager, criteria);
 		bar.setTitle(cityName);
+		
 	}
+
+
+
+	@Override
+	public void onTabChanged(String tabId) {
+		// TODO Auto-generated method stub
+		for(int i=0;i<th.getTabWidget().getChildCount();i++){
+			th.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_unselected_waverraccent);
+			th.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_unselected_pressed_waverraccent);
+		}
+		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_waverraccent);
+		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
+	}
+	
+	
 }
+
