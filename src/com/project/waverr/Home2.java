@@ -2,6 +2,8 @@ package com.project.waverr;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,8 +14,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -212,7 +216,12 @@ public class Home2 extends ActionBarActivity implements
 			// Only show items in the action bar relevant to this screen
 			// if the drawer is not showing. Otherwise, let the drawer
 			// decide what to show in the action bar.
-			getMenuInflater().inflate(R.menu.home2, menu);
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.home2, menu);
+			
+			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+			SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 			restoreActionBar();
 			return true;
 		}
