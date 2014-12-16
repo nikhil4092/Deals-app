@@ -1,18 +1,23 @@
 package com.project.waverr;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Criteria;
-import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,13 +38,15 @@ public class Home2 extends ActionBarActivity implements
 	TextView tv;
 	TextView x;
 	String cityName;
-	LocationManager locationManager;
-	Criteria criteria;
-	/*String provider;
-	Location location;*/
 	Button b;
+	Button location;
 	LocationGiver giver;
 	android.support.v7.app.ActionBar bar;
+	String[] cities;
+	AlertDialog.Builder builder;
+	AlertDialog locationChoose;
+	int flagLocation=0;
+
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
 	 * navigation drawer.
@@ -52,16 +59,18 @@ public class Home2 extends ActionBarActivity implements
 		setContentView(R.layout.activity_home2);
 		bar = getSupportActionBar();
 		bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#fe5335")));
+		cityName = getString(R.string.location_na);
+		bar.setTitle(cityName);
 		ib1=(ImageButton)findViewById(R.id.cuisine1);
 		ib2=(ImageButton)findViewById(R.id.cuisine2);
 		th=(TabHost)findViewById(R.id.tabhost);
-		
-		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-		criteria = new Criteria();
-		/*provider = locationManager.getBestProvider(criteria, true);*/
-		giver = new LocationGiver(getBaseContext());
-		
 		b=(Button)findViewById(R.id.slidemenu);
+		location = (Button)findViewById(R.id.cityselect);
+		/*locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		criteria = new Criteria();
+		provider = locationManager.getBestProvider(criteria, true);*/
+		giver = new LocationGiver(this);
+		cities = new String[]{"Automatic", "Mangaluru", "Bengaluru"};
 		
 		th.setup();
 		TabSpec specs = th.newTabSpec("Search");
@@ -115,6 +124,60 @@ public class Home2 extends ActionBarActivity implements
 		th.getTabWidget().getChildAt(1).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
 		th.getTabWidget().getChildAt(1).setBackgroundResource(R.drawable.tab_selected_waverraccent);
 		
+		builder = new AlertDialog.Builder(this);
+		builder.setSingleChoiceItems(cities, 0, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				if(which==0) {
+					new LocationObtainer() {
+						protected void onProgressUpdate(Void...voids) {
+							bar.setTitle("Updating...");
+							}
+						protected void onPostExecute(String result) {
+							bar.setTitle(result);
+							cityName = result;
+							checkStuff();
+							}
+						}.execute(giver);
+					//cityName = giver.getLocation();
+					//bar.setTitle(cityName);
+					dialog.dismiss();
+				}
+				else {
+					cityName = cities[which];
+					bar.setTitle(cityName);
+				}
+				dialog.dismiss();
+			}
+		});
+		builder.setTitle("Choose your location");
+		locationChoose = builder.create();
+		locationChoose.show();
+	}
+	
+	private void checkStuff() {
+		if(((String) bar.getTitle()).compareTo("Location Off")==0) {
+			AlertDialog.Builder promptBuilder = new AlertDialog.Builder(this);
+		    promptBuilder.setMessage("Location is disabled.\nEnable location?\n\nNote: You can also choose your preferred location by clicking on the location icon at the top.");
+		    promptBuilder.setCancelable(false);
+		    promptBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int id) { 
+		        	Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+		        }
+		     });
+		    promptBuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int id) { 
+		            // do nothing
+		        }
+		     });
+		    AlertDialog locationPrompt = promptBuilder.create();
+		    locationPrompt.show();
+		    flagLocation=1;
+		}
 	}
 
 	
@@ -143,7 +206,7 @@ public class Home2 extends ActionBarActivity implements
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowTitleEnabled(true);
-		cityName = giver.getLocation(locationManager, criteria);
+		/*cityName = giver.getLocation();*/
 		actionBar.setTitle(cityName);
 	}
 
@@ -153,7 +216,12 @@ public class Home2 extends ActionBarActivity implements
 			// Only show items in the action bar relevant to this screen
 			// if the drawer is not showing. Otherwise, let the drawer
 			// decide what to show in the action bar.
-			getMenuInflater().inflate(R.menu.home2, menu);
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.home2, menu);
+			
+			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+			SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 			restoreActionBar();
 			return true;
 		}
@@ -167,6 +235,7 @@ public class Home2 extends ActionBarActivity implements
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+		    locationChoose.show();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -225,15 +294,34 @@ public class Home2 extends ActionBarActivity implements
 		case R.id.cuisine2:c2= new Intent("come.project.waverr.INDIANCUISINE");
 		startActivity(c2);
 			break;
+		case R.id.cityselect:c1 = new Intent("com.project.waverr.CHINESECUISINE");
+		startActivity(c1);
+			break;
 		}
 	}
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		cityName = giver.getLocation(locationManager, criteria);
-		bar.setTitle(cityName);
-		
+		if(cityName.equalsIgnoreCase("Location Off") && flagLocation==1) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			new LocationObtainer() {
+				protected void onProgressUpdate(Void...voids) {
+					bar.setTitle("Updating...");
+					}
+				protected void onPostExecute(String result) {
+					bar.setTitle(result);
+					cityName = result;
+					checkStuff();
+					}
+				}.execute(giver);
+				flagLocation=0;
+		}
 	}
 
 

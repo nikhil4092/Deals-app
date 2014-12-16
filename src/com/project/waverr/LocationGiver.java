@@ -3,7 +3,6 @@ package com.project.waverr;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import android.content.Context;
 import android.location.Address;
@@ -17,24 +16,28 @@ public class LocationGiver {
 	
 	String provider;
 	Location location;
-	String city = "Location Unavailable";
+	String city;// = getString(R.string.location_na);
 	ArrayList<String> placeList;
 	Context context;
+	LocationManager locationManager;
+	Criteria criteria;
+	String na;
 	
 	public LocationGiver(Context obtained) {
 		context = obtained;
+		locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+		criteria = new Criteria();
 		
 		placeList = new ArrayList<>();
 		// Update the list of valid places
-		placeList.add("Kudla");
-		placeList.add("Bangalore");
-		placeList.add("Bengaluru");
+		placeList.add("Mangaluru");
 		//done
 	}
 	
-	public String getLocation(LocationManager locationManager, Criteria criteria) {
-		city = "Location Unavailable";
-		if(locationManager!=null) {
+	public String getLocation() {
+		na = context.getString(R.string.location_na);
+		city = na;
+		//if(locationManager!=null) {
 		provider = locationManager.getBestProvider(criteria, true);
 		if(provider!=null) {
 			location = locationManager.getLastKnownLocation(provider);
@@ -45,22 +48,23 @@ public class LocationGiver {
 			}
 		}
 		else {
-			//TODO: Give a Prompt to enable Location
-		}
+			city = "Location Off";
 		}
 		return city;
 	}
 	private String getLocationName(double latitude, double longitude) {
-		String result = "Location Unavailable";
+		String result = na;
 		
-		Geocoder gcd = new Geocoder(context, Locale.getDefault());
+		Geocoder gcd = new Geocoder(context);
 	    try {
-	        List<Address> addresses = gcd.getFromLocation(latitude, longitude, 10);
+	        List<Address> addresses = gcd.getFromLocation(latitude, longitude, 5);
 	        for (Address adrs : addresses) {
 	            if (adrs != null) {
 	                String city = adrs.getLocality();
-	                if (city != null && !city.equals(""))
+	                if (city != null) {
 	                    result = city;
+	                    break;
+	                }
 	            }
 	        }
 	    } catch (IOException e) {
