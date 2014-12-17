@@ -120,9 +120,12 @@ public class Home2 extends ActionBarActivity implements
 			th.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_unselected_pressed_waverraccent);
 			th.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_unselected_waverraccent);			
 		}
-		th.getTabWidget().setCurrentTab(1);
-		th.getTabWidget().getChildAt(1).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
-		th.getTabWidget().getChildAt(1).setBackgroundResource(R.drawable.tab_selected_waverraccent);
+		th.getTabWidget().setCurrentTab(0);
+		th.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab_selected_waverraccent);
+		th.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
+		th.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab_selected_focused_waverraccent);
+		
+		th.setOnTabChangedListener(this);
 		
 		builder = new AlertDialog.Builder(this);
 		builder.setSingleChoiceItems(cities, 0, new DialogInterface.OnClickListener() {
@@ -333,8 +336,10 @@ public class Home2 extends ActionBarActivity implements
 			th.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_unselected_waverraccent);
 			th.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_unselected_pressed_waverraccent);
 		}
+		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_indicator_ab_waverraccent);
 		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_waverraccent);
 		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
+		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_focused_waverraccent);
 	}
 	
 	
