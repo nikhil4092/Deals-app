@@ -37,7 +37,7 @@ public class Home2 extends ActionBarActivity implements
 	TabHost th;
 	TextView tv;
 	TextView x;
-	String cityName;
+	//String cityName;
 	Button b;
 	Button location;
 	LocationGiver giver;
@@ -46,6 +46,7 @@ public class Home2 extends ActionBarActivity implements
 	AlertDialog.Builder builder;
 	AlertDialog locationChoose;
 	int flagLocation=0;
+	GlobalClass global;
 
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
@@ -57,10 +58,11 @@ public class Home2 extends ActionBarActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home2);
+		global = (GlobalClass) getApplicationContext();
 		bar = getSupportActionBar();
 		bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#fe5335")));
-		cityName = getString(R.string.location_na);
-		bar.setTitle(cityName);
+		global.setCity(getString(R.string.location_na));
+		bar.setTitle(getString(R.string.location_na));
 		ib1=(ImageButton)findViewById(R.id.cuisine1);
 		ib2=(ImageButton)findViewById(R.id.cuisine2);
 		th=(TabHost)findViewById(R.id.tabhost);
@@ -140,7 +142,7 @@ public class Home2 extends ActionBarActivity implements
 							}
 						protected void onPostExecute(String result) {
 							bar.setTitle(result);
-							cityName = result;
+							global.setCity(result);
 							checkStuff();
 							}
 						}.execute(giver);
@@ -149,19 +151,20 @@ public class Home2 extends ActionBarActivity implements
 					dialog.dismiss();
 				}
 				else {
-					cityName = cities[which];
-					bar.setTitle(cityName);
+					bar.setTitle(cities[which]);
+					global.setCity(cities[which]);
 				}
 				dialog.dismiss();
 			}
 		});
 		builder.setTitle("Choose your location");
 		locationChoose = builder.create();
-		locationChoose.show();
+		//if(cityName==null)
+			locationChoose.show();
 	}
 	
 	private void checkStuff() {
-		if(((String) bar.getTitle()).compareTo("Location Off")==0) {
+		if(((String) global.getCity()).compareTo("Location Off")==0) {
 			AlertDialog.Builder promptBuilder = new AlertDialog.Builder(this);
 		    promptBuilder.setMessage("Location is disabled.\nEnable location?\n\nNote: You can also choose your preferred location by clicking on the location icon at the top.");
 		    promptBuilder.setCancelable(false);
@@ -211,7 +214,7 @@ public class Home2 extends ActionBarActivity implements
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowTitleEnabled(true);
 		/*cityName = giver.getLocation();*/
-		actionBar.setTitle(cityName);
+		actionBar.setTitle(global.getCity());
 	}
 
 	@Override
@@ -295,11 +298,8 @@ public class Home2 extends ActionBarActivity implements
 		case R.id.cuisine1:c1 = new Intent("com.project.waverr.CHINESECUISINE");
 		startActivity(c1);
 			break;
-		case R.id.cuisine2:c2= new Intent("come.project.waverr.INDIANCUISINE");
+		case R.id.cuisine2:c2= new Intent("com.project.waverr.INDIANCUISINE");
 		startActivity(c2);
-			break;
-		case R.id.cityselect:c1 = new Intent("com.project.waverr.CHINESECUISINE");
-		startActivity(c1);
 			break;
 		}
 	}
@@ -307,7 +307,7 @@ public class Home2 extends ActionBarActivity implements
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		if(cityName.equalsIgnoreCase("Location Off") && flagLocation==1) {
+		if(global.getCity().equalsIgnoreCase("Location Off") && flagLocation==1) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -319,13 +319,13 @@ public class Home2 extends ActionBarActivity implements
 					bar.setTitle("Updating...");
 					}
 				protected void onPostExecute(String result) {
-					bar.setTitle(result);
-					cityName = result;
+					global.setCity(result);
 					checkStuff();
 					}
 				}.execute(giver);
 				flagLocation=0;
 		}
+		bar.setTitle(global.getCity());
 	}
 
 

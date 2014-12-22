@@ -1,20 +1,19 @@
 package com.project.waverr;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.ImageButton;
 
-public class ChineseDeal extends Activity implements OnClickListener{
+public class ChineseDeal extends GlobalActionBar implements OnClickListener{
 
 	ImageButton ib1,ib2;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.chinese_deal);
 		
 		ib1=(ImageButton)findViewById(R.id.chinesedeal1);

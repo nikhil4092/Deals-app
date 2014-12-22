@@ -19,7 +19,7 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
 @SuppressWarnings("deprecation")
-public class DealPage extends ActionBarActivity implements OnTabChangeListener{
+public class DealPage extends GlobalActionBar implements OnTabChangeListener{
 
 	TabHost th;
 	TextView x;
@@ -28,7 +28,7 @@ public class DealPage extends ActionBarActivity implements OnTabChangeListener{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.deal_page);
 		Gallery gallery = (Gallery) findViewById(R.id.gallery1);
 		 gallery.setAdapter(new ImageAdapter(this));
