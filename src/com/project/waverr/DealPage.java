@@ -18,6 +18,7 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
+@SuppressWarnings("deprecation")
 public class DealPage extends ActionBarActivity implements OnTabChangeListener{
 
 	TabHost th;
