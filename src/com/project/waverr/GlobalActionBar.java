@@ -26,6 +26,23 @@ public class GlobalActionBar extends ActionBarActivity implements NavigationDraw
 	LocationGiver giver;
 	int flagLocation;
 	
+	/*protected RelativeLayout fullLayout;
+	protected FrameLayout frameLayout;
+
+	@Override
+	public void setContentView(int layoutResID) {
+
+	    fullLayout = (RelativeLayout) getLayoutInflater().inflate(R.layout.act_layout, null);
+	    frameLayout = (FrameLayout) fullLayout.findViewById(R.id.drawer_frame);
+
+	    getLayoutInflater().inflate(layoutResID, frameLayout, true);
+
+	    super.setContentView(fullLayout);
+
+	    //Your drawer content...
+
+	}*/
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

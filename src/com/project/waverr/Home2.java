@@ -72,7 +72,7 @@ public class Home2 extends ActionBarActivity implements
 		criteria = new Criteria();
 		provider = locationManager.getBestProvider(criteria, true);*/
 		giver = new LocationGiver(this);
-		cities = new String[]{"Automatic", "Mangaluru", "Bengaluru"};
+		cities = new String[]{"Automatic", "Mangaluru"};
 		
 		th.setup();
 		TabSpec specs = th.newTabSpec("Search");

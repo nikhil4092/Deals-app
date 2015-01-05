@@ -43,7 +43,7 @@ public class NavigationDrawerFragment extends Fragment {
 	private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
 	/**
-	 * A pointer to the current callbacks instance (the Activity).
+	 * A pointer to the current callback instance (the Activity).
 	 */
 	private NavigationDrawerCallbacks mCallbacks;
 

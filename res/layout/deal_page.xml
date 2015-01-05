@@ -65,91 +65,53 @@
 						        android:adjustViewBounds="true"
 						        />
 
-						    
-
 						    <LinearLayout
-						        android:layout_width="fill_parent"
+						        android:layout_width="match_parent"
 						        android:layout_height="wrap_content"
-						        android:layout_weight="2"
-						         >
+						        android:layout_weight="4"
+						        android:background="#f1f1f1"
+						        android:orientation="vertical" >
 
-						      <LinearLayout
-									    android:layout_width="fill_parent"
-									        android:layout_height="wrap_content"
-									        android:orientation="horizontal"
-									        android:layout_weight="2"
-									        android:weightSum="2"
-									        android:layout_margin="4dp"
-									        android:background="#f1f1f1" >
-									
-									    <Button
-									        android:id="@+id/namelocation"
-									        android:layout_width="wrap_content"
-									        android:layout_height="wrap_content"
-									        android:layout_weight="1"	
-									        android:background="@drawable/buttonborder"								        
-									        android:text="Hao Ming Mangalore" />
-									
-									    <Button
-									        android:id="@+id/timeleft"
-									        android:layout_width="wrap_content"
-									        android:layout_height="wrap_content"
-									        android:layout_weight="1"
-									        android:background="@drawable/buttonborder"
-									        android:text="Deal Ends in 2Hrs" />
-									
-									</LinearLayout>
-						    </LinearLayout>
-						    <LinearLayout
-						        android:layout_width="fill_parent"
-						        android:layout_height="wrap_content"
-						        android:layout_weight="2"
-						         >
+						        <TextView
+						            android:id="@+id/placeName"
+						            android:layout_width="wrap_content"
+						            android:layout_height="wrap_content"
+						            android:text="Hao Ming Chinese Restaurant"
+						            android:textColor="#ff5335"
+						            android:padding="7dp"
+						            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-						      <LinearLayout
-									    android:layout_width="fill_parent"
-									        android:layout_height="wrap_content"
-									        android:layout_weight="2"
-									        android:weightSum="1"
-									        android:layout_margin="4dp"
-									        android:background="#f1f1f1" >
-									
-									    <Button
-									        android:id="@+id/Specialoffer"
-									        android:layout_width="fill_parent"
-									        android:layout_weight="1"
-									        android:background="@drawable/buttonborder"
-									        android:layout_height="wrap_content"
-									        android:text="15% off on purchase greater than 500Rs." />
-									
-									</LinearLayout>
-						    </LinearLayout>
-						    <LinearLayout
-						        android:layout_width="fill_parent"
-						        android:layout_height="wrap_content"
-						        android:layout_weight="2"
-						         >
+						        <TextView
+						            android:id="@+id/theDeal"
+						            android:layout_width="wrap_content"
+						            android:layout_height="wrap_content"
+						            android:text="Get one bowl of noodles free with one bowl of rice"
+						            android:padding="7dp"
+						            android:paddingTop="10dp"
+						            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-						      <LinearLayout
-									    android:layout_width="fill_parent"
-									        android:layout_height="wrap_content"
-									        android:layout_weight="2"
-									        android:weightSum="1"
-									        android:layout_margin="4dp"
-									        android:background="#f1f1f1" >
-									
-									    <Button
-									        android:id="@+id/tc"
-									        android:layout_width="fill_parent"
-									        android:layout_weight="1"
-									        android:background="@drawable/buttonborder"
-									        android:layout_height="wrap_content"
-									        android:text="terms and conditions" />
-									
-									</LinearLayout>
+						        <TextView
+						            android:id="@+id/conditions"
+						            android:layout_width="wrap_content"
+						            android:layout_height="wrap_content"
+						            android:text="You have to buy 100 pounds of rice"
+						            android:background="#ffffff"
+						            android:padding="7dp"
+						            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+						        <TextView
+						            android:id="@+id/timeLimit"
+						            android:layout_width="wrap_content"
+						            android:layout_height="wrap_content"
+						            android:text="The deal expires in 200 days!!"
+						            android:padding="7dp"
+						            android:textAppearance="?android:attr/textAppearanceMedium" />
+
 						    </LinearLayout>
+
 				       </LinearLayout>
 				</ScrollView>
+
 				</LinearLayout>	
 				<LinearLayout android:layout_width="match_parent"
 				    android:layout_height="match_parent"
@@ -191,13 +153,13 @@
 									        android:layout_margin="4dp"
 									        android:background="#f1f1f1" >
 									
-									    <Button
+									    <TextView
 									        android:id="@+id/namefulladdress"
 									        android:layout_width="wrap_content"
 									        android:layout_height="wrap_content"
-									        android:layout_weight="2"	
-									        android:background="@drawable/buttonborder"								        
-									        android:text="Hao Ming \n Balmatta, Mangalore \n Ph.No:9008002002" />
+									        android:layout_weight="2"								        
+									        android:text="Hao Ming \n Balmatta, Mangalore \n Ph.No:9008002002"
+									        android:textAppearance="?android:attr/textAppearanceMedium" />
 								
 									
 									</LinearLayout>
@@ -216,13 +178,14 @@
 									        android:layout_margin="4dp"
 									        android:background="#f1f1f1" >
 									
-									    <Button
+									    <TextView
 									        android:id="@+id/RestoIntro"
 									        android:layout_width="fill_parent"
 									        android:layout_weight="1"
-									        android:background="@drawable/buttonborder"
 									        android:layout_height="wrap_content"
-									        android:text="Started In the year bla bla bla" />
+									        android:textColor="#ff5335"
+									        android:text="Started In the year bla bla bla"
+									        android:textAppearance="?android:attr/textAppearanceMedium" />
 									
 									</LinearLayout>
 						    </LinearLayout>
@@ -240,13 +203,14 @@
 									        android:layout_margin="4dp"
 									        android:background="#f1f1f1" >
 									
-									    <Button
+									    <TextView
 									        android:id="@+id/Info"
 									        android:layout_width="fill_parent"
 									        android:layout_weight="1"
-									        android:background="@drawable/buttonborder"
 									        android:layout_height="wrap_content"
-									        android:text="Cost for 2 : 500 \n Veg : Yes \n Non Veg : Yes \n Alcohol : No \n Delivery : Yes" />
+									        android:gravity="center"
+									        android:text="Cost for 2 : 500 \n Veg : Yes \n Non Veg : Yes \n Alcohol : No \n Delivery : Yes"
+									        android:textAppearance="?android:attr/textAppearanceMedium" />
 									
 									</LinearLayout>
 						    </LinearLayout>
@@ -304,7 +268,7 @@
         android:layout_height="0dp"
         android:orientation="horizontal"
         android:layout_weight="15"
-        android:weightSum="2"
+        android:weightSum="10"
         android:layout_margin="4dp"
         android:background="#f1f1f1" >
 
@@ -312,7 +276,7 @@
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="5"
         android:background="#0000"
         android:text="Deal Counter" />
 
@@ -320,7 +284,7 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="5"
         android:textColor="#ffffff"
         android:textStyle="bold"
         android:background="#ff6700"

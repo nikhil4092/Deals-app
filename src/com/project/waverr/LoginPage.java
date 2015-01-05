@@ -1,15 +1,13 @@
 package com.project.waverr;
 
+import android.app.Activity;
 import android.os.Bundle;
 
-public class IndianCuisine extends GlobalActionBar {
+public class LoginPage extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_indian_cuisine);
+		setContentView(R.layout.login_page);
 	}
-
-	
 }

@@ -18,12 +18,13 @@
         <item>Name</item>
         <item>Name</item>
     </string-array>
-<string-array name="city_array">
+    <string-array name="city_array">
         <item>Bangalore</item>
         <item>Mangalore</item>
         <item>Manipal</item>
         <item>Udupi</item>
     </string-array>
+
     <string name="title_activity_home2">Home2</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Name</string>
@@ -33,5 +34,6 @@
     <string name="action_example">Mangalore</string>
     <string name="location_na">Location N/A</string>
     <string name="action_search">Search</string>
+    <string name="title_activity_login_page">Login</string>
 
 </resources>
