@@ -125,7 +125,7 @@ public class Home2 extends ActionBarActivity implements
 		th.getTabWidget().setCurrentTab(0);
 		th.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab_selected_waverraccent);
 		th.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
-		th.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab_selected_focused_waverraccent);
+		
 		
 		th.setOnTabChangedListener(this);
 		
@@ -340,7 +340,7 @@ public class Home2 extends ActionBarActivity implements
 		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_indicator_ab_waverraccent);
 		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_waverraccent);
 		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
-		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_focused_waverraccent);
+		
 	}
 	
 	
