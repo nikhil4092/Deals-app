@@ -15,177 +15,182 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
+        
         <LinearLayout 
-    	android:layout_width="match_parent"
-    	android:layout_height="match_parent"
-    	android:orientation="vertical"
-    	android:weightSum="150"
-    	tools:context="com.project.waverr.Home" >
+    		android:layout_width="match_parent"
+    		android:layout_height="match_parent"
+    		android:orientation="vertical"
+    		android:weightSum="150"
+    		tools:context="com.project.waverr.Home" >
+    		
+    		<LinearLayout
+    		    android:layout_width="fill_parent"
+        		android:layout_height="0dp"
+        		android:weightSum="10"
+        		android:orientation="horizontal"
+        		android:layout_weight="0"
+        		android:background="#fe5335" >
+        	
+        		<LinearLayout
+    				android:layout_width="match_parent"
+    				android:layout_height="match_parent"
+    				android:layout_weight="7"
+    				android:weightSum="10" >
+    			
+    				<Button
+    				    android:id="@+id/slidemenu"
+        				android:layout_width="0dp"
+        				android:layout_height="wrap_content"
+        				android:layout_weight="5"
+        				android:background="#0000"
+        				android:drawableLeft="@drawable/menu_icon" />
 
-<LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:weightSum="10"
-        android:orientation="horizontal"
-        android:layout_weight="0"
-        android:background="#fe5335" >
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="7"
-    android:weightSum="10" >
-
-    <Button
-        android:id="@+id/slidemenu"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="5"
-        android:background="#0000"
-        android:drawableLeft="@drawable/menu_icon" />
-
-    <Button
-        android:id="@+id/contactpic"
-        android:layout_width="0dp"
-        android:background="#0000"
-        android:layout_height="wrap_content"
-        android:layout_weight="5" />
-</LinearLayout>
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="3"
-    android:weightSum="10"
-    android:gravity="right" >
-
-    <TextView
-        android:id="@+id/cityname"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="8"
-        android:text="Mangalore"
-        android:gravity="right|center"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#FFFFFF" />
-    
-    <Button
-        android:id="@+id/cityselect"
-        android:layout_width="0dp"
-        android:background="#0000"
-        android:layout_weight="2"
-        android:gravity="left|center"
-        android:layout_height="wrap_content"
-        android:drawableRight="@drawable/city_select" />
-
-</LinearLayout>
-    
-</LinearLayout>
-
-<LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_weight="150"
-        android:background="#f1f1f1" >
+    				<Button
+        				android:id="@+id/contactpic"
+        				android:layout_width="0dp"
+        				android:background="#0000"
+        				android:layout_height="wrap_content"
+        				android:layout_weight="5" />
+        		
+        		</LinearLayout>
+        	
+        		<LinearLayout
+    				android:layout_width="match_parent"
+   	 				android:layout_height="match_parent"
+    				android:layout_weight="3"
+    				android:weightSum="10"
+    				android:gravity="right" >
+    			
+    				<TextView
+        				android:id="@+id/cityname"
+        				android:layout_width="0dp"
+        				android:layout_height="fill_parent"
+        				android:layout_weight="8"
+        				android:text="Mangalore"
+        				android:gravity="right|center"
+        				android:textAppearance="?android:attr/textAppearanceMedium"
+        				android:textColor="#FFFFFF" />
+    			
+    				<Button
+        				android:id="@+id/cityselect"
+        				android:layout_width="0dp"
+        				android:background="#0000"
+        				android:layout_weight="2"
+        				android:gravity="left|center"
+        				android:layout_height="wrap_content"
+        				android:drawableRight="@drawable/city_select" />
+        		</LinearLayout>
+        		
+        	</LinearLayout>
+        	
+        	<LinearLayout
+		        android:layout_width="fill_parent"
+        		android:layout_height="0dp"
+        		android:orientation="horizontal"
+		        android:layout_weight="150"
+        		android:background="#f1f1f1" >
         
-        <TabHost 
-            android:id="@+id/tabhost" 
-            android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			>
+       			<TabHost 
+		            android:id="@+id/tabhost" 
+		            android:layout_width="match_parent"
+					android:layout_height="match_parent" >
     
-			<LinearLayout 
-			    android:layout_width="match_parent"
-				android:id="@+id/linearLayout1" 
-				android:layout_height="match_parent"
-				android:orientation="vertical"
-				>
-				<HorizontalScrollView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fillViewport="true"
-            android:scrollbars="none" >
-			    
-			<TabWidget 
-			    android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:id="@android:id/tabs"></TabWidget>
-			</HorizontalScrollView>
-			<FrameLayout android:layout_width="match_parent"
-				android:layout_height="match_parent" 
-				android:id="@android:id/tabcontent">
-
-				<LinearLayout
-				    android:id="@+id/tab1"
-				    android:layout_width="match_parent"
-				    android:layout_height="match_parent"
-				    android:orientation="vertical"
-				    android:layout_margin="4dp"
-				    android:weightSum="10" >
-
-					<ScrollView
-					    android:layout_width="wrap_content"
-					    android:layout_height="wrap_content" >
-
-					<LinearLayout
-					    android:layout_width="fill_parent"
-					    android:layout_height="0dp"
-					    android:weightSum="10"
-					    android:id="@+id/dealpage"
-					    android:orientation="vertical" >
+					<LinearLayout 
+			    		android:layout_width="match_parent"
+						android:id="@+id/linearLayout1" 
+						android:layout_height="match_parent"
+						android:orientation="vertical" >
 				
-					<ImageButton
-					    android:id="@+id/cuisine1"
-					    android:layout_width="fill_parent"
-					    android:layout_height="wrap_content"
-					    android:background="#0000"
-					    android:scaleType="fitXY"
-					    android:layout_weight="1"
-					    android:layout_margin="4dp"
-					    android:adjustViewBounds="true"
-					    android:src="@drawable/cuisine2" />
+						<HorizontalScrollView 
+            				android:layout_width="wrap_content"
+   				    	    android:layout_height="wrap_content"
+			            	android:fillViewport="true"
+            				android:scrollbars="none" >
+			    
+							<TabWidget 
+						    	android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:id="@android:id/tabs" >
+						    
+							</TabWidget>
+			
+						</HorizontalScrollView>
+					
+						<FrameLayout android:layout_width="match_parent"
+							android:layout_height="match_parent" 
+							android:id="@android:id/tabcontent" >
+						
+							<LinearLayout
+					    		android:id="@+id/tab1"
+						    	android:layout_width="match_parent"
+							    android:layout_height="match_parent"
+							    android:orientation="vertical"
+							    android:layout_margin="4dp"
+						    	android:weightSum="10" >
 
-					<ImageButton
-					    android:id="@+id/cuisine2"
-					    android:layout_width="fill_parent"
-					    android:layout_height="wrap_content"
-					    android:adjustViewBounds="true"
-					    android:layout_margin="4dp"
-					    android:scaleType="fitXY"
-					    android:background="#0000"
-					    android:layout_weight="1"
-					    android:src="@drawable/chinese1" />
+								<ScrollView
+								    android:layout_width="wrap_content"
+							    	android:layout_height="wrap_content" >
+	
+									<LinearLayout
+									    android:layout_width="fill_parent"
+									    android:layout_height="0dp"
+									    android:weightSum="10"
+						    			android:id="@+id/dealpage"
+									    android:orientation="vertical" >
+				
+										<ImageButton
+										    android:id="@+id/cuisine1"
+										    android:layout_width="fill_parent"
+										    android:layout_height="wrap_content"
+									    	android:background="#0000"
+										    android:scaleType="fitXY"
+										    android:layout_weight="1"
+										    android:layout_margin="4dp"
+						    				android:adjustViewBounds="true"
+										    android:src="@drawable/cuisine2" />
+
+										<ImageButton
+										    android:id="@+id/cuisine2"
+										    android:layout_width="fill_parent"
+										    android:layout_height="wrap_content"
+					   				 		android:adjustViewBounds="true"
+					    					android:layout_margin="4dp"
+					    					android:scaleType="fitXY"
+					    					android:background="#0000"
+					  	  					android:layout_weight="1"
+					    					android:src="@drawable/chinese1" />
+									</LinearLayout>
+				   				</ScrollView>
+							</LinearLayout>
+						
+							<LinearLayout 
+							    android:layout_width="match_parent"
+								android:layout_height="match_parent" 
+								android:id="@+id/tab2"
+								android:orientation="horizontal">
+							</LinearLayout>
+						
+							<LinearLayout 
+				    			android:layout_width="match_parent"
+								android:layout_height="match_parent" 
+								android:id="@+id/tab3"
+								android:orientation="horizontal">
+							</LinearLayout>
+				
+							<LinearLayout 
+							    android:layout_width="match_parent"
+								android:layout_height="match_parent" 
+								android:id="@+id/tab4"
+								android:orientation="horizontal">
+							</LinearLayout>
+						
+						</FrameLayout>
 					</LinearLayout>
-				   </ScrollView>
-					</LinearLayout>
-				<LinearLayout 
-				    android:layout_width="match_parent"
-					android:layout_height="match_parent" 
-					android:id="@+id/tab2"
-					android:orientation="horizontal">
-					</LinearLayout>
-				<LinearLayout 
-				    android:layout_width="match_parent"
-					android:layout_height="match_parent" 
-					android:id="@+id/tab3"
-					android:orientation="horizontal">
-					</LinearLayout>
-				<LinearLayout 
-				    android:layout_width="match_parent"
-					android:layout_height="match_parent" 
-					android:id="@+id/tab4"
-					android:orientation="horizontal">
-					</LinearLayout>
-									
-			</FrameLayout>
-		</LinearLayout>
-		</TabHost>
-        
-</LinearLayout>
-</LinearLayout>
-        
-        </FrameLayout>
+				</TabHost>
+			</LinearLayout>
+		</LinearLayout>	
+	</FrameLayout>
 
     <!--
          android:layout_gravity="start" tells DrawerLayout to treat
@@ -198,13 +203,33 @@
          The drawer is given a fixed width in dp and extends the full height of
          the container.
     -->
-
-    <fragment
-        android:id="@+id/navigation_drawer"
-        android:name="com.project.waverr.NavigationDrawerFragment"
+<!-- 
+	<LinearLayout 
+	    android:id="@+id/navigation_drawer"
+	    android:name="com.project.waverr.NavigationDrawerFragment"
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        tools:layout="@layout/fragment_navigation_drawer" />
+        android:layout_gravity="start" >
+        
+	    <ImageButton
+		    android:id="@+id/drawer_pic"
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+	    	android:background="#0000"
+		    android:scaleType="fitXY"
+		    android:layout_weight="1"
+			android:layout_margin="4dp"
+			android:adjustViewBounds="true"
+			android:src="@drawable/cuisine2" />
+-->        
+	    <fragment
+        	android:id="@+id/navigation_drawer"
+        	android:name="com.project.waverr.NavigationDrawerFragment"
+	        android:layout_width="@dimen/navigation_drawer_width"
+	        android:layout_height="match_parent"
+	        android:layout_gravity="start"
+	        tools:layout="@layout/fragment_navigation_drawer" />
+	    
+
 
 </android.support.v4.widget.DrawerLayout>
