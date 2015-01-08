@@ -82,7 +82,8 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener{
 	    th.getTabWidget().setCurrentTab(0);
 	    th.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab_selected_waverraccent);
 	    th.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
-	    th.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab_selected_focused_waverraccent);
+	    
+	    th.setOnTabChangedListener(this);
 	}
 
 	public class ImageAdapter extends BaseAdapter {
@@ -128,6 +129,6 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener{
 		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_indicator_ab_waverraccent);
 		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_waverraccent);
 		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
-		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_focused_waverraccent);
+		
 	}
 }
