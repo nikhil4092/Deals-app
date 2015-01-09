@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
@@ -48,6 +49,7 @@ public class GlobalActionBar extends ActionBarActivity implements NavigationDraw
 		super.onCreate(savedInstanceState);
 		global = (GlobalClass) getApplicationContext();
 		bar = getSupportActionBar();
+		bar.setDisplayHomeAsUpEnabled(true);
 		bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#fe5335")));
 		bar.setTitle(global.getCity());
 		//mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -128,6 +130,10 @@ public class GlobalActionBar extends ActionBarActivity implements NavigationDraw
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 		    locationChoose.show();
+			return true;
+		}
+		if (id == android.R.id.home) {
+			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

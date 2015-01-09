@@ -43,7 +43,14 @@
         </activity>
         <activity
             android:name=".ChineseDeal"
-            android:label="@string/title_activity_chinese_deal" >
+            android:label="@string/title_activity_chinese_deal"
+            android:launchMode="singleTop" >
+            
+        	<!-- Parent activity meta-data to support 4.0 and lower -->
+        	<meta-data
+            	android:name="android.support.PARENT_ACTIVITY"
+            	android:value="com.project.waverr.Home2" />
+            
             <intent-filter>
                 <action android:name="com.project.waverr.CHINESECUISINE" />
 
@@ -52,7 +59,14 @@
         </activity>
         <activity
             android:name=".IndianCuisine"
-            android:label="@string/title_activity_indian_cuisine" >
+            android:label="@string/title_activity_indian_cuisine"
+            android:launchMode="singleTop" >
+            
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+        	<meta-data
+            	android:name="android.support.PARENT_ACTIVITY"
+            	android:value="com.project.waverr.Home2" />
+        	
             <intent-filter>
                 <action android:name="com.project.waverr.INDIANCUISINE" />
 
@@ -61,7 +75,14 @@
         </activity>
         <activity
             android:name=".DealPage"
-            android:label="@string/title_activity_deal_page" >
+            android:label="@string/title_activity_deal_page"
+            android:launchMode="singleTop" >
+            
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+        	<meta-data
+            	android:name="android.support.PARENT_ACTIVITY"
+            	android:value="com.project.waverr.ChineseDeal" />
+        	
             <intent-filter>
                 <action android:name="com.project.waverr.DEALPAGE" />
 
@@ -70,7 +91,8 @@
         </activity>
         <activity
             android:name=".Home2"
-            android:label="@string/title_activity_home2" >
+            android:label="@string/title_activity_home2"
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="com.project.waverr.HOMETWO" />
 
