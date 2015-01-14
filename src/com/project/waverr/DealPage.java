@@ -16,11 +16,20 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 @SuppressWarnings("deprecation")
-public class DealPage extends GlobalActionBar implements OnTabChangeListener{
+public class DealPage extends GlobalActionBar implements OnTabChangeListener, OnMapReadyCallback{
 
 	TabHost th;
 	TextView x;
+	double latitude;
+	double longitude;
 	Integer[] imageIDs = {
 			 R.drawable.chinese1,R.drawable.ic_launcher,R.drawable.splash,R.drawable.chinese1};
 	@Override
@@ -84,6 +93,11 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener{
 	    th.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
 	    
 	    th.setOnTabChangedListener(this);
+	    
+	    MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.the_map);
+	    mapFragment.getMapAsync(this);
+	    latitude = 13.0092;
+	    longitude = 74.7937;
 	}
 
 	public class ImageAdapter extends BaseAdapter {
@@ -130,5 +144,15 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener{
 		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_waverraccent);
 		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
 		
+	}
+
+	@Override
+	public void onMapReady(GoogleMap map) {
+		// TODO Auto-generated method stub
+		
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude) , 15.0f) );
+		map.addMarker(new MarkerOptions()
+			.position(new LatLng(latitude, longitude))
+			.title("Location"));
 	}
 }

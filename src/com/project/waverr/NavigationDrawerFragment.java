@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 /**
@@ -55,7 +54,7 @@ public class NavigationDrawerFragment extends Fragment {
 
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerListView;
-	private LinearLayout mDrawerLinearLayout;
+	//private LinearLayout mDrawerLinearLayout;
 	private View mFragmentContainerView;
 
 	private int mCurrentSelectedPosition = 0;
