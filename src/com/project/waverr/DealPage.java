@@ -1,15 +1,12 @@
 package com.project.waverr;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -23,21 +20,21 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-@SuppressWarnings("deprecation")
 public class DealPage extends GlobalActionBar implements OnTabChangeListener, OnMapReadyCallback{
 
 	TabHost th;
 	TextView x;
 	double latitude;
 	double longitude;
-	Integer[] imageIDs = {
-			 R.drawable.chinese1,R.drawable.ic_launcher,R.drawable.splash,R.drawable.chinese1};
+	/*Integer[] imageIDs = {
+			 R.drawable.chinese1,R.drawable.ic_launcher,R.drawable.splash,R.drawable.chinese1};*/
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.deal_page);
-		Gallery gallery = (Gallery) findViewById(R.id.gallery1);
+		/*Gallery gallery = (Gallery) findViewById(R.id.gallery1);
 		 gallery.setAdapter(new ImageAdapter(this));
 		 gallery.setOnItemClickListener(new OnItemClickListener() {
 		 
@@ -47,7 +44,11 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 					 ImageView imageView = (ImageView) findViewById(R.id.showpic);
 					 imageView.setImageResource(imageIDs[position]);
 		}
-		 });
+		 });*/
+		
+		ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+	    ImagePagerAdapter adapter = new ImagePagerAdapter();
+	    viewPager.setAdapter(adapter);
 		
 		th=(TabHost)findViewById(R.id.tabhost1);
 		
@@ -99,8 +100,45 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	    latitude = 13.0092;
 	    longitude = 74.7937;
 	}
+	
+	private class ImagePagerAdapter extends PagerAdapter {
+	    private int[] mImages = new int[] {
+	    		R.drawable.chinese,
+	    		R.drawable.ic_launcher,
+	    		R.drawable.splash,
+	    		R.drawable.chinese1
+	    };
 
-	public class ImageAdapter extends BaseAdapter {
+	    @Override
+	    public int getCount() {
+	      return mImages.length;
+	    }
+
+	    @Override
+	    public boolean isViewFromObject(View view, Object object) {
+	      return view == ((ImageView) object);
+	    }
+
+	    @Override
+	    public Object instantiateItem(ViewGroup container, int position) {
+	      Context context = DealPage.this;
+	      ImageView imageView = new ImageView(context);
+	      int padding = context.getResources().getDimensionPixelSize(
+	          R.dimen.padding_medium);
+	      imageView.setPadding(padding, padding, padding, padding);
+	      imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+	      imageView.setImageResource(mImages[position]);
+	      ((ViewPager) container).addView(imageView, 0);
+	      return imageView;
+	    }
+
+	    @Override
+	    public void destroyItem(ViewGroup container, int position, Object object) {
+	      ((ViewPager) container).removeView((ImageView) object);
+	    }
+	  }
+
+	/*public class ImageAdapter extends BaseAdapter {
 		 private Context context;
 		 private int itemBackground;
 		 public ImageAdapter(Context c)
@@ -131,7 +169,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		 imageView.setBackgroundResource(itemBackground);
 		 return imageView;
 		 }
-		 }
+		}*/
 
 	@Override
 	public void onTabChanged(String tabId) {
