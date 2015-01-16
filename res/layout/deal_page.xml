@@ -231,14 +231,33 @@
 				<LinearLayout android:layout_width="match_parent"
 					android:layout_height="match_parent" android:id="@+id/dealtab4"
 					android:orientation="horizontal">
-				   
-				    <fragment
-    					android:id="@+id/the_map"
-    					android:layout_width="match_parent"
-    					android:layout_height="match_parent"
-    					android:name="com.google.android.gms.maps.MapFragment" />
 				    
-					</LinearLayout>
+				    <FrameLayout 
+				        android:layout_width="match_parent"
+    					android:layout_height="match_parent"
+    					tools:context=".DealPage" >
+				        
+				        <fragment
+    						android:id="@+id/the_map"
+    						android:layout_width="match_parent"
+    						android:layout_height="fill_parent"
+    						android:name="com.google.android.gms.maps.MapFragment" />
+				    
+				    	<Button
+				        	android:id="@+id/get_directions"
+				        	android:layout_width="match_parent"
+				        	android:layout_height="wrap_content"
+				        	android:layout_marginBottom="7dp"
+				        	android:layout_marginLeft="7dp"
+				        	android:layout_marginRight="7dp"
+				        	android:text="Get directions to restaurant"
+				        	android:background="#fe5335"
+				        	android:textColor="#ffffff"
+				        	android:layout_gravity="bottom" />
+				    	
+				    </FrameLayout>
+				    
+				</LinearLayout>
 				
 				
 					
@@ -274,7 +293,7 @@
         android:layout_weight="5"
         android:textColor="#ffffff"
         android:textStyle="bold"
-        android:background="#ff6700"
+        android:background="#00c15b"
         android:text="Activate Deal" />
 
 </LinearLayout>
