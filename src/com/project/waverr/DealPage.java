@@ -1,12 +1,16 @@
 package com.project.waverr;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -20,12 +24,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class DealPage extends GlobalActionBar implements OnTabChangeListener, OnMapReadyCallback{
+public class DealPage extends GlobalActionBar implements OnTabChangeListener, OnMapReadyCallback, OnClickListener{
 
 	TabHost th;
 	TextView x;
 	double latitude;
 	double longitude;
+	Button getDirections;
 	/*Integer[] imageIDs = {
 			 R.drawable.chinese1,R.drawable.ic_launcher,R.drawable.splash,R.drawable.chinese1};*/
 	
@@ -99,6 +104,9 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	    mapFragment.getMapAsync(this);
 	    latitude = 13.0092;
 	    longitude = 74.7937;
+	    
+	    getDirections = (Button) findViewById(R.id.get_directions);
+	    getDirections.setOnClickListener(this);
 	}
 	
 	private class ImagePagerAdapter extends PagerAdapter {
@@ -192,5 +200,18 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		map.addMarker(new MarkerOptions()
 			.position(new LatLng(latitude, longitude))
 			.title("Location"));
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch(v.getId()) {
+			case R.id.get_directions:
+				Uri gmmIntentUri = Uri.parse("google.navigation:q="+Double.toString(latitude)+","+Double.toString(longitude));
+				Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+				mapIntent.setPackage("com.google.android.apps.maps");
+				startActivity(mapIntent);
+				break;
+		}
 	}
 }
