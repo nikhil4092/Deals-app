@@ -1,8 +1,15 @@
 package com.project.waverr;
 
+import java.util.Arrays;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -19,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 /**
@@ -93,31 +101,46 @@ public class NavigationDrawerFragment extends Fragment {
 		setHasOptionsMenu(true);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		mDrawerListView = (ListView) inflater.inflate(
 				R.layout.fragment_navigation_drawer, container, false);
-	/*	TextView tv=(TextView)mDrawerListView.findViewById(android.R.id.text1);
+		/*	TextView tv=(TextView)mDrawerListView.findViewById(android.R.id.text1);
 		tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.menu_icon, 0, 0, 0);*/
 		mDrawerListView
-				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-						selectItem(position);
-					}
-				});
-		
-		mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar()
+		.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				selectItem(position);
+			}
+		});
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActionBar()
 				.getThemedContext(),
 				android.R.layout.simple_list_item_activated_1,
 				android.R.id.text1, new String[] {
-						getString(R.string.title_section1),
-						getString(R.string.title_section2),
-						getString(R.string.title_section3), }));
+			getString(R.string.title_section1),	
+			getString(R.string.title_section2),
+			getString(R.string.title_section3),
+			getString(R.string.title_section4),
+			getString(R.string.title_section5),
+			getString(R.string.title_section6),});
+
+		ImageView imageHeaderView = new ImageView(getActivity());
+		imageHeaderView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), R.drawable.chinese1, 200, 200));
+
+		mDrawerListView.addHeaderView(imageHeaderView);
+		mDrawerListView.setHeaderDividersEnabled(false);
+
+		mDrawerListView.setAdapter(adapter);
+		//mDrawerListView.addHeaderView(getActivity().getBaseContext().findViewById(R.drawable.cuisine2), null, false);
 		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-				return mDrawerListView;
+		return mDrawerListView;
 	}
 
 	public boolean isDrawerOpen() {
@@ -140,7 +163,7 @@ public class NavigationDrawerFragment extends Fragment {
 
 		// set a custom shadow that overlays the main content when the drawer
 		// opens
-		
+
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
 		// set up the drawer's list view with items and click listener
@@ -152,17 +175,17 @@ public class NavigationDrawerFragment extends Fragment {
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the navigation drawer and the action bar app icon.
 		mDrawerToggle = new ActionBarDrawerToggle(getActivity(), /* host Activity */
-		mDrawerLayout, /* DrawerLayout object */
-		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
-		R.string.navigation_drawer_open, /*
-										 * "open drawer" description for
-										 * accessibility
-										 */
-		R.string.navigation_drawer_close /*
-										 * "close drawer" description for
-										 * accessibility
-										 */
-		) {
+				mDrawerLayout, /* DrawerLayout object */
+				R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+				R.string.navigation_drawer_open, /*
+				 * "open drawer" description for
+				 * accessibility
+				 */
+				R.string.navigation_drawer_close /*
+				 * "close drawer" description for
+				 * accessibility
+				 */
+				) {
 			@Override
 			public void onDrawerClosed(View drawerView) {
 				super.onDrawerClosed(drawerView);
@@ -171,7 +194,7 @@ public class NavigationDrawerFragment extends Fragment {
 				}
 
 				getActivity().supportInvalidateOptionsMenu(); // calls
-																// onPrepareOptionsMenu()
+				// onPrepareOptionsMenu()
 			}
 
 			@Override
@@ -189,11 +212,11 @@ public class NavigationDrawerFragment extends Fragment {
 					SharedPreferences sp = PreferenceManager
 							.getDefaultSharedPreferences(getActivity());
 					sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true)
-							.apply();
+					.apply();
 				}
 
 				getActivity().supportInvalidateOptionsMenu(); // calls
-																// onPrepareOptionsMenu()
+				// onPrepareOptionsMenu()
 			}
 		};
 
@@ -217,8 +240,33 @@ public class NavigationDrawerFragment extends Fragment {
 
 	private void selectItem(int position) {
 		mCurrentSelectedPosition = position;
+
+		String[] restaurants = {
+				"Smoke 'n' Clay",
+				"Diesel Cafe",
+				"Chefs Xinlai",
+				"Cafe Mojo"
+		};
+		Arrays.sort(restaurants);
+		
 		if (mDrawerListView != null) {
-			mDrawerListView.setItemChecked(position, true);
+			//mDrawerListView.setItemChecked(position, true);
+			
+			if(position == mDrawerListView.getLastVisiblePosition()) {
+
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				builder.setTitle("Our Restaurant Partners");
+				builder.setItems(restaurants, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				
+				builder.create().show();
+			}
 		}
 		if (mDrawerLayout != null) {
 			mDrawerLayout.closeDrawer(mFragmentContainerView);
@@ -307,6 +355,44 @@ public class NavigationDrawerFragment extends Fragment {
 		 */
 		void onNavigationDrawerItemSelected(int position);
 	}
-	
+
+	public static int calculateInSampleSize(
+			BitmapFactory.Options options, int reqWidth, int reqHeight) {
+		// Raw height and width of image
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > reqHeight || width > reqWidth) {
+
+			final int halfHeight = height / 2;
+			final int halfWidth = width / 2;
+
+			// Calculate the largest inSampleSize value that is a power of 2 and keeps both
+			// height and width larger than the requested height and width.
+			while ((halfHeight / inSampleSize) > reqHeight
+					&& (halfWidth / inSampleSize) > reqWidth) {
+				inSampleSize *= 2;
+			}
+		}
+
+		return inSampleSize;
+	}
+
+	public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+			int reqWidth, int reqHeight) {
+
+		// First decode with inJustDecodeBounds=true to check dimensions
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeResource(res, resId, options);
+
+		// Calculate inSampleSize
+		options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+		// Decode bitmap with inSampleSize set
+		options.inJustDecodeBounds = false;
+		return BitmapFactory.decodeResource(res, resId, options);
+	}
 
 }

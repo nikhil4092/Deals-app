@@ -26,9 +26,12 @@
     </string-array>
 
     <string name="title_activity_home2">Home2</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Name</string>
-    <string name="title_section3">Email Id</string>
+    <string name="title_section1">Name</string>
+    <string name="title_section2">Email</string>
+    <string name="title_section3">Home</string>
+    <string name="title_section4">About Waverr</string>
+    <string name="title_section5">Contact Us</string>
+    <string name="title_section6">Restaurant Partners</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Mangalore</string>
