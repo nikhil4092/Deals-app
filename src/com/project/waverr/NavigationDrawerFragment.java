@@ -5,6 +5,7 @@ import java.util.Arrays;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -37,7 +38,7 @@ import android.widget.ListView;
  * implemented here.
  */
 @SuppressWarnings("deprecation")
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment implements OnClickListener {
 
 	/**
 	 * Remember the position of the selected item.
@@ -245,7 +246,8 @@ public class NavigationDrawerFragment extends Fragment {
 				"Smoke 'n' Clay",
 				"Diesel Cafe",
 				"Chefs Xinlai",
-				"Cafe Mojo"
+				"Cafe Mojo",
+				"Trattoria"
 		};
 		Arrays.sort(restaurants);
 		
@@ -256,14 +258,7 @@ public class NavigationDrawerFragment extends Fragment {
 
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setTitle("Our Restaurant Partners");
-				builder.setItems(restaurants, new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						// TODO Auto-generated method stub
-						
-					}
-				});
+				builder.setAdapter(new RestaurantArrayAdapter(getActivity(), restaurants), this);
 				
 				builder.create().show();
 			}
@@ -393,6 +388,12 @@ public class NavigationDrawerFragment extends Fragment {
 		// Decode bitmap with inSampleSize set
 		options.inJustDecodeBounds = false;
 		return BitmapFactory.decodeResource(res, resId, options);
+	}
+
+	@Override
+	public void onClick(DialogInterface arg0, int arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

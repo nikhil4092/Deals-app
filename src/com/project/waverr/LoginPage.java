@@ -14,7 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 import android.os.Bundle;
 
-public class LoginPage extends Activity implements ConnectionCallbacks,OnConnectionFailedListener {
+public class LoginPage extends Activity implements OnClickListener,ConnectionCallbacks,OnConnectionFailedListener {
 
 	/* Request code used to invoke sign in user interactions. */
 	  private static final int RC_SIGN_IN = 0;
@@ -32,7 +32,7 @@ public class LoginPage extends Activity implements ConnectionCallbacks,OnConnect
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.login_page);
+		setContentView(R.layout.login_page);
 		findViewById(R.id.btn_sign_in).setOnClickListener((OnClickListener) this);
 		  mGoogleApiClient = new GoogleApiClient.Builder(this)
 	        .addConnectionCallbacks(this)
@@ -61,7 +61,8 @@ public class LoginPage extends Activity implements ConnectionCallbacks,OnConnect
 		// TODO Auto-generated method stub
 		 mSignInClicked = false;
 		  Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
-		
+		Intent intent = new Intent(this, com.project.waverr.Home2.class);
+		startActivity(intent);
 	}
 
 

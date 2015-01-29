@@ -31,6 +31,8 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	double latitude;
 	double longitude;
 	Button getDirections;
+	String restaurantPhoneNumber;
+	String restaurantName;
 	/*Integer[] imageIDs = {
 			 R.drawable.chinese1,R.drawable.ic_launcher,R.drawable.splash,R.drawable.chinese1};*/
 	
@@ -56,6 +58,9 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	    viewPager.setAdapter(adapter);
 		
 		th=(TabHost)findViewById(R.id.tabhost1);
+		
+		findViewById(R.id.button_call).setOnClickListener(this);
+		restaurantPhoneNumber = "+918105563395";
 		
 		th.setup();
 		TabSpec specs = th.newTabSpec("Deal");
@@ -107,6 +112,8 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	    
 	    getDirections = (Button) findViewById(R.id.get_directions);
 	    getDirections.setOnClickListener(this);
+	    
+	    restaurantName = "Smoke 'n' Oven";
 	}
 	
 	private class ImagePagerAdapter extends PagerAdapter {
@@ -212,6 +219,11 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 				mapIntent.setPackage("com.google.android.apps.maps");
 				startActivity(mapIntent);
 				break;
+				
+			case R.id.button_call:
+				Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+				dialIntent.setData(Uri.parse("tel:" + restaurantPhoneNumber));
+				startActivity(dialIntent);
 		}
 	}
 }

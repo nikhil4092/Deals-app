@@ -214,6 +214,16 @@
 									
 									</LinearLayout>
 						    </LinearLayout>
+
+						    <Button
+						        android:id="@+id/button_call"
+						        style="?android:attr/buttonStyleSmall"
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+						        android:layout_weight="4"
+						        android:layout_gravity="center"
+						        android:text="Call Restaurant" />
+
 				       </LinearLayout>
 				</ScrollView>
 					</LinearLayout>

@@ -13,7 +13,7 @@
     	android:required="true" />
     
     <permission
-    	android:name="your.package.name.permission.MAPS_RECEIVE"
+    	android:name="com.project.waverr.permission.MAPS_RECEIVE"
     	android:protectionLevel="signature" />
 
 	<uses-permission android:name="your.package.name.permission.MAPS_RECEIVE"/>
@@ -121,6 +121,11 @@
         <activity
             android:name=".LoginPage"
             android:label="@string/title_activity_login_page" >
+            <intent-filter>
+                <action android:name="com.project.waverr.LOGINPAGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
     </application>
 
