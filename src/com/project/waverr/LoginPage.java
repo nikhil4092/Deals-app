@@ -1,5 +1,10 @@
 package com.project.waverr;
 
+import com.facebook.android.AsyncFacebookRunner;
+import com.facebook.android.DialogError;
+import com.facebook.android.Facebook;
+import com.facebook.android.Facebook.DialogListener;
+import com.facebook.android.FacebookError;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -9,6 +14,7 @@ import com.google.android.gms.plus.Plus;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
@@ -18,6 +24,7 @@ public class LoginPage extends Activity implements ConnectionCallbacks,OnConnect
 
 	/* Request code used to invoke sign in user interactions. */
 	  private static final int RC_SIGN_IN = 0;
+	  private static String APP_ID = "1547265585557850";
 
 	  /* Client used to interact with Google APIs. */
 	  private GoogleApiClient mGoogleApiClient;
@@ -26,13 +33,17 @@ public class LoginPage extends Activity implements ConnectionCallbacks,OnConnect
 	   * us from starting further intents.
 	   */
 	  private boolean mIntentInProgress;
-
+	  
+	  private Facebook facebook;
+	  private AsyncFacebookRunner mAsyncRunner;
+	  String FILENAME = "AndroidSSO_data";
+      private SharedPreferences mPrefs; 
 	  
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.login_page);
+		setContentView(R.layout.login_page);
 		findViewById(R.id.btn_sign_in).setOnClickListener((OnClickListener) this);
 		  mGoogleApiClient = new GoogleApiClient.Builder(this)
 	        .addConnectionCallbacks(this)
@@ -40,6 +51,9 @@ public class LoginPage extends Activity implements ConnectionCallbacks,OnConnect
 	        .addApi(Plus.API)
 	        .addScope(Plus.SCOPE_PLUS_LOGIN)
 	        .build();
+		  
+		facebook = new Facebook(APP_ID);
+		mAsyncRunner = new AsyncFacebookRunner(facebook); 
 		
 	}
 
@@ -147,9 +161,72 @@ public class LoginPage extends Activity implements ConnectionCallbacks,OnConnect
 		  if (view.getId() == R.id.btn_sign_in
 		    && !mGoogleApiClient.isConnecting()) {
 		    mSignInClicked = true;
-		    resolveSignInError();
+		    resolveSignInError();		    
 		  }
-		}
+		
+	View btnFbLogin = null;
+	btnFbLogin.setOnClickListener(new View.OnClickListener() {
+	    @Override
+	    public void onClick(View v) {
+	            loginToFacebook();
+	        }
+	});
 }
 	
+	
+	
+	public void loginToFacebook() {
+	    mPrefs = getPreferences(MODE_PRIVATE);
+	    String access_token = mPrefs.getString("access_token", null);
+	    long expires = mPrefs.getLong("access_expires", 0);
+	 
+	    if (access_token != null) {
+	        facebook.setAccessToken(access_token);
+	    }
+	 
+	    if (expires != 0) {
+	        facebook.setAccessExpires(expires);
+	    }
+	 
+	    if (!facebook.isSessionValid()) {
+	        facebook.authorize(this,
+	                new String[] { "email", "publish_stream" },
+	                new DialogListener() {
+	 
+	                    @Override
+	                    public void onCancel() {
+	                        // Function to handle cancel event
+	                    }
+	 
+	                    @Override
+	                    public void onComplete(Bundle values) {
+	                        // Function to handle complete event
+	                        // Edit Preferences and update facebook acess_token
+	                        SharedPreferences.Editor editor = mPrefs.edit();
+	                        editor.putString("access_token",
+	                                facebook.getAccessToken());
+	                        editor.putLong("access_expires",
+	                                facebook.getAccessExpires());
+	                        editor.commit();
+	                    }
+	 
+
+						@Override
+						public void onFacebookError(FacebookError e) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void onError(DialogError e) {
+							// TODO Auto-generated method stub
+							
+						}
+	 
+	                });
+	    }
+	}
+}
+	
+
 	
