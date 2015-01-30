@@ -11,6 +11,8 @@ import android.widget.TextView;
 public class RestaurantArrayAdapter extends ArrayAdapter<String> {
 	private final Context context;
 	private final String[] values;
+	View rowView;
+	ImageView imageView;
  
 	public RestaurantArrayAdapter(Context context, String[] values) {
 		super(context, R.layout.restaurant_list, values);
@@ -23,9 +25,9 @@ public class RestaurantArrayAdapter extends ArrayAdapter<String> {
 		LayoutInflater inflater = (LayoutInflater) context
 			.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
  
-		View rowView = inflater.inflate(R.layout.restaurant_list, parent, false);
+		rowView = inflater.inflate(R.layout.restaurant_list, parent, false);
 		TextView textView = (TextView) rowView.findViewById(R.id.restaurantName);
-		ImageView imageView = (ImageView) rowView.findViewById(R.id.favourite);
+		imageView = (ImageView) rowView.findViewById(R.id.favourite);
 		textView.setText(values[position]);
  
 		// Change icon based on name
@@ -43,4 +45,7 @@ public class RestaurantArrayAdapter extends ArrayAdapter<String> {
 		return rowView;
 	}
 
+	public void updateIcon(int position) {
+		imageView.setImageResource(R.drawable.favorite_full);
+	}
 }

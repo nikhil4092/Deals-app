@@ -17,17 +17,19 @@ public class GlobalClass extends Application{
 		return city;
 	}
 	
-	public void addRestaurantToFavourites(String restaurant) {
+	public void setFavourite(String restaurant, boolean preference) {
 		if(favouritedRestaurants==null)
 			favouritedRestaurants = new ArrayList<>();
-		favouritedRestaurants.add(restaurant);
+			
+		if(preference==true)
+			favouritedRestaurants.add(restaurant);
+		else
+			favouritedRestaurants.remove(restaurant);
 	}
 	
 	public boolean isFavourited(String restaurant) {
+		if(favouritedRestaurants==null)
+			return false;
 		return favouritedRestaurants.contains(restaurant);
-	}
-	
-	public void removeFromFavourites(String restaurant) {
-		favouritedRestaurants.remove(restaurant);
 	}
 }

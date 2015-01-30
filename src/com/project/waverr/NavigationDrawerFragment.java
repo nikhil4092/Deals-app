@@ -1,11 +1,9 @@
 package com.project.waverr;
 
-import java.util.Arrays;
-
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -242,25 +240,36 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 	private void selectItem(int position) {
 		mCurrentSelectedPosition = position;
 
-		String[] restaurants = {
+		/*String[] restaurants = {
 				"Smoke 'n' Clay",
 				"Diesel Cafe",
 				"Chefs Xinlai",
 				"Cafe Mojo",
 				"Trattoria"
 		};
-		Arrays.sort(restaurants);
+		Arrays.sort(restaurants);*/
 		
 		if (mDrawerListView != null) {
 			//mDrawerListView.setItemChecked(position, true);
 			
 			if(position == mDrawerListView.getLastVisiblePosition()) {
 
-				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				/*AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setTitle("Our Restaurant Partners");
-				builder.setAdapter(new RestaurantArrayAdapter(getActivity(), restaurants), this);
+				final RestaurantArrayAdapter adapter = new RestaurantArrayAdapter(getActivity(), restaurants);
+				builder.setAdapter(adapter, new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						
+						adapter.updateIcon(which);
+					}
+				});
+				builder.create().show();*/
 				
-				builder.create().show();
+				Intent intent = new Intent(getActivity(), com.project.waverr.RestaurantList.class);
+				startActivity(intent);
 			}
 		}
 		if (mDrawerLayout != null) {
