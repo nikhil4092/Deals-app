@@ -20,9 +20,10 @@ public class RestaurantList extends Activity {
 	
 	private LinearLayout mLinearLayout;
 	private String[] restaurants = {
-			"Smoke 'n' Clay",
+			"Smoke 'n' Oven",
 			"Diesel Cafe",
 			"Chefs Xinlai",
+			"Hao Ming",
 			"Cafe Mojo",
 			"Trattoria"
 	};
@@ -66,7 +67,7 @@ public class RestaurantList extends Activity {
 			textView.setText(i);
 			textView.setLayoutParams(params);
 			textView.setGravity(Gravity.CENTER_VERTICAL);
-			//textView.setTextSize(android.R.attr.textAppearanceLarge);
+			//textView.setTextSize(android.R.attr.textAppearanceSmall);
 			final ImageButton button = new ImageButton(this);
 			button.setBackgroundColor(Color.TRANSPARENT);
 			if(global.isFavourited(i))

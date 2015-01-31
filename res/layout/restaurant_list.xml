@@ -1,22 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:padding="15dp" >
+    android:layout_height="fill_parent" >
 
-    <ImageButton
-        android:id="@+id/favourite"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/restayrant_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#0000"
-        android:src="@drawable/favorite_empty" />
+        android:orientation="vertical" >
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/restaurantName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:paddingLeft="15dp"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-</LinearLayout>
+</ScrollView>

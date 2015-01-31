@@ -18,11 +18,15 @@ public class GlobalClass extends Application{
 	}
 	
 	public void setFavourite(String restaurant, boolean preference) {
-		if(favouritedRestaurants==null)
+		if(favouritedRestaurants==null) {
 			favouritedRestaurants = new ArrayList<>();
+			//Toast.makeText(this, "List is empty", Toast.LENGTH_SHORT);
+		}
 			
-		if(preference==true)
+		if(preference==true) {
 			favouritedRestaurants.add(restaurant);
+			//Toast.makeText(this, "Restaurant "+restaurant+" added to favs", Toast.LENGTH_SHORT).show();
+		}
 		else
 			favouritedRestaurants.remove(restaurant);
 	}
@@ -30,6 +34,12 @@ public class GlobalClass extends Application{
 	public boolean isFavourited(String restaurant) {
 		if(favouritedRestaurants==null)
 			return false;
+		
+		/*for(String i: favouritedRestaurants)
+			if(i.equalsIgnoreCase(restaurant))
+				return true;
+		
+		return false;*/
 		return favouritedRestaurants.contains(restaurant);
 	}
 }
