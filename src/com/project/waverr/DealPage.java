@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -31,6 +32,10 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	double latitude;
 	double longitude;
 	Button getDirections;
+	ImageButton favouriteStatus;
+	String restaurantPhoneNumber;
+	String restaurantName;
+	GlobalClass global;
 	/*Integer[] imageIDs = {
 			 R.drawable.chinese1,R.drawable.ic_launcher,R.drawable.splash,R.drawable.chinese1};*/
 	
@@ -56,6 +61,13 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	    viewPager.setAdapter(adapter);
 		
 		th=(TabHost)findViewById(R.id.tabhost1);
+		
+		global = (GlobalClass) getApplication();
+		findViewById(R.id.button_call).setOnClickListener(this);
+		favouriteStatus = (ImageButton) findViewById(R.id.favourite_status);
+		favouriteStatus.setOnClickListener(this);
+		
+		restaurantPhoneNumber = "+918105563395";
 		
 		th.setup();
 		TabSpec specs = th.newTabSpec("Deal");
@@ -107,6 +119,16 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	    
 	    getDirections = (Button) findViewById(R.id.get_directions);
 	    getDirections.setOnClickListener(this);
+	    
+	    restaurantName = "Hao Ming";
+	    if(global.isFavourited(restaurantName)) {
+	    	//Toast.makeText(this, "It's a favourite!!", Toast.LENGTH_SHORT).show();
+			favouriteStatus.setImageResource(R.drawable.favorite_full);
+	    }
+		else {
+			//Toast.makeText(this, "Nope!!", Toast.LENGTH_SHORT).show();
+			favouriteStatus.setImageResource(R.drawable.favorite_empty);
+		}
 	}
 	
 	private class ImagePagerAdapter extends PagerAdapter {
@@ -211,6 +233,20 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 				Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 				mapIntent.setPackage("com.google.android.apps.maps");
 				startActivity(mapIntent);
+				break;
+				
+			case R.id.button_call:
+				Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+				dialIntent.setData(Uri.parse("tel:" + restaurantPhoneNumber));
+				startActivity(dialIntent);
+				break;
+				
+			case R.id.favourite_status:
+				global.setFavourite(restaurantName, !global.isFavourited(restaurantName));
+				if(global.isFavourited(restaurantName))
+					favouriteStatus.setImageResource(R.drawable.favorite_full);
+				else
+					favouriteStatus.setImageResource(R.drawable.favorite_empty);
 				break;
 		}
 	}

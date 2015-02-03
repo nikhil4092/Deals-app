@@ -38,6 +38,7 @@
     <string name="location_na">Location N/A</string>
     <string name="action_search">Search</string>
     <string name="title_activity_login_page">Login</string>
-    <string name="facebook_app_id">Login with Facebook</string>
+    <string name="facebook_app_id">1547265585557850</string>
+    <string name="title_activity_restaurant_list">Our Partner Restaurants</string>
 
 </resources>
