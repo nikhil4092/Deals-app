@@ -44,12 +44,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/btn_sign_in"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp" />
-
     <Button
         android:id="@+id/btn_sign_out"
         android:layout_width="fill_parent"
@@ -65,11 +59,28 @@
         android:text="Revoke Access"
         android:visibility="gone" />
 
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/waverr_orangelogo" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btn_sign_in"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="3dp"
+        android:padding="3dp" >
+
+    </com.google.android.gms.common.SignInButton>
+
     <com.facebook.widget.LoginButton
         android:id="@+id/login_button"
-        android:layout_width="284dp"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
         android:layout_marginBottom="30dp"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="3dp"
+        android:padding="3dp" />
 
 </LinearLayout>
