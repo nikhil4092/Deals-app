@@ -214,6 +214,8 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 					editor.putLong("access_expires",
 							facebook.getAccessExpires());
 					editor.commit();
+					Intent intent = new Intent(getBaseContext(), com.project.waverr.Home2.class);
+					startActivity(intent);
 				}
 
 
