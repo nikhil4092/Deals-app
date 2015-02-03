@@ -40,5 +40,6 @@
     <string name="title_activity_login_page">Login</string>
     <string name="facebook_app_id">1547265585557850</string>
     <string name="title_activity_restaurant_list">Our Partner Restaurants</string>
+    <string name="teaser">You are just a few clicks away from discovering the best deals around you!</string>
 
 </resources>
