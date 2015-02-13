@@ -36,7 +36,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAjGIeZ3zObb6fmmtqVh2E_o73IqYf4-pM" />
+            android:value="AIzaSyDL1hiu5qIoLOjmbhYury5kJsPMOvu4fGU" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -51,15 +51,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Home"
-            android:label="@string/title_activity_home" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".ChineseDeal"
             android:label="@string/title_activity_chinese_deal"
             android:launchMode="singleTop" >
@@ -71,22 +62,6 @@
 
             <intent-filter>
                 <action android:name="com.project.waverr.CHINESECUISINE" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".IndianCuisine"
-            android:label="@string/title_activity_indian_cuisine"
-            android:launchMode="singleTop" >
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.project.waverr.Home2" />
-
-            <intent-filter>
-                <action android:name="com.project.waverr.INDIANCUISINE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -123,7 +98,8 @@
         </activity>
         <activity
             android:name=".LoginPage"
-            android:label="@string/title_activity_login_page" >
+            android:label="@string/title_activity_login_page"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" >
             <intent-filter>
                 <action android:name="com.project.waverr.LOGINPAGE" />
 
@@ -137,7 +113,7 @@
         <activity
             android:name=".RestaurantList"
             android:label="@string/title_activity_restaurant_list"
-            android:theme="@android:style/Theme.Holo.Light.Dialog" >
+            android:theme="@android:style/Theme.Holo.Dialog" >
         </activity>
     </application>
 

@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -29,8 +30,10 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
+import com.project.waverr.SimpleGestureFilter.SimpleGestureListener;
+
 public class Home2 extends ActionBarActivity implements
-		NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChangeListener{
+NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChangeListener, SimpleGestureListener{
 
 	int LAC;
 	ImageButton ib1,ib2;
@@ -47,6 +50,7 @@ public class Home2 extends ActionBarActivity implements
 	AlertDialog locationChoose;
 	int flagLocation=0;
 	GlobalClass global;
+	private SimpleGestureFilter detector;
 
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
@@ -73,39 +77,39 @@ public class Home2 extends ActionBarActivity implements
 		provider = locationManager.getBestProvider(criteria, true);*/
 		giver = new LocationGiver(this);
 		cities = new String[]{"Automatic", "Mangaluru"};
-		
+
 		th.setup();
 		TabSpec specs = th.newTabSpec("Search");
 		specs.setContent(R.id.tab1);
 		specs.setIndicator("Search");
 		th.addTab(specs);
 		x = (TextView) th.getTabWidget().getChildAt(0).findViewById(android.R.id.title);
-	    x.setTextSize(15);
-	    x.setTextColor(Color.parseColor("#424242"));
-		
-	    specs = th.newTabSpec("Nearby");
+		x.setTextSize(15);
+		x.setTextColor(Color.parseColor("#424242"));
+
+		specs = th.newTabSpec("Nearby");
 		specs.setContent(R.id.tab2);
 		specs.setIndicator("Nearby");
 		th.addTab(specs);
 		x = (TextView) th.getTabWidget().getChildAt(1).findViewById(android.R.id.title);
-	    x.setTextSize(15);
-	    x.setTextColor(Color.parseColor("#424242"));
-		
-	    specs = th.newTabSpec("New");
+		x.setTextSize(15);
+		x.setTextColor(Color.parseColor("#424242"));
+
+		specs = th.newTabSpec("New");
 		specs.setContent(R.id.tab3);
 		specs.setIndicator("New");
 		th.addTab(specs);
 		x = (TextView) th.getTabWidget().getChildAt(2).findViewById(android.R.id.title);
-	    x.setTextSize(15);
-	    x.setTextColor(Color.parseColor("#424242"));
-		
-	    specs = th.newTabSpec("BestDeals");
+		x.setTextSize(15);
+		x.setTextColor(Color.parseColor("#424242"));
+
+		specs = th.newTabSpec("BestDeals");
 		specs.setContent(R.id.tab4);
 		specs.setIndicator("Best Deals");
 		th.addTab(specs);
 		x = (TextView) th.getTabWidget().getChildAt(3).findViewById(android.R.id.title);
-	    x.setTextSize(15);
-	    x.setTextColor(Color.parseColor("#424242"));
+		x.setTextSize(15);
+		x.setTextColor(Color.parseColor("#424242"));
 		ib1.setOnClickListener(this);
 		ib2.setOnClickListener(this);
 		b.setOnClickListener(this);
@@ -117,7 +121,7 @@ public class Home2 extends ActionBarActivity implements
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
-		
+
 		for(int i=0;i<th.getTabWidget().getChildCount();i++){
 			th.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_unselected_pressed_waverraccent);
 			th.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_unselected_waverraccent);			
@@ -125,13 +129,13 @@ public class Home2 extends ActionBarActivity implements
 		th.getTabWidget().setCurrentTab(0);
 		th.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab_selected_waverraccent);
 		th.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
-		
-		
+
+
 		th.setOnTabChangedListener(this);
-		
+
 		builder = new AlertDialog.Builder(this);
 		builder.setSingleChoiceItems(cities, 0, new DialogInterface.OnClickListener() {
-			
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
@@ -139,13 +143,13 @@ public class Home2 extends ActionBarActivity implements
 					new LocationObtainer() {
 						protected void onProgressUpdate(Void...voids) {
 							bar.setTitle("Updating...");
-							}
+						}
 						protected void onPostExecute(String result) {
 							bar.setTitle(result);
 							global.setCity(result);
 							checkStuff();
-							}
-						}.execute(giver);
+						}
+					}.execute(giver);
 					//cityName = giver.getLocation();
 					//bar.setTitle(cityName);
 					dialog.dismiss();
@@ -160,38 +164,40 @@ public class Home2 extends ActionBarActivity implements
 		builder.setTitle("Choose your location");
 		locationChoose = builder.create();
 		//if(cityName==null)
-			locationChoose.show();
+		locationChoose.show();
+
+		detector = new SimpleGestureFilter(this, this);
 	}
-	
+
 	private void checkStuff() {
 		if(((String) global.getCity()).compareTo("Location Off")==0) {
 			AlertDialog.Builder promptBuilder = new AlertDialog.Builder(this);
-		    promptBuilder.setMessage("Location is disabled.\nEnable location?\n\nNote: You can also choose your preferred location by clicking on the location icon at the top.");
-		    promptBuilder.setCancelable(false);
-		    promptBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int id) { 
-		        	Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-		        }
-		     });
-		    promptBuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int id) { 
-		            // do nothing
-		        }
-		     });
-		    AlertDialog locationPrompt = promptBuilder.create();
-		    locationPrompt.show();
-		    flagLocation=1;
+			promptBuilder.setMessage("Location is disabled.\nEnable location?\n\nNote: You can also choose your preferred location by clicking on the location icon at the top.");
+			promptBuilder.setCancelable(false);
+			promptBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) { 
+					Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(intent);
+				}
+			});
+			promptBuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) { 
+					// do nothing
+				}
+			});
+			AlertDialog locationPrompt = promptBuilder.create();
+			locationPrompt.show();
+			flagLocation=1;
 		}
 	}
 
-	
+
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
-		
+
 	}
 
 	public void onSectionAttached(int number) {
@@ -225,7 +231,7 @@ public class Home2 extends ActionBarActivity implements
 			// decide what to show in the action bar.
 			MenuInflater inflater = getMenuInflater();
 			inflater.inflate(R.menu.home2, menu);
-			
+
 			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 			SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
 			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -242,7 +248,7 @@ public class Home2 extends ActionBarActivity implements
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
-		    locationChoose.show();
+			locationChoose.show();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -294,13 +300,13 @@ public class Home2 extends ActionBarActivity implements
 		Intent c1,c2;
 		switch(arg0.getId())
 		{
-		
+
 		case R.id.cuisine1:c1 = new Intent("com.project.waverr.CHINESECUISINE");
 		startActivity(c1);
-			break;
+		break;
 		case R.id.cuisine2:c2= new Intent("com.project.waverr.INDIANCUISINE");
 		startActivity(c2);
-			break;
+		break;
 		}
 	}
 	@Override
@@ -317,13 +323,13 @@ public class Home2 extends ActionBarActivity implements
 			new LocationObtainer() {
 				protected void onProgressUpdate(Void...voids) {
 					bar.setTitle("Updating...");
-					}
+				}
 				protected void onPostExecute(String result) {
 					global.setCity(result);
 					checkStuff();
-					}
-				}.execute(giver);
-				flagLocation=0;
+				}
+			}.execute(giver);
+			flagLocation=0;
 		}
 		bar.setTitle(global.getCity());
 	}
@@ -340,9 +346,33 @@ public class Home2 extends ActionBarActivity implements
 		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_indicator_ab_waverraccent);
 		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_waverraccent);
 		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
-		
+
+	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent me){
+		// Call onTouchEvent of SimpleGestureFilter class
+		this.detector.onTouchEvent(me);
+		return super.dispatchTouchEvent(me);
 	}
 	
-	
+	@Override
+	public void onSwipe(int direction) {
+		int currentTab = th.getCurrentTab();
+		switch (direction) {
+			case SimpleGestureFilter.SWIPE_RIGHT:
+				th.setCurrentTab(currentTab-1);
+				break;
+			case SimpleGestureFilter.SWIPE_LEFT:
+				th.setCurrentTab(currentTab+1);
+				break;
+		}
+		//Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onDoubleTap() {
+		//Toast.makeText(this, "Double Tap", Toast.LENGTH_SHORT).show();
+	}
 }
 

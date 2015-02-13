@@ -1,12 +1,16 @@
 package com.project.waverr;
 
+import org.json.JSONArray;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -17,6 +21,7 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,8 +29,9 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.project.waverr.SimpleGestureFilter.SimpleGestureListener;
 
-public class DealPage extends GlobalActionBar implements OnTabChangeListener, OnMapReadyCallback, OnClickListener{
+public class DealPage extends GlobalActionBar implements OnTabChangeListener, OnMapReadyCallback, OnClickListener, SimpleGestureListener{
 
 	TabHost th;
 	TextView x;
@@ -36,6 +42,9 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	String restaurantPhoneNumber;
 	String restaurantName;
 	GlobalClass global;
+	Button timer;
+    String time;
+    private SimpleGestureFilter detector;
 	/*Integer[] imageIDs = {
 			 R.drawable.chinese1,R.drawable.ic_launcher,R.drawable.splash,R.drawable.chinese1};*/
 	
@@ -44,17 +53,17 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		super.onCreate(savedInstanceState);
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.deal_page);
-		/*Gallery gallery = (Gallery) findViewById(R.id.gallery1);
-		 gallery.setAdapter(new ImageAdapter(this));
-		 gallery.setOnItemClickListener(new OnItemClickListener() {
-		 
-
-		@Override
-		public void onItemClick(AdapterView<?> parent, View v, int position,long id) {
-					 ImageView imageView = (ImageView) findViewById(R.id.showpic);
-					 imageView.setImageResource(imageIDs[position]);
-		}
-		 });*/
+		
+		new JSONObtainer() {
+			protected void onPostExecute(JSONArray array) {
+				Toast.makeText(getApplicationContext(), "Done!", Toast.LENGTH_SHORT).show();
+			}
+		}.execute("http://waverr.in/getusernames.php");
+		
+		/*if(jsonarray==null)
+			Toast.makeText(this, "Not working", Toast.LENGTH_SHORT).show();
+		else
+			Toast.makeText(this, "Yay!!", Toast.LENGTH_SHORT).show();*/
 		
 		ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
 	    ImagePagerAdapter adapter = new ImagePagerAdapter();
@@ -120,6 +129,33 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	    getDirections = (Button) findViewById(R.id.get_directions);
 	    getDirections.setOnClickListener(this);
 	    
+	    timer = (Button) findViewById(R.id.deal_countdown_button);
+	    
+	    new CountDownTimer(90*60*1000, 1000) {
+			
+			@Override
+			public void onTick(long millisUntilFinished) {
+				// TODO Auto-generated method stub
+				
+				//Toast.makeText(getApplicationContext(), "Tick", Toast.LENGTH_SHORT).show();
+				long secondsUntil = millisUntilFinished/1000;
+				String hours = String.valueOf((int)(secondsUntil/3600));
+			    int remainder = (int)(secondsUntil - Integer.parseInt(hours) * 3600);
+			    String minutes = String.valueOf(remainder/60);
+			    remainder = remainder - Integer.parseInt(minutes) * 60;
+			    String seconds = String.valueOf(remainder);
+			    
+			    time = hours+":"+minutes+":"+seconds;
+			    timer.setText(time.toString());
+			}
+			
+			@Override
+			public void onFinish() {
+				// TODO Auto-generated method stub
+				timer.setText("Time's up!");
+			}
+		}.start();
+	    
 	    restaurantName = "Hao Ming";
 	    if(global.isFavourited(restaurantName)) {
 	    	//Toast.makeText(this, "It's a favourite!!", Toast.LENGTH_SHORT).show();
@@ -129,6 +165,8 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 			//Toast.makeText(this, "Nope!!", Toast.LENGTH_SHORT).show();
 			favouriteStatus.setImageResource(R.drawable.favorite_empty);
 		}
+	    
+	    detector = new SimpleGestureFilter(this, this);
 	}
 	
 	private class ImagePagerAdapter extends PagerAdapter {
@@ -167,39 +205,6 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	      ((ViewPager) container).removeView((ImageView) object);
 	    }
 	  }
-
-	/*public class ImageAdapter extends BaseAdapter {
-		 private Context context;
-		 private int itemBackground;
-		 public ImageAdapter(Context c)
-		 {
-		 context = c;
-		 // sets a grey background; wraps around the images
-		 TypedArray a =obtainStyledAttributes(R.styleable.MyGallery);
-		 itemBackground = a.getResourceId(R.styleable.MyGallery_android_galleryItemBackground, 0);
-		 a.recycle();
-		 }
-		 // returns the number of images
-		 public int getCount() {
-		 return imageIDs.length;
-		 }
-		 // returns the ID of an item
-		 public Object getItem(int position) {
-		 return position;
-		 }
-		 // returns the ID of an item
-		 public long getItemId(int position) {
-		 return position;
-		 }
-		 // returns an ImageView view
-		 public View getView(int position, View convertView, ViewGroup parent) {
-		 ImageView imageView = new ImageView(context);
-		 imageView.setImageResource(imageIDs[position]);
-		 imageView.setLayoutParams(new Gallery.LayoutParams(100, 100));
-		 imageView.setBackgroundResource(itemBackground);
-		 return imageView;
-		 }
-		}*/
 
 	@Override
 	public void onTabChanged(String tabId) {
@@ -249,5 +254,31 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 					favouriteStatus.setImageResource(R.drawable.favorite_empty);
 				break;
 		}
+	}
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent me){
+		// Call onTouchEvent of SimpleGestureFilter class
+		this.detector.onTouchEvent(me);
+		return super.dispatchTouchEvent(me);
+	}
+	
+	@Override
+	public void onSwipe(int direction) {
+		int currentTab = th.getCurrentTab();
+		switch (direction) {
+			case SimpleGestureFilter.SWIPE_RIGHT:
+				th.setCurrentTab(currentTab-1);
+				break;
+			case SimpleGestureFilter.SWIPE_LEFT:
+				th.setCurrentTab(currentTab+1);
+				break;
+		}
+		//Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onDoubleTap() {
+		//Toast.makeText(this, "Double Tap", Toast.LENGTH_SHORT).show();
 	}
 }
