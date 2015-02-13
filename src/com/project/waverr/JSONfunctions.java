@@ -12,14 +12,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.util.Log;
 
-public class JSONfunctions {
+public class JSONFunctions {
 
     public static JSONArray getJSONfromURL(String url) {
         InputStream is = null;

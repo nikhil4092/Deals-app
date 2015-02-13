@@ -1,5 +1,8 @@
 package com.project.waverr;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -27,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation
@@ -119,16 +123,32 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 			}
 		});
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActionBar()
+		String url = "http://waverr.in/getusernames.php";
+		final String[] things = new String[] {
+				getString(R.string.title_section1),	
+				getString(R.string.title_section2),
+				getString(R.string.title_section3),
+				getString(R.string.title_section4),
+				getString(R.string.title_section5),
+				getString(R.string.title_section6)};
+		new JSONObtainer() {
+			@Override
+			protected void onPostExecute(JSONArray array) {
+				Toast.makeText(getActivity(), "Got stuff", Toast.LENGTH_SHORT).show();
+				try {
+					things[0] = array.getJSONObject(0).getString("Name");
+					things[1] = array.getJSONObject(0).getString("Email");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}.execute(url);
+		
+		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActionBar()
 				.getThemedContext(),
 				android.R.layout.simple_list_item_activated_1,
-				android.R.id.text1, new String[] {
-			getString(R.string.title_section1),	
-			getString(R.string.title_section2),
-			getString(R.string.title_section3),
-			getString(R.string.title_section4),
-			getString(R.string.title_section5),
-			getString(R.string.title_section6),});
+				android.R.id.text1, things);
 
 		ImageView imageHeaderView = new ImageView(getActivity());
 		imageHeaderView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), R.drawable.chinese1, 200, 200));
@@ -138,7 +158,23 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 
 		mDrawerListView.setAdapter(adapter);
 		//mDrawerListView.addHeaderView(getActivity().getBaseContext().findViewById(R.drawable.cuisine2), null, false);
-		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+		//mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+		
+		new JSONObtainer() {
+			@Override
+			protected void onPostExecute(JSONArray array) {
+				Toast.makeText(getActivity(), "Got stuff", Toast.LENGTH_SHORT).show();
+				try {
+					things[0] = array.getJSONObject(0).getString("Name");
+					things[1] = array.getJSONObject(0).getString("Email");
+					adapter.notifyDataSetChanged();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}.execute(url);
+		
 		return mDrawerListView;
 	}
 

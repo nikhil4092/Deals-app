@@ -29,7 +29,6 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.project.waverr.SimpleGestureFilter.SimpleGestureListener;
 

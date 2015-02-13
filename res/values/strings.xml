@@ -41,5 +41,7 @@
     <string name="facebook_app_id">1547265585557850</string>
     <string name="title_activity_restaurant_list">Our Partner Restaurants</string>
     <string name="teaser">You are just a few clicks away from discovering the best deals around you!</string>
+    <string name="waverr_logo">Waverr logo</string>
+    <string name="test_text">This is a test Text for the current button</string>
 
 </resources>

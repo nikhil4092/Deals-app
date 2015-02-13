@@ -36,23 +36,6 @@ public class RestaurantList extends Activity {
 		global = (GlobalClass) getApplication();
 		Arrays.sort(restaurants);
 		
-		/*mListView = (ListView) findViewById(R.id.restaurantListView);
-		adapter = new RestaurantArrayAdapter(this, restaurants);
-		mListView.setAdapter(adapter);
-		mListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
-				// TODO Auto-generated method stub
-				
-				if(position==0){
-	                  ImageView imageView = (ImageView) view.findViewById(R.id.favourite);
-	                  imageView.setImageResource(R.drawable.favorite_full);
-	            }
-			}
-		});*/
-		
 		ArrayList<ImageButton> buttonList = new ArrayList<>();
 		ArrayList<TextView> restaurantList = new ArrayList<>();
 		

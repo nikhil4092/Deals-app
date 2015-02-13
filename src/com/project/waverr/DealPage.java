@@ -1,5 +1,7 @@
 package com.project.waverr;
 
+import org.json.JSONArray;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,6 +21,7 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -50,17 +53,17 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		super.onCreate(savedInstanceState);
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.deal_page);
-		/*Gallery gallery = (Gallery) findViewById(R.id.gallery1);
-		 gallery.setAdapter(new ImageAdapter(this));
-		 gallery.setOnItemClickListener(new OnItemClickListener() {
-		 
-
-		@Override
-		public void onItemClick(AdapterView<?> parent, View v, int position,long id) {
-					 ImageView imageView = (ImageView) findViewById(R.id.showpic);
-					 imageView.setImageResource(imageIDs[position]);
-		}
-		 });*/
+		
+		new JSONObtainer() {
+			protected void onPostExecute(JSONArray array) {
+				Toast.makeText(getApplicationContext(), "Done!", Toast.LENGTH_SHORT).show();
+			}
+		}.execute("http://waverr.in/getusernames.php");
+		
+		/*if(jsonarray==null)
+			Toast.makeText(this, "Not working", Toast.LENGTH_SHORT).show();
+		else
+			Toast.makeText(this, "Yay!!", Toast.LENGTH_SHORT).show();*/
 		
 		ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
 	    ImagePagerAdapter adapter = new ImagePagerAdapter();
@@ -202,39 +205,6 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	      ((ViewPager) container).removeView((ImageView) object);
 	    }
 	  }
-
-	/*public class ImageAdapter extends BaseAdapter {
-		 private Context context;
-		 private int itemBackground;
-		 public ImageAdapter(Context c)
-		 {
-		 context = c;
-		 // sets a grey background; wraps around the images
-		 TypedArray a =obtainStyledAttributes(R.styleable.MyGallery);
-		 itemBackground = a.getResourceId(R.styleable.MyGallery_android_galleryItemBackground, 0);
-		 a.recycle();
-		 }
-		 // returns the number of images
-		 public int getCount() {
-		 return imageIDs.length;
-		 }
-		 // returns the ID of an item
-		 public Object getItem(int position) {
-		 return position;
-		 }
-		 // returns the ID of an item
-		 public long getItemId(int position) {
-		 return position;
-		 }
-		 // returns an ImageView view
-		 public View getView(int position, View convertView, ViewGroup parent) {
-		 ImageView imageView = new ImageView(context);
-		 imageView.setImageResource(imageIDs[position]);
-		 imageView.setLayoutParams(new Gallery.LayoutParams(100, 100));
-		 imageView.setBackgroundResource(itemBackground);
-		 return imageView;
-		 }
-		}*/
 
 	@Override
 	public void onTabChanged(String tabId) {

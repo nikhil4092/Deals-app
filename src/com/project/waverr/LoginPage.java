@@ -38,7 +38,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 	private boolean mIntentInProgress;
 
 	private Facebook facebook;
-	private AsyncFacebookRunner mAsyncRunner;
+	//private AsyncFacebookRunner mAsyncRunner;
 	String FILENAME = "AndroidSSO_data";
 	private SharedPreferences mPrefs; 
 
@@ -56,7 +56,8 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 		.build();
 
 		facebook = new Facebook(APP_ID);
-		mAsyncRunner = new AsyncFacebookRunner(facebook); 
+		//mAsyncRunner = 
+		new AsyncFacebookRunner(facebook); 
 
 	}
 
