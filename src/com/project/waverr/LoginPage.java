@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
+import bolts.Task;
 
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.DialogError;
@@ -16,16 +19,24 @@ import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.plus.People;
+import com.google.android.gms.plus.People.LoadPeopleResult;
 import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
+import com.google.android.gms.plus.model.people.Person.Image;
+import com.google.android.gms.plus.model.people.PersonBuffer;
 
 @SuppressWarnings("deprecation")
 public class LoginPage extends Activity implements OnClickListener,ConnectionCallbacks,OnConnectionFailedListener {
 
 	/* Request code used to invoke sign in user interactions. */
 	private static final int RC_SIGN_IN = 0;
+	private static final String TAG = null;
 	private static String APP_ID = "1547265585557850";
 
 	/* Client used to interact with Google APIs. */
@@ -81,6 +92,16 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 		Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 		Intent intent = new Intent(this, com.project.waverr.Home2.class);
 		startActivity(intent);
+	}
+	
+	public void onConnected(){
+		if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+		    Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+		    String personName = currentPerson.getDisplayName();
+		    Image personPhoto = currentPerson.getImage();
+		    String personGooglePlusProfile = currentPerson.getUrl();
+		    String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+		  }
 	}
 
 
@@ -235,7 +256,8 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 			});
 		}
 	}
-}
 
+	
+}
 
 

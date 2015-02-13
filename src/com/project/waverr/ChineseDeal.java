@@ -56,7 +56,7 @@ public class ChineseDeal extends GlobalActionBar implements OnClickListener{
 						"Cuisine"
 				};
 
-				ArrayList<Deal> deals = new ArrayList<>();
+				ArrayList<Deal> deals = new ArrayList<Deal>();
 				ArrayList<ImageButton> buttons = new ArrayList<>();
 				ArrayList<TextView> texts = new ArrayList<>();
 				
