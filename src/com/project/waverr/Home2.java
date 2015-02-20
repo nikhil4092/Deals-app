@@ -76,7 +76,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		criteria = new Criteria();
 		provider = locationManager.getBestProvider(criteria, true);*/
 		giver = new LocationGiver(this);
-		cities = new String[]{"Automatic", "Mangaluru"};
+		cities = new String[]{"Mangaluru"};
 
 		th.setup();
 		TabSpec specs = th.newTabSpec("Search");

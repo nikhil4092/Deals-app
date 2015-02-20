@@ -56,14 +56,14 @@ public class GlobalActionBar extends ActionBarActivity implements NavigationDraw
 		//mNavigationDrawerFragment.setUp(R.id.navigation_drawer,(DrawerLayout) findViewById(R.id.drawer_layout));
 		
 		giver = new LocationGiver(this);
-		cities = new String[]{"Automatic", "Mangaluru", "Bengaluru"};
+		cities = new String[]{"Mangaluru"};
 		builder = new AlertDialog.Builder(this);
 		builder.setSingleChoiceItems(cities, 0, new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-				if(which==0) {
+				/*if(which==0) {
 					new LocationObtainer() {
 						protected void onProgressUpdate(Void...voids) {
 							bar.setTitle("Updating...");
@@ -77,11 +77,11 @@ public class GlobalActionBar extends ActionBarActivity implements NavigationDraw
 					//cityName = giver.getLocation();
 					//bar.setTitle(cityName);
 					dialog.dismiss();
-				}
-				else {
+				}*/
+				//else {
 					bar.setTitle(cities[which]);
 					global.setCity(cities[which]);
-				}
+				//}
 				dialog.dismiss();
 			}
 		});
