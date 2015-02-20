@@ -1,8 +1,5 @@
 package com.project.waverr;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -30,7 +27,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation
@@ -123,15 +119,18 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 			}
 		});
 
-		String url = "http://waverr.in/getusernames.php";
+		GlobalClass global = (GlobalClass) getActivity().getApplicationContext();
+		//String url = "http://waverr.in/getusernames.php";
 		final String[] things = new String[] {
-				getString(R.string.title_section1),	
-				getString(R.string.title_section2),
+				//getString(R.string.title_section1),	
+				global.getPersonName(),
+				//getString(R.string.title_section2),
+				global.getPersonEmail(),
 				getString(R.string.title_section3),
 				getString(R.string.title_section4),
 				getString(R.string.title_section5),
 				getString(R.string.title_section6)};
-		new JSONObtainer() {
+		/*new JSONObtainer() {
 			protected void onPostExecute(JSONArray array) {
 				Toast.makeText(getActivity(), "Got stuff", Toast.LENGTH_SHORT).show();
 				try {
@@ -142,7 +141,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 					e.printStackTrace();
 				}
 			}
-		}.execute(url);
+		}.execute(url);*/
 		
 		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActionBar()
 				.getThemedContext(),
@@ -151,7 +150,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 
 		ImageView imageHeaderView = new ImageView(getActivity());
 		imageHeaderView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), R.drawable.chinese1, 200, 200));
-
+		//imageHeaderView.setImageBitmap();
 		mDrawerListView.addHeaderView(imageHeaderView);
 		mDrawerListView.setHeaderDividersEnabled(false);
 
@@ -159,7 +158,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 		//mDrawerListView.addHeaderView(getActivity().getBaseContext().findViewById(R.drawable.cuisine2), null, false);
 		//mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 		
-		new JSONObtainer() {
+		/*new JSONObtainer() {
 			protected void onPostExecute(JSONArray array) {
 				Toast.makeText(getActivity(), "Got stuff", Toast.LENGTH_SHORT).show();
 				try {
@@ -171,7 +170,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 					e.printStackTrace();
 				}
 			}
-		}.execute(url);
+		}.execute(url);*/
 		
 		return mDrawerListView;
 	}

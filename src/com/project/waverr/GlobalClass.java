@@ -4,15 +4,54 @@ import java.util.ArrayList;
 
 import android.app.Application;
 
+import com.google.android.gms.plus.model.people.Person.Image;
+
 public class GlobalClass extends Application{
 	
 	private String city;
 	private ArrayList<String> favouritedRestaurants;
+	private String personName;
+	private Image personPhoto;
+	private String personGooglePlusProfile;
+	private String personEmail;
+	
 	
 	public void setCity(String data) {
 		city = data;
 	}
 	
+	public String getPersonName() {
+		return personName;
+	}
+
+	public void setPersonName(String personName) {
+		this.personName = personName;
+	}
+
+	public Image getPersonPhoto() {
+		return personPhoto;
+	}
+
+	public void setPersonPhoto(Image personPhoto) {
+		this.personPhoto = personPhoto;
+	}
+
+	public String getPersonGooglePlusProfile() {
+		return personGooglePlusProfile;
+	}
+
+	public void setPersonGooglePlusProfile(String personGooglePlusProfile) {
+		this.personGooglePlusProfile = personGooglePlusProfile;
+	}
+
+	public String getPersonEmail() {
+		return personEmail;
+	}
+
+	public void setPersonEmail(String personEmail) {
+		this.personEmail = personEmail;
+	}
+
 	public String getCity() {
 		return city;
 	}

@@ -112,8 +112,16 @@
         </activity>
         <activity
             android:name=".RestaurantList"
-            android:label="@string/title_activity_restaurant_list"
-            android:theme="@android:style/Theme.Holo.Dialog" >
+            android:label="@string/title_activity_restaurant_list" >
+        </activity>
+        <activity
+            android:name=".Success"
+            android:label="@string/title_activity_login_page"
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="com.project.waverr.SUCCESS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
     </application>
 
