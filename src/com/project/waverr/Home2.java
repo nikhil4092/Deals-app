@@ -139,7 +139,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-				if(which==0) {
+				/*if(which==0) {
 					new LocationObtainer() {
 						protected void onProgressUpdate(Void...voids) {
 							bar.setTitle("Updating...");
@@ -153,11 +153,11 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 					//cityName = giver.getLocation();
 					//bar.setTitle(cityName);
 					dialog.dismiss();
-				}
-				else {
+				}*/
+				//else {
 					bar.setTitle(cities[which]);
 					global.setCity(cities[which]);
-				}
+				//}
 				dialog.dismiss();
 			}
 		});
