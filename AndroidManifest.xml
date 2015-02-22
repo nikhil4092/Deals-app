@@ -98,8 +98,7 @@
         </activity>
         <activity
             android:name=".LoginPage"
-            android:label="@string/title_activity_login_page"
-            android:theme="@android:style/Theme.Holo.Light.Dialog" >
+            android:label="@string/title_activity_login_page" >
             <intent-filter>
                 <action android:name="com.project.waverr.LOGINPAGE" />
 
@@ -112,7 +111,8 @@
         </activity>
         <activity
             android:name=".RestaurantList"
-            android:label="@string/title_activity_restaurant_list" >
+            android:label="@string/title_activity_restaurant_list"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" >
         </activity>
         <activity
             android:name=".Success"

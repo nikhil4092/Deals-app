@@ -9,11 +9,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
@@ -23,9 +24,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-public class ChineseDeal extends GlobalActionBar implements OnClickListener{
+public class ChineseDeal extends GlobalActionBar{
 
-	ImageButton ib1;
 	JSONObtainer obtainer;
 	String url;
 
@@ -34,9 +34,14 @@ public class ChineseDeal extends GlobalActionBar implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chinese_deal);
 
-		ib1=(ImageButton)findViewById(R.id.chinesedeal1);
-		ib1.setOnClickListener(this);
+		final ProgressDialog progressDialog = new ProgressDialog(this);
+		progressDialog.setMessage("Getting deals...");
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progressDialog.setIndeterminate(true);
+		progressDialog.show();
+
 		final LinearLayout mLayout = (LinearLayout) findViewById(R.id.deallist);
+		mLayout.setGravity(Gravity.CENTER);
 		url = "http://waverr.in/getdealparameters.php";
 		obtainer = new JSONObtainer() {
 			@Override
@@ -59,7 +64,7 @@ public class ChineseDeal extends GlobalActionBar implements OnClickListener{
 				ArrayList<Deal> deals = new ArrayList<Deal>();
 				ArrayList<ImageButton> buttons = new ArrayList<>();
 				ArrayList<TextView> texts = new ArrayList<>();
-				
+
 				try {
 
 					for(int i=0; i<array.length(); i++) {
@@ -95,7 +100,7 @@ public class ChineseDeal extends GlobalActionBar implements OnClickListener{
 						button.setBackgroundColor(Color.TRANSPARENT);
 						button.setAdjustViewBounds(true);
 						buttons.add(button);
-						
+
 						final String deal = gson.toJson(newDeal);
 
 						button.setOnClickListener(new View.OnClickListener() {
@@ -116,16 +121,17 @@ public class ChineseDeal extends GlobalActionBar implements OnClickListener{
 						text.setBackgroundColor(getResources().getColor(R.color.abc_search_url_text_normal));
 						text.setLayoutParams(params);
 						texts.add(text);
-						
+
 						LinearLayout smallLayout = new LinearLayout(getBaseContext());
 						smallLayout.setOrientation(LinearLayout.VERTICAL);
 						smallLayout.setLayoutParams(params);
-						smallLayout.setPadding(4, 4, 4, 4);
+						smallLayout.setPadding(4, 0, 4, 0);
 						smallLayout.addView(button);
 						smallLayout.addView(text);
 
 						mLayout.addView(smallLayout);
 					}
+					progressDialog.dismiss();
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -133,17 +139,5 @@ public class ChineseDeal extends GlobalActionBar implements OnClickListener{
 			}
 		};
 		obtainer.execute(url);
-	}
-	@Override
-	public void onClick(View arg0) {
-		Intent c1;
-		// TODO Auto-generated method stub
-		switch(arg0.getId())
-		{
-		case R.id.chinesedeal1:
-			c1 = new Intent("com.project.waverr.DEALPAGE");
-			startActivity(c1);
-			break;
-		}
 	}
 }

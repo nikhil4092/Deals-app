@@ -64,17 +64,6 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 			setLayout(deal);
 		}
 
-		/*new JSONObtainer() {
-			protected void onPostExecute(JSONArray array) {
-				Toast.makeText(getApplicationContext(), "Done!", Toast.LENGTH_SHORT).show();
-			}
-		}.execute("http://waverr.in/getusernames.php");
-
-		if(jsonarray==null)
-			Toast.makeText(this, "Not working", Toast.LENGTH_SHORT).show();
-		else
-			Toast.makeText(this, "Yay!!", Toast.LENGTH_SHORT).show();*/
-
 		ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
 		ImagePagerAdapter adapter = new ImagePagerAdapter();
 		viewPager.setAdapter(adapter);
