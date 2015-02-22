@@ -1,7 +1,5 @@
 package com.project.waverr;
 
-import org.json.JSONArray;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -29,6 +27,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 import com.project.waverr.SimpleGestureFilter.SimpleGestureListener;
 
 public class DealPage extends GlobalActionBar implements OnTabChangeListener, OnMapReadyCallback, OnClickListener, SimpleGestureListener{
@@ -54,14 +53,24 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		super.onCreate(savedInstanceState);
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.deal_page);
+		
+		Intent intent = getIntent();
+		String dealString = intent.getStringExtra("deal");
+		Deal deal=null;
+		Gson gson = new Gson();
+		if(dealString!=null)
+		{
+			deal = gson.fromJson(dealString, Deal.class);
+			setLayout(deal);
+		}
 
-		new JSONObtainer() {
+		/*new JSONObtainer() {
 			protected void onPostExecute(JSONArray array) {
 				Toast.makeText(getApplicationContext(), "Done!", Toast.LENGTH_SHORT).show();
 			}
 		}.execute("http://waverr.in/getusernames.php");
 
-		/*if(jsonarray==null)
+		if(jsonarray==null)
 			Toast.makeText(this, "Not working", Toast.LENGTH_SHORT).show();
 		else
 			Toast.makeText(this, "Yay!!", Toast.LENGTH_SHORT).show();*/
@@ -317,5 +326,17 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 
 			}
 		}
+	}
+	
+	private void setLayout(Deal deal) {
+		TextView theThing = (TextView) findViewById(R.id.theDeal);
+		String dealThing = "Flat "+deal.getDiscount()+"% off on all food items!";
+		theThing.setText(dealThing);
+		
+		TextView details = (TextView) findViewById(R.id.conditions);
+		details.setText("Minimum amount is Rs "+deal.getMinimumAmount()+"\n"+deal.getDetails());
+		
+		TextView duration = (TextView) findViewById(R.id.timeLimit);
+		duration.setText("The deal is valid from "+deal.getStartDate().toString()+"to "+deal.getEndDate().toString());
 	}
 }
