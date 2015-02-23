@@ -9,7 +9,7 @@ public class JSONObtainer extends AsyncTask<String, Void, JSONArray>{
 	@Override
 	protected JSONArray doInBackground(String... url) {
 		// TODO Auto-generated method stub
-		return JSONfunctions.getJSONfromURL(url[0]);
+		return JSONFunctions.getJSONfromURL(url[0]);
 	}
 
 }

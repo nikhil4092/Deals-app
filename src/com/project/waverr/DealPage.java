@@ -1,5 +1,15 @@
 package com.project.waverr;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -53,7 +63,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		super.onCreate(savedInstanceState);
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.deal_page);
-		
+
 		Intent intent = getIntent();
 		String dealString = intent.getStringExtra("deal");
 		Deal deal=null;
@@ -131,31 +141,106 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		timer = (Button) findViewById(R.id.deal_countdown_button);
 		activate = (Button) findViewById(R.id.activatedeal);
 		activate.setOnClickListener(this);
-		
-		new CountDownTimer(90*60*1000, 1000) {
 
+		final Date startDate = deal.getStartDate();
+		final Date endDate = deal.getEndDate();
+		final Time startTime = deal.getStartTime();
+		final Time endTime = deal.getEndTime();
+
+		JSONObtainer obtainer = new JSONObtainer() {
 			@Override
-			public void onTick(long millisUntilFinished) {
-				// TODO Auto-generated method stub
+			protected void onPostExecute(JSONArray array) {
+				Date currentDate=null;
+				Time currentTime=null;
+				try {
+					JSONObject object = array.getJSONObject(0);
+					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					try {
+						currentDate = format.parse(object.getString("date"));
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					currentTime = Time.valueOf(object.getString("time"));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
-				//Toast.makeText(getApplicationContext(), "Tick", Toast.LENGTH_SHORT).show();
-				long secondsUntil = millisUntilFinished/1000;
-				String hours = String.valueOf((int)(secondsUntil/3600));
-				int remainder = (int)(secondsUntil - Integer.parseInt(hours) * 3600);
-				String minutes = String.valueOf(remainder/60);
-				remainder = remainder - Integer.parseInt(minutes) * 60;
-				String seconds = String.valueOf(remainder);
+				Toast.makeText(getBaseContext(), currentDate.toString()+"\n"+currentTime.toString(), Toast.LENGTH_LONG).show();
+				long time=0;
 
-				time = hours+":"+minutes+":"+seconds;
-				timer.setText(time.toString());
+				Boolean hasStarted = false;
+				Boolean hasEnded = false;
+
+				if(currentDate.before(startDate)) {
+					time+=startDate.getTime()-currentDate.getTime();
+					time+=startTime.getTime()-currentTime.getTime();
+				}
+				else if(currentDate.compareTo(startDate)==0)
+					time+=startTime.getTime()-currentTime.getTime();
+				else {
+					hasStarted = true;
+					if(currentDate.before(endDate)) {
+						time+=endDate.getTime()-currentDate.getTime();
+						time+=endTime.getTime()-currentTime.getTime();
+					}
+					else if(currentDate.compareTo(endDate)==0)
+						time+=endTime.getTime()-currentTime.getTime();
+					else
+						hasEnded = true;
+				}
+
+				final String text;
+				if(!hasStarted)
+					text = "Deal starts in";
+				else if(!hasEnded)
+					text = "Deal ends in";
+				else
+					text = "Deal has ended!!";
+
+				new CountDownTimer(time, 1000) {
+
+					@Override
+					public void onTick(long millisUntilFinished) {
+						// TODO Auto-generated method stub
+
+						long seconds = millisUntilFinished/1000;
+
+						/*String hours = String.valueOf((int)(secondsUntil/3600));
+						String days = String.valueOf(Integer.parseInt(hours)/24);
+						int remainder = (int) (secondsUntil%3600);
+						hours = String.valueOf(Integer.parseInt(hours)%24);
+						String minutes = String.valueOf(remainder/60);
+						remainder = remainder%60;
+						String seconds = String.valueOf(remainder);*/
+
+						/*int days = (int) (secondsUntil/(24*60*60));
+						secondsUntil = secondsUntil % (24*60*60);
+						int hours = (int) (secondsUntil/(60*60));
+						secondsUntil = secondsUntil % (60*60);
+						int minutes = (int) (secondsUntil/60);
+						secondsUntil = secondsUntil % 60;*/
+
+						int days = (int)TimeUnit.SECONDS.toDays(seconds);        
+						long hours = TimeUnit.SECONDS.toHours(seconds) - (days *24);
+						long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds)* 60);
+						long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
+
+						String time = days+" d "+hours+" h "+minutes+" m "+second+" s";
+						timer.setText(text+"\n"+time);
+						//timer.setTextSize(android.R.attr.textAppearanceSmall);
+					}
+
+					@Override
+					public void onFinish() {
+						// TODO Auto-generated method stub
+						timer.setText("Time's up!");
+					}
+				}.start();
 			}
-
-			@Override
-			public void onFinish() {
-				// TODO Auto-generated method stub
-				timer.setText("Time's up!");
-			}
-		}.start();
+		};
+		obtainer.execute("http://waverr.in/getcurrenttime.php");
 
 		restaurantName = "Hao Ming";
 		if(global.isFavourited(restaurantName)) {
@@ -316,15 +401,15 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 			}
 		}
 	}
-	
+
 	private void setLayout(Deal deal) {
 		TextView theThing = (TextView) findViewById(R.id.theDeal);
 		String dealThing = "Flat "+deal.getDiscount()+"% off on all food items!";
 		theThing.setText(dealThing);
-		
+
 		TextView details = (TextView) findViewById(R.id.conditions);
 		details.setText("Minimum amount is Rs "+deal.getMinimumAmount()+"\n"+deal.getDetails());
-		
+
 		TextView duration = (TextView) findViewById(R.id.timeLimit);
 		duration.setText("The deal is valid from "+deal.getStartDate().toString()+"to "+deal.getEndDate().toString());
 	}

@@ -310,6 +310,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="5"
         android:background="#0000"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Deal Counter" />
 
     <Button
@@ -321,7 +322,7 @@
         android:textStyle="bold"
         android:background="#00c15b"
         android:text="Activate Deal" />
-
+    
 </LinearLayout>
 
 </LinearLayout>

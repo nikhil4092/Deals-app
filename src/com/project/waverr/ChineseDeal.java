@@ -38,6 +38,7 @@ public class ChineseDeal extends GlobalActionBar{
 		progressDialog.setMessage("Getting deals...");
 		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		progressDialog.setIndeterminate(true);
+		progressDialog.setCancelable(false);
 		progressDialog.show();
 
 		final LinearLayout mLayout = (LinearLayout) findViewById(R.id.deallist);
@@ -90,7 +91,7 @@ public class ChineseDeal extends GlobalActionBar{
 						newDeal.setImageURL(object.getString(things[9]));
 						newDeal.setCuisine(object.getString(things[9]));
 						deals.add(newDeal);
-						Toast.makeText(getBaseContext(), "Got the object", Toast.LENGTH_SHORT).show();
+						//Toast.makeText(getBaseContext(), "Got the object", Toast.LENGTH_SHORT).show();
 						LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
 						ImageButton button = new ImageButton(getBaseContext());

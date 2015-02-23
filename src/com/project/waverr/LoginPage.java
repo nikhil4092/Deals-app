@@ -252,6 +252,11 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 		}
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		finish();
+	}
 	
 }
 

@@ -28,6 +28,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.squareup.picasso.Picasso;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation
  * drawer. See the <a href=
@@ -149,8 +151,10 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 				android.R.id.text1, things);
 
 		ImageView imageHeaderView = new ImageView(getActivity());
-		imageHeaderView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), R.drawable.chinese1, 200, 200));
-		//imageHeaderView.setImageBitmap();
+		/*imageHeaderView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), R.drawable.chinese1, 200, 200));
+		//imageHeaderView.setImageBitmap();*/
+		String imageURL = global.getPersonPhoto().getUrl();
+		Picasso.with(getActivity()).load(imageURL+"0").resize(250, 250).centerCrop().into(imageHeaderView);
 		mDrawerListView.addHeaderView(imageHeaderView);
 		mDrawerListView.setHeaderDividersEnabled(false);
 
