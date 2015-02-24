@@ -14,7 +14,26 @@ public class GlobalClass extends Application{
 	private Image personPhoto;
 	private String personGooglePlusProfile;
 	private String personEmail;
+	private String loginstatus;
+	private String lastitem;
 	
+	public void setloginstatus(String status){
+		loginstatus = status;
+		
+		if(loginstatus.equals("none")){
+			lastitem="Login";
+		}
+		else{
+			lastitem="Logout";
+		}
+	}
+	
+	public String getlastitem(){
+		return lastitem;
+	}
+	public String getloginstatus(){
+		return loginstatus;
+	}
 	
 	public void setCity(String data) {
 		city = data;

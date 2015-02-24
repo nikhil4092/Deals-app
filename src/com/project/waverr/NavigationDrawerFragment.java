@@ -131,7 +131,8 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 				getString(R.string.title_section3),
 				getString(R.string.title_section4),
 				getString(R.string.title_section5),
-				getString(R.string.title_section6)};
+				getString(R.string.title_section6),
+				global.getlastitem()};
 		/*new JSONObtainer() {
 			protected void onPostExecute(JSONArray array) {
 				Toast.makeText(getActivity(), "Got stuff", Toast.LENGTH_SHORT).show();

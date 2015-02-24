@@ -26,6 +26,7 @@ import com.google.android.gms.plus.model.people.Person.Image;
 @SuppressWarnings("deprecation")
 public class LoginPage extends Activity implements OnClickListener,ConnectionCallbacks,OnConnectionFailedListener {
 
+	GlobalClass global;
 	/* Request code used to invoke sign in user interactions. */
 	private static final int RC_SIGN_IN = 0;
 	//private static final String TAG = null;
@@ -50,6 +51,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_page);
+		global=(GlobalClass)getApplication();
 		findViewById(R.id.btn_sign_in).setOnClickListener((OnClickListener) this);
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 		.addConnectionCallbacks(this)
@@ -68,6 +70,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 			@Override
 			public void onClick(View v) {
 				loginToFacebook();
+				
 			}
 		});
 
@@ -100,11 +103,12 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 			String personEmail = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
 			//Toast.makeText(this, personName+","+personEmail, Toast.LENGTH_SHORT).show();
-			GlobalClass global = (GlobalClass) getApplicationContext();
+			
 			global.setPersonName(personName);
 			global.setPersonPhoto(personPhoto);
 			global.setPersonGooglePlusProfile(personGooglePlusProfile);
 			global.setPersonEmail(personEmail);
+			global.setloginstatus("google");
 		}
 		Intent intent = new Intent(this, com.project.waverr.Home2.class);
 		startActivity(intent);
@@ -199,6 +203,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 		
 		if(view.getId()==R.id.nologin){
 			Intent intent = new Intent(this, com.project.waverr.Home2.class);
+			global.setloginstatus("none");
 		    startActivity(intent);
 		}
 
@@ -241,7 +246,9 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 					editor.putLong("access_expires",
 							facebook.getAccessExpires());
 					editor.commit();
+					
 					Intent intent = new Intent(getBaseContext(), com.project.waverr.Home2.class);
+					global.setloginstatus("facebook");
 					startActivity(intent);
 				}
 
