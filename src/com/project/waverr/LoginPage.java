@@ -34,7 +34,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 	/* Client used to interact with Google APIs. */
 	private GoogleApiClient mGoogleApiClient;
 	private ConnectionResult mConnectionResult;
-	
+
 	/* A flag indicating that a PendingIntent is in progress and prevents
 	 * us from starting further intents.
 	 */
@@ -62,6 +62,15 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 		//mAsyncRunner = 
 		new AsyncFacebookRunner(facebook); 
 
+		//View btnFbLogin = null;
+		Button btnFbLogin = (Button) findViewById(R.id.login_button);
+		btnFbLogin.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				loginToFacebook();
+			}
+		});
+
 	}
 
 	protected void onStart() {
@@ -83,23 +92,23 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 		mSignInClicked = false;
 		Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 		if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-		    Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-		    String personName = currentPerson.getDisplayName();
-		    Image personPhoto = currentPerson.getImage();
-		    String personGooglePlusProfile = currentPerson.getUrl();
-		    String personEmail = Plus.AccountApi.getAccountName(mGoogleApiClient);
-		    
-		    //Toast.makeText(this, personName+","+personEmail, Toast.LENGTH_SHORT).show();
-		    GlobalClass global = (GlobalClass) getApplicationContext();
-		    global.setPersonName(personName);
-		    global.setPersonPhoto(personPhoto);
-		    global.setPersonGooglePlusProfile(personGooglePlusProfile);
-		    global.setPersonEmail(personEmail);
-		  }
+			Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+			String personName = currentPerson.getDisplayName();
+			Image personPhoto = currentPerson.getImage();
+			String personGooglePlusProfile = currentPerson.getUrl();
+			String personEmail = Plus.AccountApi.getAccountName(mGoogleApiClient);
+
+			//Toast.makeText(this, personName+","+personEmail, Toast.LENGTH_SHORT).show();
+			GlobalClass global = (GlobalClass) getApplicationContext();
+			global.setPersonName(personName);
+			global.setPersonPhoto(personPhoto);
+			global.setPersonGooglePlusProfile(personGooglePlusProfile);
+			global.setPersonEmail(personEmail);
+		}
 		Intent intent = new Intent(this, com.project.waverr.Home2.class);
 		startActivity(intent);
 	}
-	
+
 	@Override
 	public void onConnectionSuspended(int cause) {
 		// TODO Auto-generated method stub
@@ -183,17 +192,17 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 				&& !mGoogleApiClient.isConnecting()) {
 			mGoogleApiClient.connect();
 			mSignInClicked = true;
-			resolveSignInError();		    
+			resolveSignInError();		  
+
+		}
+		
+		if(view.getId()==R.id.nologin){
+			Intent intent = new Intent(this, com.project.waverr.Home2.class);
+		    startActivity(intent);
 		}
 
-		//View btnFbLogin = null;
-		Button btnFbLogin = (Button) findViewById(R.id.login_button);
-		btnFbLogin.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				loginToFacebook();
-			}
-		});
+
+
 	}
 
 
@@ -257,7 +266,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 		super.onPause();
 		finish();
 	}
-	
+
 }
 
 

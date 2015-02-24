@@ -33,6 +33,12 @@
         android:layout_marginTop="3dp"
         android:padding="3dp" />
 
+    <Button
+        android:id="@+id/nologin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Proceed without login"/>
+
     <TextView
         android:id="@+id/teaser"
         android:layout_width="wrap_content"

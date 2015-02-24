@@ -81,4 +81,6 @@ public class GlobalClass extends Application{
 		return false;*/
 		return favouritedRestaurants.contains(restaurant);
 	}
+	
+	
 }
