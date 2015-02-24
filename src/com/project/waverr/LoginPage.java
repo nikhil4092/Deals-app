@@ -71,8 +71,9 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 			}
 		});
 
+		Button btnnologin = (Button) findViewById(R.id.nologin);
+		btnnologin.setOnClickListener(this);
 	}
-
 	protected void onStart() {
 		super.onStart();
 		//mGoogleApiClient.connect();
