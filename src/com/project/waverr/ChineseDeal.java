@@ -19,10 +19,14 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 
 public class ChineseDeal extends GlobalActionBar{
 
@@ -42,8 +46,11 @@ public class ChineseDeal extends GlobalActionBar{
 		progressDialog.show();
 
 		final LinearLayout mLayout = (LinearLayout) findViewById(R.id.deallist);
+		final PullToRefreshScrollView pullToRefreshView = (PullToRefreshScrollView) findViewById(R.id.dealScrollView);
+
 		mLayout.setGravity(Gravity.CENTER);
 		url = "http://waverr.in/getdealparameters.php";
+		
 		obtainer = new JSONObtainer() {
 			@Override
 			protected void onPostExecute(JSONArray array) {
@@ -132,6 +139,7 @@ public class ChineseDeal extends GlobalActionBar{
 
 						mLayout.addView(smallLayout);
 					}
+					pullToRefreshView.onRefreshComplete();
 					progressDialog.dismiss();
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -140,5 +148,13 @@ public class ChineseDeal extends GlobalActionBar{
 			}
 		};
 		obtainer.execute(url);
+		
+		pullToRefreshView.setOnRefreshListener(new OnRefreshListener<ScrollView>() {
+		    @Override
+		    public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
+		        // Do work to refresh the list here.
+		        obtainer.execute(url);
+		    }
+		});
 	}
 }
