@@ -1,6 +1,7 @@
 package com.project.waverr;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +30,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.android.Facebook;
+import com.facebook.model.GraphUser;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -69,6 +79,8 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 	private int mCurrentSelectedPosition = 0;
 	private boolean mFromSavedInstanceState;
 	private boolean mUserLearnedDrawer;
+	private String mLoginStatus;
+	private static GoogleApiClient mGoogleApiClient;
 
 	public NavigationDrawerFragment() {
 	}
@@ -133,6 +145,8 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 				getString(R.string.title_section5),
 				getString(R.string.title_section6),
 				global.getlastitem()};
+		
+		mLoginStatus = global.getloginstatus();
 		/*new JSONObtainer() {
 			protected void onPostExecute(JSONArray array) {
 				Toast.makeText(getActivity(), "Got stuff", Toast.LENGTH_SHORT).show();
@@ -290,7 +304,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 		if (mDrawerListView != null) {
 			//mDrawerListView.setItemChecked(position, true);
 			
-			if(position == mDrawerListView.getLastVisiblePosition()) {
+			if(position == mDrawerListView.getLastVisiblePosition() ) {
 
 				/*AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setTitle("Our Restaurant Partners");
@@ -305,10 +319,27 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 					}
 				});
 				builder.create().show();*/
-				
-				Intent intent = new Intent(getActivity(), com.project.waverr.RestaurantList.class);
-				startActivity(intent);
+				if(mLoginStatus.equals("none")){
+					getActivity().finish();
+					Intent intent = new Intent(getActivity(), com.project.waverr.LoginPage.class);
+					startActivity(intent);
+				}
+				else if(mLoginStatus.equals("facebook")){
+					logoutFacebook();
+					getActivity().finish();
+					Intent intent = new Intent(getActivity(), com.project.waverr.LoginPage.class);
+					startActivity(intent);
+				    
+				//Intent intent = new Intent(getActivity(), com.project.waverr.RestaurantList.class);
+				//startActivity(intent);
 			}
+				else if(mLoginStatus.equals("google")){
+					logoutGoogle();
+					getActivity().finish();
+					Intent intent = new Intent(getActivity(), com.project.waverr.LoginPage.class);
+					startActivity(intent);
+				}
+		}
 		}
 		if (mDrawerLayout != null) {
 			mDrawerLayout.closeDrawer(mFragmentContainerView);
@@ -317,7 +348,32 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 			mCallbacks.onNavigationDrawerItemSelected(position);
 		}
 	}
+	
+	public static void logoutGoogle(){
+		if(mGoogleApiClient.isConnected()){
+			Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+			mGoogleApiClient.disconnect();
+			mGoogleApiClient.connect();
+		}
+	}
 
+	public static void logoutFacebook(){
+		Session session = Session.getActiveSession();
+		if(session!=null){
+			if(!session.isClosed()){
+				session.closeAndClearTokenInformation();
+			}
+		}
+		else{
+			Activity context = null;
+			Session session2 = Session.openActiveSession((Activity)context, false,null);
+			if(session2!=null){
+				session2.closeAndClearTokenInformation();
+			}
+			
+		}
+		Session.setActiveSession(null);
+	}
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
