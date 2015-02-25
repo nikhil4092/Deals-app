@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
     
-	<com.handmark.pulltorefresh.library.PullToRefreshScrollView
+	<ScrollView
     	android:id="@+id/dealScrollView"
     	android:layout_width="wrap_content"
     	android:layout_height="wrap_content" >
@@ -16,5 +16,5 @@
 		    android:layout_marginRight="4dp"
 		    android:orientation="vertical" >
 		</LinearLayout>
-	</com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+	</ScrollView>
 </LinearLayout>

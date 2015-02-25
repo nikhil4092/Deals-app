@@ -10,10 +10,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.SearchView;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
@@ -22,17 +30,21 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import cm.ben.pulltorefresh.widget.PullToRefreshView;
+import cm.ben.pulltorefresh.widget.PullToRefreshView.Attacher;
+import cm.ben.pulltorefresh.widget.PullToRefreshView.OnPullToRefreshListener;
 
 import com.google.gson.Gson;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 
-public class ChineseDeal extends GlobalActionBar{
+public class ChineseDeal extends GlobalActionBar implements OnPullToRefreshListener {
 
 	JSONObtainer obtainer;
 	String url;
-
+	private Attacher mAttacher;
+	private ScrollView mScrollView;
+	private final ActionBar bar = getSupportActionBar();
+    //private PullToRefreshView mPullToRefreshView;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,7 +58,17 @@ public class ChineseDeal extends GlobalActionBar{
 		progressDialog.show();
 
 		final LinearLayout mLayout = (LinearLayout) findViewById(R.id.deallist);
-		final PullToRefreshScrollView pullToRefreshView = (PullToRefreshScrollView) findViewById(R.id.dealScrollView);
+		
+		// Find The ScrolView
+        mScrollView = (ScrollView) findViewById(R.id.dealScrollView);
+
+        // Attach It
+        mAttacher = new PullToRefreshView.Attacher(mScrollView);
+
+        // Set the pull to refresh listener
+        mAttacher.setOnPullToRefreshListener(this);
+        
+		//final PullToRefreshScrollView pullToRefreshView = (PullToRefreshScrollView) findViewById(R.id.dealScrollView);
 
 		mLayout.setGravity(Gravity.CENTER);
 		url = "http://waverr.in/getdealparameters.php";
@@ -139,7 +161,7 @@ public class ChineseDeal extends GlobalActionBar{
 
 						mLayout.addView(smallLayout);
 					}
-					pullToRefreshView.onRefreshComplete();
+					//pullToRefreshView.onRefreshComplete();
 					progressDialog.dismiss();
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -149,12 +171,58 @@ public class ChineseDeal extends GlobalActionBar{
 		};
 		obtainer.execute(url);
 		
-		pullToRefreshView.setOnRefreshListener(new OnRefreshListener<ScrollView>() {
+		/*pullToRefreshView.setOnRefreshListener(new OnRefreshListener<ScrollView>() {
 		    @Override
 		    public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
 		        // Do work to refresh the list here.
 		        obtainer.execute(url);
 		    }
-		});
+		});*/
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		//if (!mNavigationDrawerFragment.isDrawerOpen()) {
+			// Only show items in the action bar relevant to this screen
+			// if the drawer is not showing. Otherwise, let the drawer
+			// decide what to show in the action bar.
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.chinese_deal, menu);
+			
+			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+			SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+			restoreActionBar();
+			return true;
+		//}
+		//return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.refresh_deal) {
+			finish();
+			Intent intent = getIntent();
+			intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(intent);
+			return true;
+		}
+		if (id == android.R.id.home) {
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onRefresh() {
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "Shit", Toast.LENGTH_LONG).show();
+		if(obtainer!=null)
+			obtainer.execute(url);
 	}
 }

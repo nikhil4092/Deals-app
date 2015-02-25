@@ -167,6 +167,10 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		locationChoose.show();
 
 		detector = new SimpleGestureFilter(this, this);
+		
+		/*GetDistance sample = new GetDistance();
+		float distance = sample.getDistance(13.013758, 74.798322, 13.004930, 74.792860);
+		Toast.makeText(this, Float.toString(distance), Toast.LENGTH_LONG).show();*/
 	}
 
 	private void checkStuff() {
