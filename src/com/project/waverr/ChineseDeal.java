@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
 import android.view.Gravity;
 import android.view.Menu;
@@ -24,26 +23,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import cm.ben.pulltorefresh.widget.PullToRefreshView;
-import cm.ben.pulltorefresh.widget.PullToRefreshView.Attacher;
-import cm.ben.pulltorefresh.widget.PullToRefreshView.OnPullToRefreshListener;
 
 import com.google.gson.Gson;
 
-public class ChineseDeal extends GlobalActionBar implements OnPullToRefreshListener {
+public class ChineseDeal extends GlobalActionBar {
 
 	JSONObtainer obtainer;
-	String url;
-	private Attacher mAttacher;
-	private ScrollView mScrollView;
-	private final ActionBar bar = getSupportActionBar();
-    //private PullToRefreshView mPullToRefreshView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,37 +49,32 @@ public class ChineseDeal extends GlobalActionBar implements OnPullToRefreshListe
 		progressDialog.show();
 
 		final LinearLayout mLayout = (LinearLayout) findViewById(R.id.deallist);
-		
-		// Find The ScrolView
-        mScrollView = (ScrollView) findViewById(R.id.dealScrollView);
-
-        // Attach It
-        mAttacher = new PullToRefreshView.Attacher(mScrollView);
-
-        // Set the pull to refresh listener
-        mAttacher.setOnPullToRefreshListener(this);
-        
-		//final PullToRefreshScrollView pullToRefreshView = (PullToRefreshScrollView) findViewById(R.id.dealScrollView);
 
 		mLayout.setGravity(Gravity.CENTER);
-		url = "http://waverr.in/getdealparameters.php";
+		String[] url = {
+				"http://waverr.in/getdealparameters.php",
+				"",
+				""
+		};
 		
 		obtainer = new JSONObtainer() {
 			@Override
 			protected void onPostExecute(JSONArray array) {
 
 				String things[] = {
-						"Did",
-						"Oid",
-						"Detail",
-						"Discount",
-						"MinAmt",
-						"StartDate",
-						"EndDate",
-						"StartTime",
-						"EndTime",
-						"imgurl",
-						"Cuisine"
+						"ID",
+						"Restaurant ID",
+						"Restaurant Name",
+						"Percentage Discount",
+						"Amount Discount",
+						"Freebie",
+						"CanvasText",
+						"Min Purchase Amount",
+						"Deal Start Date",
+						"Deal End Date",
+						"Start Time",
+						"End Time",
+						"Cuisine",
 				};
 
 				ArrayList<Deal> deals = new ArrayList<Deal>();
@@ -102,27 +88,28 @@ public class ChineseDeal extends GlobalActionBar implements OnPullToRefreshListe
 
 						Gson gson = new Gson();
 						Deal newDeal = new Deal();
-						newDeal.setDid(object.getInt(things[0]));
-						newDeal.setOid(object.getInt(things[1]));
-						newDeal.setDetails(object.getString(things[2]));
-						newDeal.setDiscount(object.getInt(things[3]));
-						newDeal.setMinimumAmount(object.getInt(things[4]));
+						newDeal.setID(object.getInt(things[0]));
+						newDeal.setRestaurantID(object.getString(things[1]));
+						newDeal.setRestaurantName(object.getString(things[2]));
+						newDeal.setPercentageDiscount(object.getInt(things[3]));
+						newDeal.setAmountDiscount(object.getInt(things[4]));
+						newDeal.setFreebie(object.getString(things[5]));
+						newDeal.setCanvasText(object.getString(things[6]));
+						newDeal.setMinimumAmount(object.getInt(things[7]));
 						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 						try {
-							newDeal.setStartDate(format.parse(object.getString(things[5])));
-							newDeal.setEndDate(format.parse(object.getString(things[6])));
+							newDeal.setStartDate(format.parse(object.getString(things[8])));
+							newDeal.setEndDate(format.parse(object.getString(things[9])));
 						} catch (ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						newDeal.setStartTime(Time.valueOf(object.getString(things[7])));
-						newDeal.setEndTime(Time.valueOf(object.getString(things[8])));
-						newDeal.setImageURL(object.getString(things[9]));
-						newDeal.setCuisine(object.getString(things[9]));
+						newDeal.setStartTime(Time.valueOf(object.getString(things[10])));
+						newDeal.setEndTime(Time.valueOf(object.getString(things[11])));
+						newDeal.setCuisine(object.getString(things[12]));
 						deals.add(newDeal);
 						//Toast.makeText(getBaseContext(), "Got the object", Toast.LENGTH_SHORT).show();
 						LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-
 						ImageButton button = new ImageButton(getBaseContext());
 						button.setLayoutParams(params);
 						button.setImageResource(R.drawable.soup5);
@@ -152,8 +139,8 @@ public class ChineseDeal extends GlobalActionBar implements OnPullToRefreshListe
 						text.setLayoutParams(params);
 						texts.add(text);
 
-						LinearLayout smallLayout = new LinearLayout(getBaseContext());
-						smallLayout.setOrientation(LinearLayout.VERTICAL);
+						FrameLayout smallLayout = new FrameLayout(getBaseContext());
+						//smallLayout.setOrientation(LinearLayout.VERTICAL);
 						smallLayout.setLayoutParams(params);
 						smallLayout.setPadding(4, 0, 4, 0);
 						smallLayout.addView(button);
@@ -216,13 +203,5 @@ public class ChineseDeal extends GlobalActionBar implements OnPullToRefreshListe
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void onRefresh() {
-		// TODO Auto-generated method stub
-		Toast.makeText(this, "Shit", Toast.LENGTH_LONG).show();
-		if(obtainer!=null)
-			obtainer.execute(url);
 	}
 }

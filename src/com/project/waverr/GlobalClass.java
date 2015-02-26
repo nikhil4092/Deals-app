@@ -10,10 +10,10 @@ public class GlobalClass extends Application{
 	
 	private String city;
 	private ArrayList<String> favouritedRestaurants;
-	private String personName = "Anonymous";
+	private String personName = "Not available";
 	private Image personPhoto;
 	private String personGooglePlusProfile;
-	private String personEmail = "anon@waverr.in";
+	private String personEmail = "Please login";
 	private String loginstatus;
 	private String lastitem;
 	

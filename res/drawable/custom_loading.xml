@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list   android:id="@+id/handimation" android:oneshot="false" 
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/tick1" android:duration="15" />
+    <item android:drawable="@drawable/tick2" android:duration="15" />
+    <item android:drawable="@drawable/tick3" android:duration="15" />
+    <item android:drawable="@drawable/tick4" android:duration="15" />
+    <item android:drawable="@drawable/tick5" android:duration="15" />
+    <item android:drawable="@drawable/tick6" android:duration="15" />
+    <item android:drawable="@drawable/tick7" android:duration="15" />
+    <item android:drawable="@drawable/tick8" android:duration="15" />
+    <item android:drawable="@drawable/tick9" android:duration="15" />
+    <item android:drawable="@drawable/tick10" android:duration="15" />
+    <item android:drawable="@drawable/tick11" android:duration="15" />
+    <item android:drawable="@drawable/tick12" android:duration="15" />
+    <item android:drawable="@drawable/tick13" android:duration="15" />
+    <item android:drawable="@drawable/tick14" android:duration="15" />
+    <item android:drawable="@drawable/tick15" android:duration="15" />
+    <item android:drawable="@drawable/tick16" android:duration="15" />
+    <item android:drawable="@drawable/tick17" android:duration="15" />
+    <item android:drawable="@drawable/tick18" android:duration="15" />
+    <item android:drawable="@drawable/tick19" android:duration="15" />
+    <item android:drawable="@drawable/tick20" android:duration="15" />
+    <item android:drawable="@drawable/tick21" android:duration="15" />
+    <item android:drawable="@drawable/tick22" android:duration="15" />
+    <item android:drawable="@drawable/tick23" android:duration="15" />
+    <item android:drawable="@drawable/tick24" android:duration="15" />
+    <item android:drawable="@drawable/tick25" android:duration="15" />
+    <item android:drawable="@drawable/tick26" android:duration="15" />
+    <item android:drawable="@drawable/tick27" android:duration="15" />
+    <item android:drawable="@drawable/tick28" android:duration="15" />
+    <item android:drawable="@drawable/tick29" android:duration="15" />
+ </animation-list> 

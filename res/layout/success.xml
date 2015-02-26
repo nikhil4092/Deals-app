@@ -22,9 +22,18 @@
     <LinearLayout 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="1" >
         
-        ></LinearLayout> 
+        <TextView
+            android:id="@+id/dealvalue"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text=""
+            android:gravity="center"
+            android:background="#f1f1f1"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        </LinearLayout> 
     <LinearLayout 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -39,6 +48,8 @@
             android:text=""
             android:gravity="center"
             android:background="#f1f1f1"
+            android:textSize="40dp"
+            android:textColor="#ff0000"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </LinearLayout> 
@@ -55,7 +66,27 @@
 	        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-	        ></LinearLayout>
+	        >
+	        
+	        <RelativeLayout 
+                   android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff" >
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="200px"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/custom_loading"
+        android:visibility="gone" />
+
+</RelativeLayout>
+	    </LinearLayout>
 	    <LinearLayout 
 	        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -69,6 +100,8 @@
 	            android:layout_height="fill_parent"
 	            android:gravity="center"
 	            android:text=""
+	            android:textSize="40dp"
+	            android:textColor="#ff0000"
 	            android:background="#f1f1f1"
 	            android:textAppearance="?android:attr/textAppearanceLarge" />
 	        
@@ -110,7 +143,11 @@
         android:layout_weight="1"
         
         
-        ></LinearLayout> 
+        >
+
+           
+
+        </LinearLayout> 
     <LinearLayout 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

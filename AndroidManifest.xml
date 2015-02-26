@@ -24,7 +24,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-
+	<uses-permission android:name="android.permission.CAMERA"/>
     <application
         android:name=".GlobalClass"
         android:allowBackup="true"
@@ -43,17 +43,33 @@
 
         <activity
             android:name=".Splash"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.google.zxing.client.android.CaptureActivity"
+   android:screenOrientation="landscape"
+   android:configChanges="orientation|keyboardHidden"
+   android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+   android:windowSoftInputMode="stateAlwaysHidden">
+   <intent-filter>
+      <action android:name="android.intent.action.MAIN"/>
+      <category android:name="android.intent.category.DEFAULT"/>
+   </intent-filter>
+   <intent-filter>
+      <action android:name="com.google.zxing.client.android.SCAN"/>
+      <category android:name="android.intent.category.DEFAULT"/>
+    </intent-filter>
+</activity>
         <activity
             android:name=".ChineseDeal"
             android:label="@string/title_activity_chinese_deal"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -69,7 +85,8 @@
         <activity
             android:name=".DealPage"
             android:label="@string/title_activity_deal_page"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -85,7 +102,8 @@
         <activity
             android:name=".Home2"
             android:label="@string/title_activity_home2"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="com.project.waverr.HOMETWO" />
 
@@ -98,7 +116,8 @@
         </activity>
         <activity
             android:name=".LoginPage"
-            android:label="@string/title_activity_login_page" >
+            android:label="@string/title_activity_login_page"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="com.project.waverr.LOGINPAGE" />
 
@@ -107,17 +126,19 @@
         </activity>
         <activity
             android:name="com.facebook.LoginActivity"
-            android:label="FB Login" >
+            android:label="FB Login"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".RestaurantList"
             android:label="@string/title_activity_restaurant_list"
-            android:theme="@android:style/Theme.Holo.Light.Dialog" >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Success"
             android:label="@string/title_activity_login_page"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="com.project.waverr.SUCCESS" />
                 <category android:name="android.intent.category.DEFAULT" />
