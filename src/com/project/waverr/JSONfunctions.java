@@ -18,7 +18,7 @@ import org.json.JSONException;
 
 import android.util.Log;
 
-public class JSONFunctions {
+public class JSONfunctions {
 
     public static JSONArray getJSONfromURL(String[] url) {
         InputStream is = null;
