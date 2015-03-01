@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import android.app.Application;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.Builder;
+import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person.Image;
 
 public class GlobalClass extends Application{
@@ -16,6 +19,12 @@ public class GlobalClass extends Application{
 	private String personEmail;
 	private String loginstatus;
 	private String lastitem;
+	private GoogleApiClient mGoogleApiClient;
+	
+	public GoogleApiClient getClient(){
+		return mGoogleApiClient;
+	}
+	
 	
 	public void setloginstatus(String status){
 		loginstatus = status;

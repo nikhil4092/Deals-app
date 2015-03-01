@@ -17,6 +17,7 @@ import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.Builder;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.plus.Plus;
@@ -53,6 +54,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 		setContentView(R.layout.login_page);
 		global=(GlobalClass)getApplication();
 		findViewById(R.id.btn_sign_in).setOnClickListener((OnClickListener) this);
+		mGoogleApiClient=global.getClient();
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 		.addConnectionCallbacks(this)
 		.addOnConnectionFailedListener(this)
@@ -247,9 +249,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 							facebook.getAccessExpires());
 					editor.commit();
 					
-					Intent intent = new Intent(getBaseContext(), com.project.waverr.Home2.class);
-					global.setloginstatus("facebook");
-					startActivity(intent);
+					
 				}
 
 
@@ -266,6 +266,9 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 				}
 
 			});
+			Intent intent = new Intent(getBaseContext(), com.project.waverr.Home2.class);
+			global.setloginstatus("facebook");
+			startActivity(intent);
 		}
 	}
 

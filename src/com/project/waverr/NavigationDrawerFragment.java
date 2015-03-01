@@ -80,7 +80,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 	private boolean mFromSavedInstanceState;
 	private boolean mUserLearnedDrawer;
 	private String mLoginStatus;
-	private static GoogleApiClient mGoogleApiClient;
+	private GoogleApiClient mGoogleApiClient;
 
 	public NavigationDrawerFragment() {
 	}
@@ -104,6 +104,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 
 		// Select either the default item (0) or the last selected item.
 		selectItem(mCurrentSelectedPosition);
+		 
 	}
 
 	@Override
@@ -147,6 +148,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 				global.getlastitem()};
 		
 		mLoginStatus = global.getloginstatus();
+		mGoogleApiClient=global.getClient();
 		/*new JSONObtainer() {
 			protected void onPostExecute(JSONArray array) {
 				Toast.makeText(getActivity(), "Got stuff", Toast.LENGTH_SHORT).show();
@@ -349,7 +351,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 		}
 	}
 	
-	public static void logoutGoogle(){
+	public void logoutGoogle(){
 		if(mGoogleApiClient.isConnected()){
 			Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
 			mGoogleApiClient.disconnect();
