@@ -347,13 +347,10 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 			mCallbacks.onNavigationDrawerItemSelected(position);
 		}
 	}
-<<<<<<< HEAD
 	
-	public void logoutGoogle(){
-=======
 
-	public static void logoutGoogle(){
->>>>>>> 3a3e9e545042732fc089a1f978293baf0311c5c5
+	public  void logoutGoogle(){
+
 		if(mGoogleApiClient.isConnected()){
 			Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
 			mGoogleApiClient.disconnect();
