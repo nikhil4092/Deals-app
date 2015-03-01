@@ -12,6 +12,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -19,7 +20,7 @@ import android.util.Log;
 
 public class JSONFunctions {
 
-    public static JSONArray getJSONfromURL(String url) {
+    public static JSONArray getJSONfromURL(String[] url) {
         InputStream is = null;
         String result = "";
         JSONArray jArray = null;
@@ -31,7 +32,9 @@ public class JSONFunctions {
         // Download JSON data from URL
         try{
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(url);
+            HttpPost httppost = new HttpPost(url[0]);
+            nameValuePairs.add(new BasicNameValuePair(url[1], url[2]));
+            nameValuePairs.add(new BasicNameValuePair("pass", "Waverr2015"));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();

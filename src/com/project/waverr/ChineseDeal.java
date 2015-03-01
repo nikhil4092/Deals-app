@@ -10,12 +10,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v7.widget.SearchView;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -24,11 +32,10 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-public class ChineseDeal extends GlobalActionBar{
+public class ChineseDeal extends GlobalActionBar {
 
 	JSONObtainer obtainer;
-	String url;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,24 +49,32 @@ public class ChineseDeal extends GlobalActionBar{
 		progressDialog.show();
 
 		final LinearLayout mLayout = (LinearLayout) findViewById(R.id.deallist);
+
 		mLayout.setGravity(Gravity.CENTER);
-		url = "http://waverr.in/getdealparameters.php";
+		String[] url = {
+				"http://waverr.in/getdealparameters.php",
+				"",
+				""
+		};
+		
 		obtainer = new JSONObtainer() {
 			@Override
 			protected void onPostExecute(JSONArray array) {
 
 				String things[] = {
-						"Did",
-						"Oid",
-						"Detail",
-						"Discount",
-						"MinAmt",
-						"StartDate",
-						"EndDate",
-						"StartTime",
-						"EndTime",
-						"imgurl",
-						"Cuisine"
+						"ID",
+						"Restaurant ID",
+						"Restaurant Name",
+						"Percentage Discount",
+						"Amount Discount",
+						"Freebie",
+						"CanvasText",
+						"Min Purchase Amount",
+						"Deal Start Date",
+						"Deal End Date",
+						"Start Time",
+						"End Time",
+						"Cuisine",
 				};
 
 				ArrayList<Deal> deals = new ArrayList<Deal>();
@@ -73,27 +88,28 @@ public class ChineseDeal extends GlobalActionBar{
 
 						Gson gson = new Gson();
 						Deal newDeal = new Deal();
-						newDeal.setDid(object.getInt(things[0]));
-						newDeal.setOid(object.getInt(things[1]));
-						newDeal.setDetails(object.getString(things[2]));
-						newDeal.setDiscount(object.getInt(things[3]));
-						newDeal.setMinimumAmount(object.getInt(things[4]));
+						newDeal.setID(object.getInt(things[0]));
+						newDeal.setRestaurantID(object.getString(things[1]));
+						newDeal.setRestaurantName(object.getString(things[2]));
+						newDeal.setPercentageDiscount(object.getInt(things[3]));
+						newDeal.setAmountDiscount(object.getInt(things[4]));
+						newDeal.setFreebie(object.getString(things[5]));
+						newDeal.setCanvasText(object.getString(things[6]));
+						newDeal.setMinimumAmount(object.getInt(things[7]));
 						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 						try {
-							newDeal.setStartDate(format.parse(object.getString(things[5])));
-							newDeal.setEndDate(format.parse(object.getString(things[6])));
+							newDeal.setStartDate(format.parse(object.getString(things[8])));
+							newDeal.setEndDate(format.parse(object.getString(things[9])));
 						} catch (ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						newDeal.setStartTime(Time.valueOf(object.getString(things[7])));
-						newDeal.setEndTime(Time.valueOf(object.getString(things[8])));
-						newDeal.setImageURL(object.getString(things[9]));
-						newDeal.setCuisine(object.getString(things[9]));
+						newDeal.setStartTime(Time.valueOf(object.getString(things[10])));
+						newDeal.setEndTime(Time.valueOf(object.getString(things[11])));
+						newDeal.setCuisine(object.getString(things[12]));
 						deals.add(newDeal);
 						//Toast.makeText(getBaseContext(), "Got the object", Toast.LENGTH_SHORT).show();
 						LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-
 						ImageButton button = new ImageButton(getBaseContext());
 						button.setLayoutParams(params);
 						button.setImageResource(R.drawable.soup5);
@@ -123,8 +139,8 @@ public class ChineseDeal extends GlobalActionBar{
 						text.setLayoutParams(params);
 						texts.add(text);
 
-						LinearLayout smallLayout = new LinearLayout(getBaseContext());
-						smallLayout.setOrientation(LinearLayout.VERTICAL);
+						FrameLayout smallLayout = new FrameLayout(getBaseContext());
+						//smallLayout.setOrientation(LinearLayout.VERTICAL);
 						smallLayout.setLayoutParams(params);
 						smallLayout.setPadding(4, 0, 4, 0);
 						smallLayout.addView(button);
@@ -132,6 +148,7 @@ public class ChineseDeal extends GlobalActionBar{
 
 						mLayout.addView(smallLayout);
 					}
+					//pullToRefreshView.onRefreshComplete();
 					progressDialog.dismiss();
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -140,5 +157,51 @@ public class ChineseDeal extends GlobalActionBar{
 			}
 		};
 		obtainer.execute(url);
+		
+		/*pullToRefreshView.setOnRefreshListener(new OnRefreshListener<ScrollView>() {
+		    @Override
+		    public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
+		        // Do work to refresh the list here.
+		        obtainer.execute(url);
+		    }
+		});*/
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		//if (!mNavigationDrawerFragment.isDrawerOpen()) {
+			// Only show items in the action bar relevant to this screen
+			// if the drawer is not showing. Otherwise, let the drawer
+			// decide what to show in the action bar.
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.chinese_deal, menu);
+			
+			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+			SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+			restoreActionBar();
+			return true;
+		//}
+		//return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.refresh_deal) {
+			finish();
+			Intent intent = getIntent();
+			intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(intent);
+			return true;
+		}
+		if (id == android.R.id.home) {
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

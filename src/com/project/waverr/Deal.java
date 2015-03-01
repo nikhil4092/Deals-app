@@ -5,29 +5,40 @@ import java.util.Date;
 
 public class Deal {
 	
-	int did;
-	int oid;
+	int ID;
+	String restaurantID;
+	String restaurantName;
 	String details;
-	int discount;
+	int percentageDiscount;
+	int amountDiscount;
+	String freebie;
+	String canvasText;
 	int minimumAmount;
 	Date startDate;
 	Date endDate;
 	Time startTime;
 	Time endTime;
-	String imageURL;
 	String cuisine;
+	String dealID;
+	double distanceFromUser;
 	
-	public int getDid() {
-		return did;
+	public int getID() {
+		return ID;
 	}
-	public void setDid(int did) {
-		this.did = did;
+	public void setID(int iD) {
+		ID = iD;
 	}
-	public int getOid() {
-		return oid;
+	public String getRestaurantID() {
+		return restaurantID;
 	}
-	public void setOid(int oid) {
-		this.oid = oid;
+	public void setRestaurantID(String restaurantID) {
+		this.restaurantID = restaurantID;
+	}
+	public String getRestaurantName() {
+		return restaurantName;
+	}
+	public void setRestaurantName(String restaurantName) {
+		this.restaurantName = restaurantName;
 	}
 	public String getDetails() {
 		return details;
@@ -35,11 +46,29 @@ public class Deal {
 	public void setDetails(String details) {
 		this.details = details;
 	}
-	public int getDiscount() {
-		return discount;
+	public int getPercentageDiscount() {
+		return percentageDiscount;
 	}
-	public void setDiscount(int discount) {
-		this.discount = discount;
+	public void setPercentageDiscount(int percentageDiscount) {
+		this.percentageDiscount = percentageDiscount;
+	}
+	public int getAmountDiscount() {
+		return amountDiscount;
+	}
+	public void setAmountDiscount(int amountDiscount) {
+		this.amountDiscount = amountDiscount;
+	}
+	public String getFreebie() {
+		return freebie;
+	}
+	public void setFreebie(String freebie) {
+		this.freebie = freebie;
+	}
+	public String getCanvasText() {
+		return canvasText;
+	}
+	public void setCanvasText(String canvasText) {
+		this.canvasText = canvasText;
 	}
 	public int getMinimumAmount() {
 		return minimumAmount;
@@ -71,16 +100,24 @@ public class Deal {
 	public void setEndTime(Time endTime) {
 		this.endTime = endTime;
 	}
-	public String getImageURL() {
-		return imageURL;
-	}
-	public void setImageURL(String imageURL) {
-		this.imageURL = imageURL;
-	}
 	public String getCuisine() {
 		return cuisine;
 	}
 	public void setCuisine(String cuisine) {
 		this.cuisine = cuisine;
+	}
+	public String getDealID() {
+		return dealID;
+	}
+	public void setDealID(String dealID) {
+		this.dealID = dealID;
+	}
+	
+	public void setDistanceFromUser(double distance) {
+		this.distanceFromUser = distance;
+	}
+	
+	public double getDistanceFromUser() {
+		return distanceFromUser;
 	}
 }

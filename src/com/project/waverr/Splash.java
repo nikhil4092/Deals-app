@@ -1,19 +1,19 @@
 package com.project.waverr;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Window;
 
-public class Splash extends ActionBarActivity {
+public class Splash extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
-
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.splash);
+
 		Thread timer = new Thread(){
 			public void run(){
 				try{

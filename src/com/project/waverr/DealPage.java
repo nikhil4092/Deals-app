@@ -240,7 +240,12 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 				}.start();
 			}
 		};
-		obtainer.execute("http://waverr.in/getcurrenttime.php");
+		String[] url = {
+				"http://waverr.in/getcurrenttime.php",
+				"",
+				""
+		};
+		obtainer.execute(url);
 
 		restaurantName = "Hao Ming";
 		if(global.isFavourited(restaurantName)) {
@@ -404,7 +409,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 
 	private void setLayout(Deal deal) {
 		TextView theThing = (TextView) findViewById(R.id.theDeal);
-		String dealThing = "Flat "+deal.getDiscount()+"% off on all food items!";
+		String dealThing = "Flat "+deal.getPercentageDiscount()+"% off on all food items!";
 		theThing.setText(dealThing);
 
 		TextView details = (TextView) findViewById(R.id.conditions);

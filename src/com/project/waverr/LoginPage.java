@@ -1,6 +1,7 @@
 package com.project.waverr;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.content.SharedPreferences;
@@ -28,6 +29,7 @@ import com.google.android.gms.plus.model.people.Person.Image;
 public class LoginPage extends Activity implements OnClickListener,ConnectionCallbacks,OnConnectionFailedListener {
 
 	GlobalClass global;
+	ProgressDialog progressDialog;
 	/* Request code used to invoke sign in user interactions. */
 	private static final int RC_SIGN_IN = 0;
 	//private static final String TAG = null;
@@ -112,6 +114,8 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 			global.setPersonEmail(personEmail);
 			global.setloginstatus("google");
 		}
+		if(progressDialog!=null)
+			progressDialog.dismiss();
 		Intent intent = new Intent(this, com.project.waverr.Home2.class);
 		startActivity(intent);
 	}
@@ -197,6 +201,13 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 	public void onClick(View view) {
 		if (view.getId() == R.id.btn_sign_in
 				&& !mGoogleApiClient.isConnecting()) {
+			
+			progressDialog = new ProgressDialog(this);
+			progressDialog.setMessage("Logging you in...");
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			progressDialog.setIndeterminate(true);
+			progressDialog.setCancelable(false);
+			progressDialog.show();
 			mGoogleApiClient.connect();
 			mSignInClicked = true;
 			resolveSignInError();		  

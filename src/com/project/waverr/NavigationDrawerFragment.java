@@ -1,7 +1,6 @@
 package com.project.waverr;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -18,7 +17,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,12 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.facebook.Request;
-import com.facebook.Response;
 import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.android.Facebook;
-import com.facebook.model.GraphUser;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.squareup.picasso.Picasso;
@@ -141,12 +134,11 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 				global.getPersonName(),
 				//getString(R.string.title_section2),
 				global.getPersonEmail(),
-				getString(R.string.title_section3),
 				getString(R.string.title_section4),
 				getString(R.string.title_section5),
 				getString(R.string.title_section6),
 				global.getlastitem()};
-		
+
 		mLoginStatus = global.getloginstatus();
 		mGoogleApiClient=global.getClient();
 		/*new JSONObtainer() {
@@ -161,7 +153,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 				}
 			}
 		}.execute(url);*/
-		
+
 		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActionBar()
 				.getThemedContext(),
 				android.R.layout.simple_list_item_activated_1,
@@ -170,15 +162,17 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 		ImageView imageHeaderView = new ImageView(getActivity());
 		/*imageHeaderView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), R.drawable.chinese1, 200, 200));
 		//imageHeaderView.setImageBitmap();*/
-		String imageURL = global.getPersonPhoto().getUrl();
-		Picasso.with(getActivity()).load(imageURL+"0").resize(250, 250).centerCrop().into(imageHeaderView);
+		String imageURL = null;
+		if(global.getPersonPhoto()!=null)
+			imageURL = global.getPersonPhoto().getUrl();
+		Picasso.with(getActivity()).load(imageURL+"0").resize(250, 250).error(R.drawable.com_facebook_profile_default_icon).centerCrop().into(imageHeaderView);
 		mDrawerListView.addHeaderView(imageHeaderView);
 		mDrawerListView.setHeaderDividersEnabled(false);
 
 		mDrawerListView.setAdapter(adapter);
 		//mDrawerListView.addHeaderView(getActivity().getBaseContext().findViewById(R.drawable.cuisine2), null, false);
 		//mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-		
+
 		/*new JSONObtainer() {
 			protected void onPostExecute(JSONArray array) {
 				Toast.makeText(getActivity(), "Got stuff", Toast.LENGTH_SHORT).show();
@@ -192,7 +186,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 				}
 			}
 		}.execute(url);*/
-		
+
 		return mDrawerListView;
 	}
 
@@ -302,25 +296,31 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 				"Trattoria"
 		};
 		Arrays.sort(restaurants);*/
-		
+
 		if (mDrawerListView != null) {
 			//mDrawerListView.setItemChecked(position, true);
-			
-			if(position == mDrawerListView.getLastVisiblePosition() ) {
+
+			if(position == 4 ) {
 
 				/*AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setTitle("Our Restaurant Partners");
 				final RestaurantArrayAdapter adapter = new RestaurantArrayAdapter(getActivity(), restaurants);
 				builder.setAdapter(adapter, new OnClickListener() {
-					
+
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
-						
+
 						adapter.updateIcon(which);
 					}
 				});
 				builder.create().show();*/
+
+				Intent intent = new Intent(getActivity(), com.project.waverr.RestaurantList.class);
+				startActivity(intent);
+			}
+
+			else if(position ==5) {
 				if(mLoginStatus.equals("none")){
 					getActivity().finish();
 					Intent intent = new Intent(getActivity(), com.project.waverr.LoginPage.class);
@@ -331,17 +331,14 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 					getActivity().finish();
 					Intent intent = new Intent(getActivity(), com.project.waverr.LoginPage.class);
 					startActivity(intent);
-				    
-				//Intent intent = new Intent(getActivity(), com.project.waverr.RestaurantList.class);
-				//startActivity(intent);
-			}
+				}
 				else if(mLoginStatus.equals("google")){
 					logoutGoogle();
 					getActivity().finish();
 					Intent intent = new Intent(getActivity(), com.project.waverr.LoginPage.class);
 					startActivity(intent);
 				}
-		}
+			}
 		}
 		if (mDrawerLayout != null) {
 			mDrawerLayout.closeDrawer(mFragmentContainerView);
@@ -350,8 +347,13 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 			mCallbacks.onNavigationDrawerItemSelected(position);
 		}
 	}
+<<<<<<< HEAD
 	
 	public void logoutGoogle(){
+=======
+
+	public static void logoutGoogle(){
+>>>>>>> 3a3e9e545042732fc089a1f978293baf0311c5c5
 		if(mGoogleApiClient.isConnected()){
 			Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
 			mGoogleApiClient.disconnect();
@@ -372,7 +374,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 			if(session2!=null){
 				session2.closeAndClearTokenInformation();
 			}
-			
+
 		}
 		Session.setActiveSession(null);
 	}
@@ -498,7 +500,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 	@Override
 	public void onClick(DialogInterface arg0, int arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

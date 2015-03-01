@@ -43,5 +43,6 @@
     <string name="teaser">You are just a few clicks away from discovering the best deals around you!</string>
     <string name="waverr_logo">Waverr logo</string>
     <string name="test_text">This is a test Text for the current button</string>
+    <string name="refresh">Refresh deals</string>
 
 </resources>

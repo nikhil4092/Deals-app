@@ -13,10 +13,10 @@ public class GlobalClass extends Application{
 	
 	private String city;
 	private ArrayList<String> favouritedRestaurants;
-	private String personName;
+	private String personName = "Not available";
 	private Image personPhoto;
 	private String personGooglePlusProfile;
-	private String personEmail;
+	private String personEmail = "Please login";
 	private String loginstatus;
 	private String lastitem;
 	private GoogleApiClient mGoogleApiClient;
