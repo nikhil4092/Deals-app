@@ -17,13 +17,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.SearchView;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -35,7 +35,9 @@ import com.google.gson.Gson;
 public class ChineseDeal extends GlobalActionBar {
 
 	JSONObtainer obtainer;
-	
+	TextView DealType;
+	String s;
+	boolean login;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,16 +49,21 @@ public class ChineseDeal extends GlobalActionBar {
 		progressDialog.setIndeterminate(true);
 		progressDialog.setCancelable(false);
 		progressDialog.show();
-
+		Bundle b=getIntent().getExtras();
+        s=b.getString("cuisine");
+        login=b.getBoolean("login");
+		DealType=(TextView)findViewById(R.id.DealType);
+		
+		DealType.setText(s.toUpperCase()+" DEALS");
 		final LinearLayout mLayout = (LinearLayout) findViewById(R.id.deallist);
-
 		mLayout.setGravity(Gravity.CENTER);
 		String[] url = {
 				"http://waverr.in/getdealparameters.php",
-				"",
-				""
+				"cuisine",
+				s
 		};
-		
+		final DisplayMetrics display = mLayout.getResources().getDisplayMetrics();
+
 		obtainer = new JSONObtainer() {
 			@Override
 			protected void onPostExecute(JSONArray array) {
@@ -82,7 +89,26 @@ public class ChineseDeal extends GlobalActionBar {
 				ArrayList<TextView> texts = new ArrayList<>();
 
 				try {
-
+					if(array==null){
+						LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+						TextView text = new TextView(getBaseContext());
+						//text.setText(newDeal.getDetails());
+						text.setText("No "+s+" Deals Currently.Please check back later.");
+				        int height = display.heightPixels; 
+						text.setPadding(0, height/3,0, 0);
+						text.setTextColor(Color.parseColor("#a9a9a9"));
+						text.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+						text.setGravity(Gravity.CENTER);
+						texts.add(text);
+						
+						LinearLayout smallLayout=new LinearLayout(getBaseContext());
+						smallLayout.setOrientation(LinearLayout.VERTICAL);
+						smallLayout.setLayoutParams(params);
+						smallLayout.setPadding(0, 0,0, 10);
+						smallLayout.addView(text);
+						mLayout.addView(smallLayout);
+					}
+					if(array!=null){
 					for(int i=0; i<array.length(); i++) {
 						JSONObject object = array.getJSONObject(i);
 
@@ -112,7 +138,7 @@ public class ChineseDeal extends GlobalActionBar {
 						LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 						ImageButton button = new ImageButton(getBaseContext());
 						button.setLayoutParams(params);
-						button.setImageResource(R.drawable.soup5);
+						button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
 						button.setScaleType(ScaleType.FIT_XY);
 						button.setBackgroundColor(Color.TRANSPARENT);
 						button.setAdjustViewBounds(true);
@@ -128,25 +154,42 @@ public class ChineseDeal extends GlobalActionBar {
 								Intent intent = new Intent(getBaseContext(), com.project.waverr.DealPage.class);
 								Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
 								intent.putExtra("deal", deal);
+								intent.putExtra("login", login);
 								startActivity(intent);
 							}
 						});
 
 						TextView text = new TextView(getBaseContext());
 						//text.setText(newDeal.getDetails());
-						text.setText("This is just some text for testing");
-						text.setBackgroundColor(getResources().getColor(R.color.abc_search_url_text_normal));
+						text.setText(object.getString(things[2]));
+						text.setBackgroundResource(R.drawable.deal_details);
+						text.setPadding(15,25, 15, 25);
+						text.setTextSize(15);
+						text.setTextColor(Color.WHITE);
 						text.setLayoutParams(params);
 						texts.add(text);
-
-						FrameLayout smallLayout = new FrameLayout(getBaseContext());
-						//smallLayout.setOrientation(LinearLayout.VERTICAL);
+						LayoutParams params2 = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+						//FrameLayout smallLayout = new FrameLayout(getBaseContext());
+						LinearLayout smallLayout=new LinearLayout(getBaseContext());
+						smallLayout.setOrientation(LinearLayout.VERTICAL);
 						smallLayout.setLayoutParams(params);
-						smallLayout.setPadding(4, 0, 4, 0);
-						smallLayout.addView(button);
-						smallLayout.addView(text);
+						smallLayout.setPadding(0, 0,0, 10);
+						LinearLayout smallLayout2=new LinearLayout(getBaseContext());
+						smallLayout2.setOrientation(LinearLayout.VERTICAL);
+						smallLayout2.setLayoutParams(params);
+						smallLayout2.setPadding(0, 0,0, -20);
+						smallLayout.addView(smallLayout2);
+						smallLayout2.addView(button);
+						LinearLayout smallLayout3=new LinearLayout(getBaseContext());
+						smallLayout3.setOrientation(LinearLayout.VERTICAL);
+						smallLayout3.setLayoutParams(params2);
+						smallLayout3.setPadding(24, 0,24, 0);
+						smallLayout.addView(smallLayout3);
+						smallLayout3.addView(text);
+						
 
 						mLayout.addView(smallLayout);
+					}
 					}
 					//pullToRefreshView.onRefreshComplete();
 					progressDialog.dismiss();
@@ -155,6 +198,7 @@ public class ChineseDeal extends GlobalActionBar {
 					e.printStackTrace();
 				}
 			}
+			
 		};
 		obtainer.execute(url);
 		

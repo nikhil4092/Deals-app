@@ -56,7 +56,7 @@ public class Home2 extends ActionBarActivity implements
 NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChangeListener, SimpleGestureListener{
 
 	int LAC;
-	ImageButton ib1,ib2;
+	ImageButton ib1,ib2,ib3,ib4,ib5,ib6,ib7;
 	TabHost th;
 	TextView tv;
 	TextView x;
@@ -72,6 +72,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 	GlobalClass global;
 	private SimpleGestureFilter detector;
 	private Boolean firstTimeNearbyClicked;
+	boolean login=true;
 
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
@@ -90,8 +91,24 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		bar.setTitle(getString(R.string.location_na));
 		ib1=(ImageButton)findViewById(R.id.cuisine1);
 		ib2=(ImageButton)findViewById(R.id.cuisine2);
+		ib3=(ImageButton)findViewById(R.id.cuisine3);
+		ib4=(ImageButton)findViewById(R.id.cuisine4);
+		ib5=(ImageButton)findViewById(R.id.cuisine5);
+		ib6=(ImageButton)findViewById(R.id.cuisine6);
+		ib7=(ImageButton)findViewById(R.id.cuisine7);
 		th=(TabHost)findViewById(R.id.tabhost);
 		b=(Button)findViewById(R.id.slidemenu);
+		ib1.setOnClickListener(this);
+		ib2.setOnClickListener(this);
+		ib3.setOnClickListener(this);
+		ib4.setOnClickListener(this);
+		ib5.setOnClickListener(this);
+		ib6.setOnClickListener(this);
+		ib7.setOnClickListener(this);
+		b.setOnClickListener(this);
+		Bundle b=getIntent().getExtras();
+		if(b!=null)
+        login=b.getBoolean("login");
 		locationSelect = (Button)findViewById(R.id.cityselect);
 		/*locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		criteria = new Criteria();
@@ -131,9 +148,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		x = (TextView) th.getTabWidget().getChildAt(3).findViewById(android.R.id.title);
 		x.setTextSize(15);
 		x.setTextColor(Color.parseColor("#424242"));
-		ib1.setOnClickListener(this);
-		ib2.setOnClickListener(this);
-		b.setOnClickListener(this);
+		
 
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
@@ -325,17 +340,39 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 	@Override
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
-		Intent c1,c2;
+		Intent c1=new Intent();
 		switch(arg0.getId())
 		{
 
 		case R.id.cuisine1:c1 = new Intent("com.project.waverr.CHINESECUISINE");
-		startActivity(c1);
+		c1.putExtra("cuisine", "Fast Food");
 		break;
-		case R.id.cuisine2:c2= new Intent("com.project.waverr.INDIANCUISINE");
-		startActivity(c2);
+		case R.id.cuisine2:c1 = new Intent("com.project.waverr.CHINESECUISINE");
+		c1.putExtra("cuisine", "Italian");
+		break;
+		case R.id.cuisine3:c1 = new Intent("com.project.waverr.CHINESECUISINE");
+		c1.putExtra("cuisine", "Desserts");
+		
+		break;
+		case R.id.cuisine4:c1 = new Intent("com.project.waverr.CHINESECUISINE");
+		c1.putExtra("cuisine", "Drinks");
+		
+		break;
+		case R.id.cuisine5:c1 = new Intent("com.project.waverr.CHINESECUISINE");
+		c1.putExtra("cuisine", "Biryani");
+		
+		break;
+		case R.id.cuisine6:c1 = new Intent("com.project.waverr.CHINESECUISINE");
+		c1.putExtra("cuisine", "North Indian");
+		
+		break;
+		case R.id.cuisine7:c1 = new Intent("com.project.waverr.CHINESECUISINE");
+		c1.putExtra("cuisine", "Chinese");
+		
 		break;
 		}
+		c1.putExtra("login", login);
+		startActivity(c1);
 	}
 	@Override
 	protected void onResume() {
@@ -566,7 +603,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 
 							ImageButton button = new ImageButton(getBaseContext());
 							button.setLayoutParams(params);
-							button.setImageResource(R.drawable.soup5);
+							button.setImageResource(R.drawable.soup1);
 							button.setScaleType(ScaleType.FIT_XY);
 							button.setBackgroundColor(Color.TRANSPARENT);
 							button.setAdjustViewBounds(true);

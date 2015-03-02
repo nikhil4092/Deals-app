@@ -7,6 +7,7 @@ import android.content.IntentSender.SendIntentException;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ import com.google.android.gms.plus.model.people.Person.Image;
 public class LoginPage extends Activity implements OnClickListener,ConnectionCallbacks,OnConnectionFailedListener {
 
 	GlobalClass global;
+	boolean check=false;
 	ProgressDialog progressDialog;
 	/* Request code used to invoke sign in user interactions. */
 	private static final int RC_SIGN_IN = 0;
@@ -52,6 +54,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.login_page);
 		global=(GlobalClass)getApplication();
 		findViewById(R.id.btn_sign_in).setOnClickListener((OnClickListener) this);
@@ -114,6 +117,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 		}
 		if(progressDialog!=null)
 			progressDialog.dismiss();
+		check=true;
 		Intent intent = new Intent(this, com.project.waverr.Home2.class);
 		startActivity(intent);
 	}
@@ -213,8 +217,10 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 		}
 		
 		if(view.getId()==R.id.nologin){
-			Intent intent = new Intent(this, com.project.waverr.Home2.class);
+			check=true;
+			Intent intent = new Intent("com.project.waverr.HOMETWO");
 			global.setloginstatus("none");
+			intent.putExtra("login", false);
 		    startActivity(intent);
 		}
 
@@ -257,7 +263,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 					editor.putLong("access_expires",
 							facebook.getAccessExpires());
 					editor.commit();
-					
+					check=true;
 					Intent intent = new Intent(getBaseContext(), com.project.waverr.Home2.class);
 					global.setloginstatus("facebook");
 					startActivity(intent);
@@ -283,6 +289,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 	@Override
 	protected void onPause() {
 		super.onPause();
+		if(check==true)
 		finish();
 	}
 

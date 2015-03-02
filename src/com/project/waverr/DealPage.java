@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,13 +36,13 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
+//timport com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.project.waverr.SimpleGestureFilter.SimpleGestureListener;
 
-public class DealPage extends GlobalActionBar implements OnTabChangeListener, OnMapReadyCallback, OnClickListener, SimpleGestureListener{
+public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*tOnMapReadyCallback,*/ OnClickListener, SimpleGestureListener{
 
 	TabHost th;
 	TextView x;
@@ -53,8 +55,10 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	GlobalClass global;
 	Button timer;
 	String time;
+	JSONObtainer obtainer;
 	private SimpleGestureFilter detector;
 	Button activate;
+	boolean login;
 	/*Integer[] imageIDs = {
 			 R.drawable.chinese1,R.drawable.ic_launcher,R.drawable.splash,R.drawable.chinese1};*/
 
@@ -62,8 +66,15 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
 		setContentView(R.layout.deal_page);
-
+		
+		final ProgressDialog progressDialog = new ProgressDialog(this);
+		progressDialog.setMessage("Getting deals...");
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progressDialog.setIndeterminate(true);
+		progressDialog.setCancelable(false);
+		progressDialog.show();
 		Intent intent = getIntent();
 		String dealString = intent.getStringExtra("deal");
 		Deal deal=null;
@@ -131,7 +142,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		th.setOnTabChangedListener(this);
 
 		MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.the_map);
-		mapFragment.getMapAsync(this);
+		//tmapFragment.getMapAsync(this);
 		latitude = 13.0092;
 		longitude = 74.7937;
 
@@ -146,7 +157,14 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		final Date endDate = deal.getEndDate();
 		final Time startTime = deal.getStartTime();
 		final Time endTime = deal.getEndTime();
-
+		Bundle b=getIntent().getExtras();
+		login=b.getBoolean("login");
+		if(login==false)
+		{
+			activate.setEnabled(false);
+			activate.setBackgroundColor(Color.parseColor("#f1f1f1"));
+		}
+		
 		JSONObtainer obtainer = new JSONObtainer() {
 			@Override
 			protected void onPostExecute(JSONArray array) {
@@ -157,11 +175,13 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 					try {
 						currentDate = format.parse(object.getString("date"));
+						
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					currentTime = Time.valueOf(object.getString("time"));
+					progressDialog.dismiss();
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -228,7 +248,9 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 						long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
 
 						String time = days+" d "+hours+" h "+minutes+" m "+second+" s";
-						timer.setText(text+"\n"+time);
+						timer.setText(/*text+"\n"+*/time);
+						
+						
 						//timer.setTextSize(android.R.attr.textAppearanceSmall);
 					}
 
@@ -236,15 +258,21 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 					public void onFinish() {
 						// TODO Auto-generated method stub
 						timer.setText("Time's up!");
+						activate.setEnabled(false);
+						activate.setBackgroundColor(Color.parseColor("#f1f1f1"));
 					}
+					
 				}.start();
+				
 			}
+			
 		};
 		String[] url = {
 				"http://waverr.in/getcurrenttime.php",
 				"",
 				""
 		};
+		progressDialog.dismiss();
 		obtainer.execute(url);
 
 		restaurantName = "Hao Ming";
@@ -258,13 +286,14 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		}
 
 		detector = new SimpleGestureFilter(this, this);
+		
 	}
 
 	private class ImagePagerAdapter extends PagerAdapter {
 		private int[] mImages = new int[] {
 				R.drawable.chinese,
 				R.drawable.ic_launcher,
-				R.drawable.splash,
+				R.drawable.soup3,
 				R.drawable.chinese1
 		};
 
@@ -310,15 +339,15 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 
 	}
 
-	@Override
-	public void onMapReady(GoogleMap map) {
+	/*@Override
+	tpublic void onMapReady(GoogleMap map) {
 		// TODO Auto-generated method stub
 
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude) , 15.0f) );
 		map.addMarker(new MarkerOptions()
 		.position(new LatLng(latitude, longitude))
 		.title("Location"));
-	}
+	}*/
 
 	@Override
 	public void onClick(View v) {
