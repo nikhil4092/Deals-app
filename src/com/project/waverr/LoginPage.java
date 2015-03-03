@@ -56,13 +56,15 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 		setContentView(R.layout.login_page);
 		global=(GlobalClass)getApplication();
 		findViewById(R.id.btn_sign_in).setOnClickListener((OnClickListener) this);
-		mGoogleApiClient=global.getClient();
+		
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 		.addConnectionCallbacks(this)
 		.addOnConnectionFailedListener(this)
 		.addApi(Plus.API)
 		.addScope(Plus.SCOPE_PLUS_LOGIN)
 		.build();
+		global.setClient(mGoogleApiClient);
+		mGoogleApiClient = global.getClient();
 
 		facebook = new Facebook(APP_ID);
 		//mAsyncRunner = 
@@ -200,7 +202,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 
 	public void onClick(View view) {
 		if (view.getId() == R.id.btn_sign_in
-				&& !mGoogleApiClient.isConnecting()) {
+				&& !mGoogleApiClient.isConnected()&& mConnectionResult!=null) {
 			
 			progressDialog = new ProgressDialog(this);
 			progressDialog.setMessage("Logging you in...");

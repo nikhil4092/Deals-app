@@ -6,6 +6,7 @@ import android.app.Application;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.Builder;
+import com.google.android.gms.drive.Drive;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person.Image;
 
@@ -25,6 +26,9 @@ public class GlobalClass extends Application{
 		return mGoogleApiClient;
 	}
 	
+	public void setClient(GoogleApiClient mGoogleApiClient){
+		this.mGoogleApiClient=mGoogleApiClient;
+	}
 	
 	public void setloginstatus(String status){
 		loginstatus = status;
