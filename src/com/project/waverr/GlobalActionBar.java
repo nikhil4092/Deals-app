@@ -167,7 +167,7 @@ public class GlobalActionBar extends ActionBarActivity implements NavigationDraw
 	@Override
 	protected void onResume () {
 		super.onResume();
-		AppEventsLogger.activateApp(this);
+		//AppEventsLogger.activateApp(this);
 		if(global.getCity().equalsIgnoreCase("Location Off") && flagLocation==1) {
 			try {
 				Thread.sleep(1000);
@@ -189,10 +189,5 @@ public class GlobalActionBar extends ActionBarActivity implements NavigationDraw
 		}
 		bar.setTitle(global.getCity());
 	}
-	
-	@Override
-	protected void onPause {
-		super.onPause();
-		AppEventsLogger.deactivateApp(this);
-	}
+
 }
