@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.facebook.Session;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -73,7 +74,8 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 	private boolean mFromSavedInstanceState;
 	private boolean mUserLearnedDrawer;
 	private String mLoginStatus;
-	private static GoogleApiClient mGoogleApiClient;
+	private GoogleApiClient mGoogleApiClient;
+	GlobalClass global;
 
 	public NavigationDrawerFragment() {
 	}
@@ -97,6 +99,8 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 
 		// Select either the default item (0) or the last selected item.
 		selectItem(mCurrentSelectedPosition);
+		
+		 
 	}
 
 	@Override
@@ -126,7 +130,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 			}
 		});
 
-		GlobalClass global = (GlobalClass) getActivity().getApplicationContext();
+		global = (GlobalClass) getActivity().getApplicationContext();
 		//String url = "http://waverr.in/getusernames.php";
 		final String[] things = new String[] {
 				//getString(R.string.title_section1),	
@@ -139,19 +143,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 				global.getlastitem()};
 
 		mLoginStatus = global.getloginstatus();
-		/*new JSONObtainer() {
-			protected void onPostExecute(JSONArray array) {
-				Toast.makeText(getActivity(), "Got stuff", Toast.LENGTH_SHORT).show();
-				try {
-					things[0] = array.getJSONObject(0).getString("Name");
-					things[1] = array.getJSONObject(0).getString("Email");
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}.execute(url);*/
-
+		mGoogleApiClient=global.getClient();
 		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActionBar()
 				.getThemedContext(),
 				android.R.layout.simple_list_item_activated_1,
@@ -298,7 +290,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 		if (mDrawerListView != null) {
 			//mDrawerListView.setItemChecked(position, true);
 
-			if(position == 4 ) {
+			if(position == 5 ) {
 
 				/*AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setTitle("Our Restaurant Partners");
@@ -318,7 +310,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 				startActivity(intent);
 			}
 
-			else if(position ==5) {
+			else if(position == 6) {
 				if(mLoginStatus.equals("none")){
 					getActivity().finish();
 					Intent intent = new Intent(getActivity(), com.project.waverr.LoginPage.class);
@@ -333,7 +325,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 				else if(mLoginStatus.equals("google")){
 					logoutGoogle();
 					getActivity().finish();
-					Intent intent = new Intent(getActivity(), com.project.waverr.LoginPage.class);
+					Intent intent = new Intent("com.project.waverr.LOGINPAGE");
 					startActivity(intent);
 				}
 			}
@@ -345,12 +337,17 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 			mCallbacks.onNavigationDrawerItemSelected(position);
 		}
 	}
+	
 
-	public static void logoutGoogle(){
+	public  void logoutGoogle(){
+
 		if(mGoogleApiClient.isConnected()){
+			Toast.makeText(getActivity(), "Logging out...", Toast.LENGTH_SHORT).show();
 			Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+			Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient);
 			mGoogleApiClient.disconnect();
-			mGoogleApiClient.connect();
+			global.setClient(null);
+			//mGoogleApiClient.connect();
 		}
 	}
 

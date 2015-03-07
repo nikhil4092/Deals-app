@@ -115,7 +115,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".LoginPage"
+            android:name=".LoginPage2"
             android:label="@string/title_activity_login_page"
             android:screenOrientation="portrait" >
             <intent-filter>

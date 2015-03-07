@@ -17,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.facebook.AppEventsLogger;
+
 public class GlobalActionBar extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks{
 	ActionBar bar;
 	GlobalClass global;
@@ -165,6 +167,7 @@ public class GlobalActionBar extends ActionBarActivity implements NavigationDraw
 	@Override
 	protected void onResume () {
 		super.onResume();
+		AppEventsLogger.activateApp(this);
 		if(global.getCity().equalsIgnoreCase("Location Off") && flagLocation==1) {
 			try {
 				Thread.sleep(1000);
@@ -185,5 +188,11 @@ public class GlobalActionBar extends ActionBarActivity implements NavigationDraw
 				flagLocation=0;
 		}
 		bar.setTitle(global.getCity());
+	}
+	
+	@Override
+	protected void onPause {
+		super.onPause();
+		AppEventsLogger.deactivateApp(this);
 	}
 }

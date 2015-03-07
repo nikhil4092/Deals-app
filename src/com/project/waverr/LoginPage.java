@@ -7,7 +7,6 @@ import android.content.IntentSender.SendIntentException;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
@@ -29,7 +28,6 @@ import com.google.android.gms.plus.model.people.Person.Image;
 public class LoginPage extends Activity implements OnClickListener,ConnectionCallbacks,OnConnectionFailedListener {
 
 	GlobalClass global;
-	boolean check=false;
 	ProgressDialog progressDialog;
 	/* Request code used to invoke sign in user interactions. */
 	private static final int RC_SIGN_IN = 0;
@@ -54,16 +52,17 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.login_page);
 		global=(GlobalClass)getApplication();
 		findViewById(R.id.btn_sign_in).setOnClickListener((OnClickListener) this);
-		mGoogleApiClient = new GoogleApiClient.Builder(this)
-		.addConnectionCallbacks(this)
-		.addOnConnectionFailedListener(this)
-		.addApi(Plus.API)
-		.addScope(Plus.SCOPE_PLUS_LOGIN)
-		.build();
+
+		mGoogleApiClient = global.getClient();
+		if(mGoogleApiClient==null) {
+			Toast.makeText(this, "Building from onCreate()", Toast.LENGTH_SHORT).show();
+			buildClient();
+		}
+
+		//mGoogleApiClient = global.getClient();
 
 		facebook = new Facebook(APP_ID);
 		//mAsyncRunner = 
@@ -75,7 +74,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 			@Override
 			public void onClick(View v) {
 				loginToFacebook();
-				
+
 			}
 		});
 
@@ -91,13 +90,14 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 		super.onStop();
 
 		if (mGoogleApiClient.isConnected()) {
-			mGoogleApiClient.disconnect();
+			//mGoogleApiClient.disconnect();
 		}
 	}
 
 	@Override
 	public void onConnected(Bundle connectionHint) {
 		// TODO Auto-generated method stub
+		Toast.makeText(this, "blah", Toast.LENGTH_SHORT).show();
 		mSignInClicked = false;
 		Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 		if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
@@ -108,7 +108,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 			String personEmail = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
 			//Toast.makeText(this, personName+","+personEmail, Toast.LENGTH_SHORT).show();
-			
+
 			global.setPersonName(personName);
 			global.setPersonPhoto(personPhoto);
 			global.setPersonGooglePlusProfile(personGooglePlusProfile);
@@ -117,7 +117,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 		}
 		if(progressDialog!=null)
 			progressDialog.dismiss();
-		check=true;
+		global.setClient(mGoogleApiClient);
 		Intent intent = new Intent(this, com.project.waverr.Home2.class);
 		startActivity(intent);
 	}
@@ -131,6 +131,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 
 	@Override
 	public void onConnectionFailed(ConnectionResult result) {
+		Toast.makeText(this, "Failed!: "+result.getErrorCode(), Toast.LENGTH_SHORT).show();
 		// TODO Auto-generated method stub
 		if (!mIntentInProgress && result.hasResolution()) {
 			try {
@@ -202,26 +203,26 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 
 	public void onClick(View view) {
 		if (view.getId() == R.id.btn_sign_in
-				&& !mGoogleApiClient.isConnecting()) {
-			
-			progressDialog = new ProgressDialog(this);
-			progressDialog.setMessage("Logging you in...");
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			progressDialog.setIndeterminate(true);
-			progressDialog.setCancelable(false);
+				&& !mGoogleApiClient.isConnected()/*&& mConnectionResult!=null*/) {
+
+			if(progressDialog==null) {
+				progressDialog = new ProgressDialog(this);
+				progressDialog.setMessage("Logging you in...");
+				progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+				progressDialog.setIndeterminate(true);
+				progressDialog.setCancelable(false);
+			}
 			progressDialog.show();
 			mGoogleApiClient.connect();
 			mSignInClicked = true;
 			resolveSignInError();		  
 
 		}
-		
+
 		if(view.getId()==R.id.nologin){
-			check=true;
-			Intent intent = new Intent("com.project.waverr.HOMETWO");
+			Intent intent = new Intent(this, com.project.waverr.Home2.class);
 			global.setloginstatus("none");
-			intent.putExtra("login", false);
-		    startActivity(intent);
+			startActivity(intent);
 		}
 
 
@@ -263,10 +264,8 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 					editor.putLong("access_expires",
 							facebook.getAccessExpires());
 					editor.commit();
-					check=true;
-					Intent intent = new Intent(getBaseContext(), com.project.waverr.Home2.class);
-					global.setloginstatus("facebook");
-					startActivity(intent);
+
+
 				}
 
 
@@ -283,16 +282,37 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 				}
 
 			});
+			Intent intent = new Intent(getBaseContext(), com.project.waverr.Home2.class);
+			global.setloginstatus("facebook");
+			startActivity(intent);
 		}
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if(check==true)
+		if(progressDialog!=null && progressDialog.isShowing())
+			progressDialog.dismiss();
 		finish();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if(mGoogleApiClient==null)
+			//mGoogleApiClient = global.getClient();
+			buildClient();
+	}
+
+	private void buildClient() {
+		Toast.makeText(this, "Building stuff", Toast.LENGTH_SHORT).show();
+		mGoogleApiClient = new GoogleApiClient.Builder(this)
+		.addConnectionCallbacks(this)
+		.addOnConnectionFailedListener(this)
+		.addApi(Plus.API)
+		.addScope(Plus.SCOPE_PLUS_LOGIN)
+		.build();
+	}
 }
 
 
