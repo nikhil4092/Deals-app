@@ -69,7 +69,7 @@ public class LoginPage extends Activity implements OnClickListener,ConnectionCal
 		new AsyncFacebookRunner(facebook); 
 
 		//View btnFbLogin = null;
-		Button btnFbLogin = (Button) findViewById(R.id.login_button);
+		Button btnFbLogin = (Button) findViewById(R.id.fbLoginButton);
 		btnFbLogin.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

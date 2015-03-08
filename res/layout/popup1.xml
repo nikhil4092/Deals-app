@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="		Waverr is India&apos;s first live deal engine. A place where you find great deals from your favourite restaurants nearby. Discover great food and get an incentive to do so!
+  		We believe in quality rather than quantity and we make sure that we get the best deals from our partners and not any run of the mill deals. 
+  		So every time you are hungry, don&apos;t forget to fire up the Waverr app because you never know, you might find a deal that you just cannot resist. " />
+
+    <Button
+        android:id="@+id/popupclose1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="30dp"
+        android:text="Close" />
+
+</LinearLayout>

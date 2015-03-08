@@ -20,47 +20,49 @@ import android.util.Log;
 
 public class JSONFunctions {
 
-    public static JSONArray getJSONfromURL(String[] url) {
-        InputStream is = null;
-        String result = "";
-        JSONArray jArray = null;
-      //the year data to send
-      ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-      
-        
+	public static JSONArray getJSONfromURL(String[] url) {
+		InputStream is = null;
+		String result = "";
+		JSONArray jArray = null;
+		//the year data to send
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
-        // Download JSON data from URL
-        try{
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(url[0]);
-            nameValuePairs.add(new BasicNameValuePair(url[1], url[2]));
-            nameValuePairs.add(new BasicNameValuePair("pass", "Waverr2015"));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
-            is = entity.getContent();
-    }catch(Exception e){
-            Log.e("log_tag", "Error in http connection "+e.toString());
-    }
-    //convert response to string
-    try{
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
-            }
-            is.close();
-     
-            result=sb.toString();
-    }catch(Exception e){
-            Log.e("log_tag", "Error converting result "+e.toString());
-    }
-     
-    //parse json data
-    try{
-            jArray = new JSONArray(result);
-           /* for(int i=0;i<jArray.length();i++){
+
+
+		// Download JSON data from URL
+		try{
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpPost httppost = new HttpPost(url[0]);
+			int i;
+			for(i=1; i+1<url.length; i++)
+				nameValuePairs.add(new BasicNameValuePair(url[i], url[i+1]));
+			nameValuePairs.add(new BasicNameValuePair("pass", "Waverr2015"));
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			HttpResponse response = httpclient.execute(httppost);
+			HttpEntity entity = response.getEntity();
+			is = entity.getContent();
+		}catch(Exception e){
+			Log.e("log_tag", "Error in http connection "+e.toString());
+		}
+		//convert response to string
+		try{
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
+			StringBuilder sb = new StringBuilder();
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line + "\n");
+			}
+			is.close();
+
+			result=sb.toString();
+		}catch(Exception e){
+			Log.e("log_tag", "Error converting result "+e.toString());
+		}
+
+		//parse json data
+		try{
+			jArray = new JSONArray(result);
+			/* for(int i=0;i<jArray.length();i++){
                     JSONObject json_data = jArray.getJSONObject(i);
                     Log.i("log_tag","id: "+json_data.getInt("id")+
                             ", name: "+json_data.getString("name")+
@@ -68,11 +70,11 @@ public class JSONFunctions {
                             ", birthyear: "+json_data.getInt("birthyear")
                     );
             }*/
-    
-    }catch(JSONException e){
-            Log.e("log_tag", "Error parsing data "+e.toString());
-    }
 
-        return jArray;
-    }
+		}catch(JSONException e){
+			Log.e("log_tag", "Error parsing data "+e.toString());
+		}
+
+		return jArray;
+	}
 }

@@ -28,6 +28,7 @@ public class PostData extends AsyncTask<Void, Void, CharSequence>{
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
                 //nameValuePairs.add(new BasicNameValuePair("pass", "Waverr2015"));
                 nameValuePairs.add(new BasicNameValuePair("id", "12345"));
+                nameValuePairs.add(new BasicNameValuePair("pass", "Waverr2015"));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
 
                 // Execute HTTP Post Request

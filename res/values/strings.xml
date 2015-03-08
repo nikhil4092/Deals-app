@@ -32,6 +32,7 @@
     <string name="title_section4">About Waverr</string>
     <string name="title_section5">Contact Us</string>
     <string name="title_section6">Restaurant Partners</string>
+    <string name="title_section7">Rate Waverr</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Mangalore</string>
@@ -39,6 +40,7 @@
     <string name="action_search">Search</string>
     <string name="title_activity_login_page">Login</string>
     <string name="facebook_app_id">1547265585557850</string>
+    <string name="APP_ID">1609355119282575</string>
     <string name="title_activity_restaurant_list">Our Partner Restaurants</string>
     <string name="teaser">You are just a few clicks away from discovering the best deals around you!</string>
     <string name="waverr_logo">Waverr logo</string>

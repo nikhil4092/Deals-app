@@ -1,5 +1,7 @@
 package com.project.waverr;
 
+import org.json.JSONArray;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
@@ -15,8 +17,6 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.android.gms.plus.model.people.Person.Image;
-
-import com.facebook.Session;
 
 public class LoginPage2 extends Activity implements OnClickListener, ConnectionCallbacks, OnConnectionFailedListener{
 
@@ -40,37 +40,15 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 	 * us from starting further intents.
 	 */
 	private boolean mIntentInProgress;
+	private FacebookFragment facebookFragment;
 
 	GlobalClass global;
-	/*private final int SPLASH_DURATION = 3000;
-	private Boolean allCoolWithGoogle = false;*/
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_page);
-
-		/*//LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		setContentView(R.layout.splash);
-
-		new CountDownTimer(SPLASH_DURATION, 1000) {
-
-			@Override
-			public void onTick(long millisUntilFinished) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onFinish() {
-				// TODO Auto-generated method stub
-				if(allCoolWithGoogle==true)
-					goAheadWithGoogle();
-				else {
-					showLoginPage();
-				}
-			}
-		}.start();*/
+		global = (GlobalClass) getApplication();
 
 		findViewById(R.id.btn_sign_in).setOnClickListener(this);
 
@@ -81,20 +59,35 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 		.addScope(Plus.SCOPE_PLUS_PROFILE)
 		.build();
 
-		global = (GlobalClass) getApplication();
+		/*if (savedInstanceState == null) {
+			// Add the fragment on initial activity setup
+			facebookFragment = new FacebookFragment();
+			getSupportFragmentManager()
+			.beginTransaction()
+			.add(android.R.id.content, facebookFragment)
+			.commit();
+		} else {
+			// Or set the fragment from restored state info
+			facebookFragment = (FacebookFragment) getSupportFragmentManager()
+					.findFragmentById(android.R.id.content);
+		}*/
 	}
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.btn_sign_in
-				&& !mGoogleApiClient.isConnecting()) {
-			mSignInClicked = true;
-			resolveSignInError();
+		//Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
+		if (view.getId() == R.id.btn_sign_in) {
+			if(!mGoogleApiClient.isConnecting()) {
+				Toast.makeText(this, "Processing stuff", Toast.LENGTH_SHORT).show();
+				mSignInClicked = true;
+				resolveSignInError();
+			}
 		}
 	}
 
 	/* A helper method to resolve the current ConnectionResult error. */
 	private void resolveSignInError() {
+		Toast.makeText(this, "Resolving sign-in error", Toast.LENGTH_SHORT).show();
 		if (mConnectionResult.hasResolution()) {
 			try {
 				mIntentInProgress = true;
@@ -110,6 +103,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 	}
 
 	public void onConnectionFailed(ConnectionResult result) {
+		Toast.makeText(this, "Connection failed!", Toast.LENGTH_SHORT).show();
 		if (!mIntentInProgress) {
 			// Store the ConnectionResult so that we can use it later when the user clicks
 			// 'sign-in'.
@@ -125,10 +119,8 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 
 	@Override
 	public void onConnected(Bundle arg0) {
-		// TODO Auto-generated method stub
 		mSignInClicked = false;
 		goAheadWithGoogle();
-		//allCoolWithGoogle = true;
 	}
 
 	@Override
@@ -155,6 +147,8 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 	protected void onStart() {
 		super.onStart();
 		mGoogleApiClient.connect();
+		if(mGoogleApiClient.isConnecting())
+			Toast.makeText(this, "Connecting client...", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -167,26 +161,42 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 		Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 		if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
 			Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-			String personName = currentPerson.getDisplayName();
+			final String personName = currentPerson.getDisplayName();
 			Image personPhoto = currentPerson.getImage();
 			String personGooglePlusProfile = currentPerson.getUrl();
-			String personEmail = Plus.AccountApi.getAccountName(mGoogleApiClient);
-
-			//Toast.makeText(this, personName+","+personEmail, Toast.LENGTH_SHORT).show();
+			final String personEmail = Plus.AccountApi.getAccountName(mGoogleApiClient);
+			final String personBirthday = currentPerson.getBirthday();
 
 			global.setPersonName(personName);
 			global.setPersonPhoto(personPhoto);
 			global.setPersonGooglePlusProfile(personGooglePlusProfile);
 			global.setPersonEmail(personEmail);
 			global.setloginstatus("google");
+
+			JSONObtainer checker = new JSONObtainer() {
+				@Override
+				protected void onPostExecute(JSONArray array) {
+
+					if(array==null) {
+						Toast.makeText(getBaseContext(), "New user... Adding to database", Toast.LENGTH_SHORT).show();
+						new JSONObtainer().execute(new String[] {
+								"http://waverr.in/adduser.php",
+								"user", personName,
+								"email", personEmail,
+								"age", personBirthday
+						});
+					}
+					else
+						Toast.makeText(getBaseContext(), "User already exists in the database", Toast.LENGTH_SHORT).show();
+				}
+			};
+			checker.execute(new String[] {
+					"http://waverr.in/checkuser.php",
+					"email", personEmail
+			});
+			global.setClient(mGoogleApiClient);
+			Intent intent = new Intent(this, com.project.waverr.Home2.class);
+			startActivity(intent);
 		}
-		global.setClient(mGoogleApiClient);
-		Intent intent = new Intent(this, com.project.waverr.Home2.class);
-		startActivity(intent);
 	}
-	
-	/*private void showLoginPage() {
-		setContentView(R.layout.login_page);
-		findViewById(R.id.btn_sign_in).setOnClickListener(this);
-	}*/
 }
