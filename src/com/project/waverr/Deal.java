@@ -1,7 +1,5 @@
 package com.project.waverr;
 
-import java.sql.Time;
-import java.util.Date;
 
 public class Deal {
 	
@@ -14,10 +12,8 @@ public class Deal {
 	String freebie;
 	String canvasText;
 	int minimumAmount;
-	Date startDate;
-	Date endDate;
-	Time startTime;
-	Time endTime;
+	DateTime start;
+	DateTime end;
 	String cuisine;
 	String dealID;
 	double distanceFromUser;
@@ -76,31 +72,19 @@ public class Deal {
 	public void setMinimumAmount(int minimumAmount) {
 		this.minimumAmount = minimumAmount;
 	}
-	public Date getStartDate() {
-		return startDate;
+	public void setStartDateTime(DateTime dateTime) {
+		start = dateTime;
 	}
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	public DateTime getStartDateTime() {
+		return start;
 	}
-	public Date getEndDate() {
-		return endDate;
+	public void setEndDateTime(DateTime dateTime) {
+		end = dateTime;
 	}
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public DateTime getEndDateTime() {
+		return end;
 	}
-	public Time getStartTime() {
-		return startTime;
-	}
-	public void setStartTime(Time startTime) {
-		this.startTime = startTime;
-	}
-	public Time getEndTime() {
-		return endTime;
-	}
-	public void setEndTime(Time endTime) {
-		this.endTime = endTime;
-	}
-	public String getCuisine() {
+ 	public String getCuisine() {
 		return cuisine;
 	}
 	public void setCuisine(String cuisine) {

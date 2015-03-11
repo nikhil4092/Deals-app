@@ -1,12 +1,8 @@
 package com.project.waverr;
 
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -450,15 +447,18 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		final ArrayList<ImageButton> buttons = new ArrayList<>();
 		final ArrayList<TextView> texts = new ArrayList<>();
 
-		//LocationManager locationManager;
-		/*locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		LocationManager locationManager;
+		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
-		String provider = locationManager.getBestProvider(criteria, true);*/
-		final Location location = getLastKnownLocation();
-		/*if(provider!=null) {
-			Toast.makeText(this, "We have something!", Toast.LENGTH_SHORT).show();
+		String provider = locationManager.getBestProvider(criteria, true);
+		final Location location;
+		//final Location location = getLastKnownLocation();
+		if(provider!=null) {
+			Toast.makeText(this, "We have a provider!", Toast.LENGTH_SHORT).show();
 			location = locationManager.getLastKnownLocation(provider);
-		}*/
+		}
+		else
+			location = null;
 		if(location == null) {
 			Toast.makeText(this, "No provider", Toast.LENGTH_SHORT).show();
 			AlertDialog.Builder promptBuilder = new AlertDialog.Builder(this);
@@ -484,9 +484,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		if(location!=null) {
 			Toast.makeText(this, location.getLatitude()+","+location.getLongitude(), Toast.LENGTH_LONG).show();
 			String[] url = {
-					"http://waverr.in/getdealparameters.php",
-					"",
-					""
+					"http://waverr.in/getdealparameters.php"
 			};
 
 			final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -533,29 +531,26 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							newDeal.setFreebie(object.getString(things[5]));
 							newDeal.setCanvasText(object.getString(things[6]));
 							newDeal.setMinimumAmount(object.getInt(things[7]));
-							SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-							try {
-								newDeal.setStartDate(format.parse(object.getString(things[8])));
-								newDeal.setEndDate(format.parse(object.getString(things[9])));
-							} catch (ParseException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							newDeal.setStartTime(Time.valueOf(object.getString(things[10])));
-							newDeal.setEndTime(Time.valueOf(object.getString(things[11])));
+							DateTime start = new DateTime();
+							start.setDate(object.getString(things[8]));
+							start.setTime(object.getString(things[10]));
+							DateTime end = new DateTime();
+							end.setDate(object.getString(things[9]));
+							end.setTime(object.getString(things[11]));
+							newDeal.setStartDateTime(start);
+							newDeal.setEndDateTime(end);
 							newDeal.setCuisine(object.getString(things[12]));
 
 							final Location restaurantLocation = new Location("database");
 							String[] url = {
 									"http://waverr.in/getrestaurantlocation.php",
-									"restaurantname",
-									newDeal.getRestaurantName()
+									"restaurantname", newDeal.getRestaurantName()
 							};
 
 							JSONObtainer locationObtainer = new JSONObtainer() {
 								@Override
 								protected void onPostExecute(JSONArray array) {
-									Toast.makeText(getBaseContext(), "Getting location", Toast.LENGTH_SHORT).show();
+									//Toast.makeText(getBaseContext(), "Getting location", Toast.LENGTH_SHORT).show();
 									JSONObject object;
 									try {
 										object = array.getJSONObject(0);
@@ -575,7 +570,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 									restaurantLocation.setLatitude(Float.parseFloat(coords[0]));
 									restaurantLocation.setLongitude(Float.parseFloat(coords[1]));
 
-									Toast.makeText(getBaseContext(), coords[0]+","+coords[1], Toast.LENGTH_SHORT).show();
+									//Toast.makeText(getBaseContext(), coords[0]+","+coords[1], Toast.LENGTH_SHORT).show();
 								}
 							};
 							locationObtainer.execute(url);
@@ -586,7 +581,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 									restaurantLocation.getLongitude()));
 
 							deals.add(newDeal);
-							Toast.makeText(getBaseContext(), "Got the deal!", Toast.LENGTH_SHORT).show();	
+							//Toast.makeText(getBaseContext(), "Got the deal!", Toast.LENGTH_SHORT).show();	
 						}
 
 						Collections.sort(deals,new Comparator<Deal>() {
@@ -607,10 +602,9 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							button.setScaleType(ScaleType.FIT_XY);
 							button.setBackgroundColor(Color.TRANSPARENT);
 							button.setAdjustViewBounds(true);
-							buttons.add(button);
-
 							final String deal = gson.toJson(newDeal);
-
+							if(deal==null)
+								Toast.makeText(getBaseContext(), "JSON didn't work!", Toast.LENGTH_SHORT).show();
 							button.setOnClickListener(new View.OnClickListener() {
 
 								@Override
@@ -619,10 +613,11 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 									Intent intent = new Intent(getBaseContext(), com.project.waverr.DealPage.class);
 									Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
 									intent.putExtra("deal", deal);
+									//global.setDeal(newDeal);
 									startActivity(intent);
 								}
 							});
-
+							buttons.add(button);
 							TextView text = new TextView(getBaseContext());
 							//text.setText(newDeal.getDetails());
 							text.setText("This is just some text for testing");
@@ -653,7 +648,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 			Toast.makeText(this, "Nope!", Toast.LENGTH_SHORT).show();
 	}
 	
-	private Location getLastKnownLocation() {
+	/*private Location getLastKnownLocation() {
 	    LocationManager mLocationManager = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
 	    List<String> providers = mLocationManager.getProviders(true);
 	    Location bestLocation = null;
@@ -668,6 +663,6 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 	        }
 	    }
 	    return bestLocation;
-	}
+	}*/
 }
 

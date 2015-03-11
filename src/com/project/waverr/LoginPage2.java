@@ -40,7 +40,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 	 * us from starting further intents.
 	 */
 	private boolean mIntentInProgress;
-	private FacebookFragment facebookFragment;
+	//private FacebookFragment facebookFragment;
 
 	GlobalClass global;
 
@@ -51,6 +51,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 		global = (GlobalClass) getApplication();
 
 		findViewById(R.id.btn_sign_in).setOnClickListener(this);
+		findViewById(R.id.nologin).setOnClickListener(this);
 
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 		.addConnectionCallbacks(this)
@@ -82,6 +83,11 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 				mSignInClicked = true;
 				resolveSignInError();
 			}
+		}
+		if(view.getId() == R.id.nologin) {
+			Intent intent = new Intent(this, com.project.waverr.Home2.class);
+			global.setloginstatus("none");
+			startActivity(intent);
 		}
 	}
 
@@ -178,10 +184,11 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 				protected void onPostExecute(JSONArray array) {
 
 					if(array==null) {
-						Toast.makeText(getBaseContext(), "New user... Adding to database", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getBaseContext(),
+								"New user... Adding to database", Toast.LENGTH_SHORT).show();
 						new JSONObtainer().execute(new String[] {
 								"http://waverr.in/adduser.php",
-								"user", personName,
+								"name", personName,
 								"email", personEmail,
 								"age", personBirthday
 						});

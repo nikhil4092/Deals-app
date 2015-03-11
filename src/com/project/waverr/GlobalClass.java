@@ -3,11 +3,34 @@ package com.project.waverr;
 import java.util.ArrayList;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.model.people.Person.Image;
+import com.parse.Parse;
+import com.parse.ParseInstallation;
+import com.parse.PushService;
 
-public class GlobalClass extends Application{
+public class GlobalClass extends Application {
+	
+	private static GlobalClass instance = new GlobalClass();
+
+    public void MainApplication() {
+        instance = this;
+    }
+
+    public static Context getContext() {
+        return instance;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Parse.initialize(this, "i83LuSHlmyI7wTcI7Cmlh0n6v5glfRVXmFzpc5xb", "qWSCgY6QGgeSbAXVZfG7VVrFDxbSHZ3qQFlfbiEo");
+        PushService.setDefaultPushCallback(this, Splash.class);
+        PushService.subscribe(this, "", Splash.class);
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+    }
 	
 	private String city;
 	private ArrayList<String> favouritedRestaurants;
@@ -18,7 +41,15 @@ public class GlobalClass extends Application{
 	private String loginstatus;
 	private String lastitem;
 	private GoogleApiClient mGoogleApiClient;
+	private Deal currentDeal;
 	
+	public void setDeal(Deal deal) {
+		currentDeal = deal;
+	}
+	
+	public Deal getDeal() {
+		return currentDeal;
+	}
 	public GoogleApiClient getClient(){
 		return mGoogleApiClient;
 	}

@@ -17,8 +17,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.facebook.AppEventsLogger;
-
 public class GlobalActionBar extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks{
 	ActionBar bar;
 	GlobalClass global;

@@ -17,7 +17,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -173,7 +172,7 @@ OnClickListener {
 		String imageURL = null;
 		if (global.getPersonPhoto() != null)
 			imageURL = global.getPersonPhoto().getUrl();
-		Picasso.with(getActivity()).load(imageURL + "0").resize(250, 250)
+		Picasso.with(getActivity()).load(imageURL + "0").resize(500, 500)
 		.error(R.drawable.com_facebook_profile_default_icon)
 		.centerCrop().into(imageHeaderView);
 		mDrawerListView.addHeaderView(imageHeaderView);
@@ -308,6 +307,7 @@ OnClickListener {
 						com.project.waverr.PopUpActivity1.class);
 				startActivity(intent);*/
 				
+				@SuppressWarnings("static-access")
 				LayoutInflater inflater = (LayoutInflater) getActivity().getBaseContext()
 						.getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
 				View popupview = inflater.inflate(R.layout.popup1, null);
@@ -341,7 +341,7 @@ OnClickListener {
 				if (mLoginStatus.equals("none")) {
 					getActivity().finish();
 					Intent intent = new Intent(getActivity(),
-							com.project.waverr.LoginPage.class);
+							com.project.waverr.LoginPage2.class);
 					startActivity(intent);
 				} else if (mLoginStatus.equals("facebook")) {
 					logoutFacebook();
