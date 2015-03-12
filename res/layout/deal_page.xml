@@ -57,7 +57,8 @@
 					    android:orientation="vertical" >
 					    
 						    <ImageView
-						        android:layout_width="wrap_content"
+						        android:id="@+id/dealImageMain"
+						        android:layout_width="fill_parent"
 						        android:layout_height="wrap_content"
 						        android:src="@drawable/soup1"
 						        android:layout_weight="4" 
@@ -84,7 +85,7 @@
                                             android:layout_weight="17"
                                             android:layout_height="wrap_content"
                                             android:padding="7dp"
-                                            android:text="Restaurant Name"
+                                            android:text=""
                                             android:textAppearance="?android:attr/textAppearanceLarge"
                                             android:textColor="#ff5335" />
 
@@ -104,7 +105,7 @@
 						            android:id="@+id/theDeal"
 						            android:layout_width="wrap_content"
 						            android:layout_height="wrap_content"
-						            android:text="Get one bowl of noodles free with one bowl of rice"
+						            android:text=""
 						            android:padding="7dp"
 						            android:paddingTop="10dp"
 						            android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -113,16 +114,18 @@
 						            android:id="@+id/timeLimit"
 						            android:layout_width="match_parent"
 						            android:layout_height="wrap_content"
-						            android:text="You have to buy 100 pounds of rice"
+						            android:text=""
 						            android:background="#ffffff"
 						            android:padding="7dp"
+						            android:textColor="#000000"
 						            android:textAppearance="?android:attr/textAppearanceMedium" />
 
 						        <TextView
 						            android:id="@+id/fine_print"
 						            android:layout_width="wrap_content"
 						            android:layout_height="wrap_content"
-						            android:text="The deal expires in 200 days!!"
+						            android:text=""
+						            android:textColor="#000000"
 						            android:padding="7dp"
 						            android:textAppearance="?android:attr/textAppearanceMedium" />
 						        
@@ -130,9 +133,11 @@
 						            android:id="@+id/instructions"
 						            android:layout_width="match_parent"
 						            android:layout_height="wrap_content"
-						            android:text="You have to buy 100 pounds of rice"
+						            android:text=""
+						            android:textColor="#000000"
 						            android:background="#ffffff"
 						            android:padding="7dp"
+						            android:textStyle="bold"
 						            android:textAppearance="?android:attr/textAppearanceMedium" />
 
 						    </LinearLayout>
@@ -158,7 +163,8 @@
 					    android:orientation="vertical" >
 					    
 						    <ImageView
-						        android:layout_width="wrap_content"
+						        android:id="@+id/dealImageAbout"
+						        android:layout_width="fill_parent"
 						        android:layout_height="wrap_content"
 						        android:src="@drawable/soup1"
 						        android:layout_weight="4" 
@@ -186,7 +192,8 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_weight="2"
-                                            android:text="Hao Ming \n Balmatta, Mangalore \n Ph.No:9008002002"
+                                            android:textColor="#000000"
+                                            android:text=""
                                             android:textAppearance="?android:attr/textAppearanceMedium" />
 
                                         <ImageButton
@@ -220,38 +227,13 @@
 									        android:layout_weight="1"
 									        android:layout_height="wrap_content"
 									        android:textColor="#ff5335"
-									        android:text="Started In the year bla bla bla"
+									        android:textStyle="bold"
+									        android:text=""
 									        android:textAppearance="?android:attr/textAppearanceMedium" />
 									
 									</LinearLayout>
 						    </LinearLayout>
-						    <LinearLayout
-						        android:layout_width="fill_parent"
-						        android:layout_height="wrap_content"
-						        android:layout_weight="2"
-						         >
-
-						      <LinearLayout
-									    android:layout_width="fill_parent"
-									        android:layout_height="wrap_content"
-									        android:layout_weight="2"
-									        android:weightSum="1"
-									        android:layout_margin="4dp"
-									        android:background="#f1f1f1" >
-									
-									    <TextView
-									        android:id="@+id/Info"
-									        android:layout_width="fill_parent"
-									        android:layout_weight="1"
-									        android:layout_height="wrap_content"
-									        android:gravity="center"
-									        android:text="Cost for 2 : 500 \n Veg : Yes \n Non Veg : Yes \n Alcohol : No \n Delivery : Yes"
-									        android:textAppearance="?android:attr/textAppearanceMedium" />
-									
-									</LinearLayout>
-						    </LinearLayout>
-
-						    
+						    						    
 				       </LinearLayout>
 				</ScrollView>
 					</LinearLayout>

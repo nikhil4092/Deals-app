@@ -1,7 +1,14 @@
 package com.project.waverr;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -353,7 +360,60 @@ OnClickListener {
 			}
 
 			if(position == 5 ) {
-				
+				final ArrayList<String> restaurants = new ArrayList<>();
+
+				final ProgressDialog dialog = new ProgressDialog(getActivity());
+				dialog.setIndeterminate(true);
+				dialog.setCancelable(true);
+				dialog.setMessage("Please wait...");
+				dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+				dialog.show();
+
+				new JSONObtainer() {
+					String display = "";
+					@Override
+					protected void onPostExecute(JSONArray array) {
+						if(array==null) 
+							display = "Please check your network connection and try again";
+						else {
+							int i=0;
+							for(i=0; i<array.length(); i++) {
+								JSONObject object = null;
+								try {
+									object = array.getJSONObject(i);
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								try {
+									String temp  = object.getString("Restaurant Name");
+									restaurants.add(temp);
+									display = display + "\n" + temp;
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						}
+						dialog.dismiss();
+						AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+						builder.setTitle("Our Partners");
+						builder.setPositiveButton(R.string.button_ok, new OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// TODO Auto-generated method stub
+								dialog.dismiss();
+							}
+						});
+						builder.setMessage(display);
+						builder.create().show();
+					}
+
+				}.execute(new String[] {
+						"http://waverr.in/restaurantpartners.php"
+				});
+
 			}
 
 			else if (position == 7) {

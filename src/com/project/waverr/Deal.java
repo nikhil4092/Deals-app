@@ -3,7 +3,7 @@ package com.project.waverr;
 
 public class Deal {
 	
-	int ID;
+	String ID;
 	String details;
 	int percentageDiscount;
 	int amountDiscount;
@@ -15,14 +15,29 @@ public class Deal {
 	String cuisine;
 	String dealID;
 	double distanceFromUser;
+	String imageURL;
 	
+	public String getImageURL() {
+		return imageURL;
+	}
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+	}
+
 	String restaurantID;
 	String restaurantName;
 	String restaurantNumber;
 	String restaurantAddress;
 	String restaurantCoordinates;
 	String restaurantFinePrint;
+	String restaurantDetails;
 	
+	public String getRestaurantDetails() {
+		return restaurantDetails;
+	}
+	public void setRestaurantDetails(String restaurantDetails) {
+		this.restaurantDetails = restaurantDetails;
+	}
 	public String getRestaurantCoordinates() {
 		return restaurantCoordinates;
 	}
@@ -48,10 +63,10 @@ public class Deal {
 		this.restaurantAddress = restaurantAddress;
 	}
 
-	public int getID() {
+	public String getID() {
 		return ID;
 	}
-	public void setID(int iD) {
+	public void setID(String iD) {
 		ID = iD;
 	}
 	public String getRestaurantID() {

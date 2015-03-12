@@ -1,5 +1,7 @@
 package com.project.waverr;
 
+import org.json.JSONArray;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 
@@ -20,8 +23,10 @@ public class Success extends Activity{
 	ProgressBar bar;
 	Animation animblink;
 	RandAlphaNum gen = new RandAlphaNum();
+	GlobalClass global;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		global = (GlobalClass) getApplication();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.success);
 		tv1=(TextView)findViewById(R.id.successtext1);
@@ -34,14 +39,29 @@ public class Success extends Activity{
 		{
 			Dealvalue.setText(s);
 			s=gen.randomString(4);
-			name="SIZ";
+			Deal deal = global.getDeal();
+			String dealid = deal.getID();
+			name = deal.getRestaurantID();
 			tv1.setText("Congratulations");
 			tv2.setText("DEAL ACTIVATED");
-			tv3.setText("CODE:WAV"+name+"MLR-"+s);
+			tv3.setText("CODE:"+dealid+s);
 			animblink=AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
 			tv2.startAnimation(animblink);
 
-			new PostData().execute();
+			//new PostData().execute();
+			String[] things = {
+					"http://waverr.in/sendactivateddeals.php",
+					"dealid", dealid+s,
+					"restaurantname", deal.getRestaurantName(),
+					"emailid", global.getPersonEmail(),
+					"customername", global.getPersonName(),
+			};
+			
+			new JSONObtainer() {
+				protected void onPostExecute(JSONArray array) {
+					Toast.makeText(getBaseContext(), "Done", Toast.LENGTH_SHORT).show();
+				}
+			}.execute(things);
 		}
 		else if(b.getBoolean("Working")==false)
 		{

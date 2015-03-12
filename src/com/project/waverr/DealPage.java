@@ -36,11 +36,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.project.waverr.SimpleGestureFilter.SimpleGestureListener;
+import com.squareup.picasso.Picasso;
 
 public class DealPage extends GlobalActionBar implements OnTabChangeListener, OnMapReadyCallback, OnClickListener, SimpleGestureListener{
 
 	TabHost th;
 	TextView x, restname, dealtext, duration, instructions, finePrint;
+	TextView placeDetails, restaurantInfo;
 	double latitude;
 	double longitude;
 	Button getDirections;
@@ -51,10 +53,14 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	private SimpleGestureFilter detector;
 	Button activate;
 	String dtext;
-	boolean login;
+	boolean login = false;
 	Deal deal;
-	Boolean dealExpired;
+	Boolean dealExpired = false;
+	Boolean dealStarted = false;
 	String dealString;
+	ImageView main;
+	ImageView about;
+	
 
 	DateTime start;
 	DateTime end;
@@ -90,12 +96,16 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		duration = (TextView) findViewById(R.id.timeLimit);
 		instructions = (TextView) findViewById(R.id.instructions);
 		finePrint = (TextView) findViewById(R.id.fine_print);
+		placeDetails = (TextView) findViewById(R.id.namefulladdress);
+		restaurantInfo = (TextView) findViewById(R.id.RestoIntro);
 		findViewById(R.id.get_directions).setOnClickListener(this);
 		findViewById(R.id.button_call).setOnClickListener(this);
 		findViewById(R.id.share).setOnClickListener(this);
 		timerText = (Button) findViewById(R.id.deal_countdown_button);
 		activate = (Button) findViewById(R.id.activatedeal);
 		activate.setOnClickListener(this);
+		main = (ImageView) findViewById(R.id.dealImageMain);
+		about = (ImageView) findViewById(R.id.dealImageAbout);
 
 		th.setup();
 		TabSpec specs = th.newTabSpec("Deal");
@@ -168,6 +178,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		if(login==false)
 		{
 			//activate.setEnabled(false);
+			activate.setTextColor(Color.BLACK);
 			activate.setBackgroundColor(Color.parseColor("#f1f1f1"));
 		}
 
@@ -255,9 +266,23 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		case R.id.activatedeal:
 			// TODO Auto-generated method stub
 			if(dealExpired == true) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder.setTitle("Deal expired");
 				builder.setMessage("Sorry... The deal has expired. Please have a look at other deals.");
+				builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				});
+				builder.create().show();
+			}
+			else if(dealStarted==false) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("Deal not yet started");
+				builder.setMessage("The deal has not yet started. Please check back later.");
 				builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
 
 					@Override
@@ -300,6 +325,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 				Intent intent = new Intent("com.google.zxing.client.android.SCAN");
 				intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
 				intent.putExtra("PROMPT_MESSAGE", "");
+				global.setDeal(deal);
 				startActivityForResult(intent, 0);
 			}
 			break;
@@ -330,13 +356,13 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 
 	@Override
 	public void onSwipe(int direction) {
-		int currentTab = th.getCurrentTab();
+		//int currentTab = th.getCurrentTab();
 		switch (direction) {
 		case SimpleGestureFilter.SWIPE_RIGHT:
-			th.setCurrentTab(currentTab-1);
+			//th.setCurrentTab(currentTab-1);
 			break;
 		case SimpleGestureFilter.SWIPE_LEFT:
-			th.setCurrentTab(currentTab+1);
+			//th.setCurrentTab(currentTab+1);
 			break;
 		}
 		//Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
@@ -352,7 +378,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 			if (resultCode == RESULT_OK) {
 
 				String contents = intent.getStringExtra("SCAN_RESULT");
-				if(contents.compareTo(restaurantID)==0)
+				if(contents.compareTo(deal.getRestaurantID())==0)
 				{
 					Intent i=new Intent("com.project.waverr.SUCCESS");
 					i.putExtra("Working",true);
@@ -418,16 +444,20 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 						// TODO Auto-generated method stub
 						actual.setDateTimeByMillis(millisUntilFinished);
 						String text = "Deal starts in\n"
-								+ actual.days + " d, "
-								+ actual.hours + " h, "
-								+ actual.minutes + " m, "
-								+ actual.seconds + "s";
+								+ actual.days + " d "
+								+ actual.hours + " h "
+								+ actual.minutes + " m "
+								+ actual.seconds + " s";
 						timerText.setText(text);
+						activate.setTextColor(Color.BLACK);
+						activate.setBackgroundColor(Color.parseColor("#f1f1f1"));
 					}
 
 					@Override
 					public void onFinish() {
 						// TODO Auto-generated method stub
+						dealStarted = true;
+						activate.setBackgroundColor(Color.parseColor("#00c15b"));
 						new CountDownTimer(timeUntilEnd, 1000) {
 
 							@Override
@@ -435,10 +465,10 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 								// TODO Auto-generated method stub
 								actual.setDateTimeByMillis(millisUntilFinished);
 								String text = "Deal ends in\n"
-										+ actual.days + " d, "
-										+ actual.hours + " h, "
-										+ actual.minutes + " m, "
-										+ actual.seconds + "s";
+										+ actual.days + " d "
+										+ actual.hours + " h "
+										+ actual.minutes + " m "
+										+ actual.seconds + " s";
 								timerText.setText(text);
 							}
 
@@ -449,6 +479,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 								timerText.setText(text);
 								dealExpired = true;
 								//activate.setEnabled(false);
+								activate.setTextColor(Color.BLACK);
 								activate.setBackgroundColor(Color.parseColor("#f1f1f1"));
 							}
 						}.start();
@@ -470,6 +501,18 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(true);
 		dialog.show();
+		
+		Picasso.with(this)
+		.load(deal.getImageURL())
+		.placeholder(R.drawable.soup1)
+		.error(R.drawable.soup5)
+		.into(main);
+		
+		Picasso.with(this)
+		.load(deal.getImageURL())
+		.placeholder(R.drawable.soup1)
+		.error(R.drawable.soup5)
+		.into(about);
 
 		new JSONObtainer() {
 			@Override
@@ -490,7 +533,8 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 						"City",
 						"Pincode",
 						"Coordinates",
-						"FinePrint"
+						"FinePrint",
+						"Details"
 				};
 				try {
 
@@ -500,7 +544,8 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 					deal.setRestaurantAddress(object.getString(things[3])+", "+object.getString(things[4])+" - "+object.getString(things[5]));
 					deal.setRestaurantCoordinates(object.getString(things[6]));
 					deal.setRestaurantFinePrint(object.getString(things[7]));
-
+					deal.setRestaurantDetails(object.getString(things[8]));
+					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -528,7 +573,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 				}
 
 				try {
-					instructions.setText(object.getString("Instructions"));
+					instructions.setText("How to:\n"+object.getString("Instructions"));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -540,9 +585,12 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	void goStillAhead() {
 		restname.setText(deal.getRestaurantName());
 		restname.setTypeface(null, Typeface.BOLD);
-		dealtext.setText(dtext);
+		dealtext.setText("Deal:\n"+dtext);
 		duration.setText("The deal is valid from "+start.getDateTime()+" to "+end.getDateTime());
-		finePrint.setText(deal.getRestaurantFinePrint());
+		finePrint.setText("Fine Print:\n"+deal.getRestaurantFinePrint());
+		placeDetails.setText("Address:\n"+deal.getRestaurantAddress());
+		restaurantPhoneNumber = deal.getRestaurantNumber();
+		restaurantInfo.setText("About "+deal.getRestaurantName()+":\n"+deal.getRestaurantDetails());
 		
 		String[] latlng = deal.getRestaurantCoordinates().split(",");
 		latitude = Double.parseDouble(latlng[0]);
@@ -552,5 +600,6 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		mapFragment.getMapAsync(this);
 		
 		dialog.dismiss();
+		
 	}
 }

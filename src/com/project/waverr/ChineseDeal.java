@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 public class ChineseDeal extends GlobalActionBar {
 
@@ -75,7 +76,7 @@ public class ChineseDeal extends GlobalActionBar {
 			protected void onPostExecute(JSONArray array) {
 
 				String things[] = {
-						"ID",
+						"dealID",
 						"Restaurant ID",
 						"Restaurant Name",
 						"Percentage Discount",
@@ -88,6 +89,7 @@ public class ChineseDeal extends GlobalActionBar {
 						"Start Time",
 						"End Time",
 						"Cuisine",
+						"url"
 				};
 
 				try {
@@ -102,7 +104,7 @@ public class ChineseDeal extends GlobalActionBar {
 						//text.setText(newDeal.getDetails());
 						else
 						{
-							text.setText("No "+s+" Deals Currently.Please check back later.");
+							text.setText("No "+s+" Deals Currently. Please check back later.");
 						}
 				        int height = display.heightPixels; 
 						text.setPadding(0, height/3,0, 0);
@@ -124,7 +126,7 @@ public class ChineseDeal extends GlobalActionBar {
 
 						Gson gson = new Gson();
 						Deal newDeal = new Deal();
-						newDeal.setID(object.getInt(things[0]));
+						newDeal.setID(object.getString(things[0]));
 						newDeal.setRestaurantID(object.getString(things[1]));
 						newDeal.setRestaurantName(object.getString(things[2]));
 						newDeal.setPercentageDiscount(object.getInt(things[3]));
@@ -140,8 +142,8 @@ public class ChineseDeal extends GlobalActionBar {
                         end.setTime(object.getString(things[11]));
                         newDeal.setStartDateTime(start);
                         newDeal.setEndDateTime(end);
-
 						newDeal.setCuisine(object.getString(things[12]));
+						newDeal.setImageURL(object.getString(things[13]));
 						deals.add(newDeal);
 						//Toast.makeText(getBaseContext(), "Got the object", Toast.LENGTH_SHORT).show();
 						LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -152,6 +154,11 @@ public class ChineseDeal extends GlobalActionBar {
 						button.setBackgroundColor(Color.TRANSPARENT);
 						button.setAdjustViewBounds(true);
 						buttons.add(button);
+						Picasso.with(getBaseContext())
+						.load(newDeal.getImageURL())
+						.placeholder(R.drawable.soup1)
+						.error(R.drawable.soup5)
+						.into(button);
 						final String deal = gson.toJson(newDeal);
 
 						button.setOnClickListener(new View.OnClickListener() {

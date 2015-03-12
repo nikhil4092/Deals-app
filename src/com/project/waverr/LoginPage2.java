@@ -69,7 +69,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 		.addConnectionCallbacks(this)
 		.addOnConnectionFailedListener(this)
 		.addApi(Plus.API)
-		.addScope(Plus.SCOPE_PLUS_PROFILE)
+		.addScope(Plus.SCOPE_PLUS_LOGIN)
 		.build();
 
 		progressDialog = new ProgressDialog(this);
