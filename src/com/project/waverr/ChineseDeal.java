@@ -45,7 +45,7 @@ public class ChineseDeal extends GlobalActionBar {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chinese_deal);
 
-		final ProgressDialog progressDialog = new ProgressDialog(this);
+		final ProgressDialog progressDialog = new ProgressDialog(ChineseDeal.this);
 		progressDialog.setMessage("Getting deals...");
 		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		progressDialog.setIndeterminate(true);
@@ -89,10 +89,6 @@ public class ChineseDeal extends GlobalActionBar {
 						"End Time",
 						"Cuisine",
 				};
-
-				ArrayList<Deal> deals = new ArrayList<Deal>();
-				ArrayList<ImageButton> buttons = new ArrayList<>();
-				ArrayList<TextView> texts = new ArrayList<>();
 
 				try {
 					if(array==null){

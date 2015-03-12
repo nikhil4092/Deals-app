@@ -110,7 +110,7 @@
 						            android:textAppearance="?android:attr/textAppearanceLarge" />
 
 						        <TextView
-						            android:id="@+id/conditions"
+						            android:id="@+id/timeLimit"
 						            android:layout_width="match_parent"
 						            android:layout_height="wrap_content"
 						            android:text="You have to buy 100 pounds of rice"
@@ -119,10 +119,19 @@
 						            android:textAppearance="?android:attr/textAppearanceMedium" />
 
 						        <TextView
-						            android:id="@+id/timeLimit"
+						            android:id="@+id/fine_print"
 						            android:layout_width="wrap_content"
 						            android:layout_height="wrap_content"
 						            android:text="The deal expires in 200 days!!"
+						            android:padding="7dp"
+						            android:textAppearance="?android:attr/textAppearanceMedium" />
+						        
+						        <TextView
+						            android:id="@+id/instructions"
+						            android:layout_width="match_parent"
+						            android:layout_height="wrap_content"
+						            android:text="You have to buy 100 pounds of rice"
+						            android:background="#ffffff"
 						            android:padding="7dp"
 						            android:textAppearance="?android:attr/textAppearanceMedium" />
 

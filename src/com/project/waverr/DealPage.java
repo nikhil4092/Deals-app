@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,7 +40,7 @@ import com.project.waverr.SimpleGestureFilter.SimpleGestureListener;
 public class DealPage extends GlobalActionBar implements OnTabChangeListener, OnMapReadyCallback, OnClickListener, SimpleGestureListener{
 
 	TabHost th;
-	TextView x,restname,dealtext;
+	TextView x, restname, dealtext, duration, instructions, finePrint;
 	double latitude;
 	double longitude;
 	Button getDirections;
@@ -58,6 +59,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	DateTime start;
 	DateTime end;
 	CountDownTimer timer;
+	ProgressDialog dialog;
 
 	String restaurantPhoneNumber;
 	String restaurantName;
@@ -85,13 +87,16 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		th=(TabHost)findViewById(R.id.tabhost1);
 		restname=(TextView)findViewById(R.id.placeName);
 		dealtext=(TextView)findViewById(R.id.theDeal);
+		duration = (TextView) findViewById(R.id.timeLimit);
+		instructions = (TextView) findViewById(R.id.instructions);
+		finePrint = (TextView) findViewById(R.id.fine_print);
 		findViewById(R.id.get_directions).setOnClickListener(this);
 		findViewById(R.id.button_call).setOnClickListener(this);
 		findViewById(R.id.share).setOnClickListener(this);
 		timerText = (Button) findViewById(R.id.deal_countdown_button);
 		activate = (Button) findViewById(R.id.activatedeal);
 		activate.setOnClickListener(this);
-		
+
 		th.setup();
 		TabSpec specs = th.newTabSpec("Deal");
 		specs.setContent(R.id.dealtab1);
@@ -135,13 +140,6 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 
 		th.setOnTabChangedListener(this);
 
-		MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.the_map);
-		mapFragment.getMapAsync(this);
-		
-		latitude = 13.0092;
-		longitude = 74.7937;
-
-		final String RestaurantName = deal.getRestaurantName();
 		final int percentageDeal = deal.getPercentageDiscount();
 		final int minamount = deal.getMinimumAmount();
 		final int amountdiscount = deal.getAmountDiscount();
@@ -164,11 +162,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		{
 			dtext="Get "+percentageDeal+"% off on a Minimum purchase of Rs."+minamount;
 		}
-		dealtext.setText(dtext);
-		restname.setText(RestaurantName);
-		restname.setTypeface(null, Typeface.BOLD);
-		TextView duration = (TextView) findViewById(R.id.timeLimit);
-		duration.setText("The deal is valid from "+start.getDateTime()+" to "+end.getDateTime());
+		getRestaurantDetails();
 		
 		login = global.getLoggedIn();
 		if(login==false)
@@ -246,7 +240,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		// TODO Auto-generated method stub
 		switch(v.getId()) {
 		case R.id.get_directions:
-			Uri gmmIntentUri = Uri.parse("google.navigation:q="+Double.toString(latitude)+","+Double.toString(longitude));
+			Uri gmmIntentUri = Uri.parse("google.navigation:q="+deal.getRestaurantCoordinates());
 			Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 			mapIntent.setPackage("com.google.android.apps.maps");
 			startActivity(mapIntent);
@@ -462,5 +456,101 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 				}.start();
 			}
 		}.execute(new String[] {"http://waverr.in/getcurrenttime.php"});
+	}
+
+	private void getRestaurantDetails() {
+		String[] restaurantUrl = {
+				"http://waverr.in/getrestaurantlocation.php",
+				"restaurantname", deal.getRestaurantName()
+		};
+
+		dialog = new ProgressDialog(this);
+		dialog.setMessage("Loading deal...");
+		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		dialog.setIndeterminate(true);
+		dialog.setCancelable(true);
+		dialog.show();
+
+		new JSONObtainer() {
+			@Override
+			protected void onPostExecute(JSONArray array) {
+				JSONObject object = null;
+				try {
+					object = array.getJSONObject(0);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				String[] things = {
+						"Restaurant ID",
+						"Restaurant Name",
+						"Contact Number",
+						"Street Address",
+						"City",
+						"Pincode",
+						"Coordinates",
+						"FinePrint"
+				};
+				try {
+
+					deal.setRestaurantID(object.getString(things[0]));
+					deal.setRestaurantName(object.getString(things[1]));
+					deal.setRestaurantNumber(object.getString(things[2]));
+					deal.setRestaurantAddress(object.getString(things[3])+", "+object.getString(things[4])+" - "+object.getString(things[5]));
+					deal.setRestaurantCoordinates(object.getString(things[6]));
+					deal.setRestaurantFinePrint(object.getString(things[7]));
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				goAhead();
+			}
+		}.execute(restaurantUrl);
+	}
+
+	private void goAhead() {
+		String[] url = {
+				"http://waverr.in/getinstructions.php"
+		};
+
+		new JSONObtainer() {
+			@Override
+			protected void onPostExecute(JSONArray array) {
+				JSONObject object = null;
+				try {
+					object= array.getJSONObject(0);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				try {
+					instructions.setText(object.getString("Instructions"));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				goStillAhead();
+			}
+		}.execute(url);
+	}
+	void goStillAhead() {
+		restname.setText(deal.getRestaurantName());
+		restname.setTypeface(null, Typeface.BOLD);
+		dealtext.setText(dtext);
+		duration.setText("The deal is valid from "+start.getDateTime()+" to "+end.getDateTime());
+		finePrint.setText(deal.getRestaurantFinePrint());
+		
+		String[] latlng = deal.getRestaurantCoordinates().split(",");
+		latitude = Double.parseDouble(latlng[0]);
+		longitude = Double.parseDouble(latlng[1]);
+		
+		MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.the_map);
+		mapFragment.getMapAsync(this);
+		
+		dialog.dismiss();
 	}
 }
