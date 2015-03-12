@@ -1,18 +1,13 @@
 package com.project.waverr;
 
 import android.app.AlertDialog;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -98,9 +93,6 @@ public class GlobalActionBar extends ActionBarActivity implements NavigationDraw
 			MenuInflater inflater = getMenuInflater();
 			inflater.inflate(R.menu.home2, menu);
 			
-			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-			SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 			restoreActionBar();
 			return true;
 		//}
@@ -139,7 +131,7 @@ public class GlobalActionBar extends ActionBarActivity implements NavigationDraw
 		return super.onOptionsItemSelected(item);
 	}
 	
-	private void checkStuff() {
+	/*private void checkStuff() {
 		if(((String) global.getCity()).compareTo("Location Off")==0) {
 			AlertDialog.Builder promptBuilder = new AlertDialog.Builder(this);
 		    promptBuilder.setMessage("Location is disabled.\nEnable location?\n\nNote: You can also choose your preferred location by clicking on the location icon at the top.");
@@ -160,13 +152,13 @@ public class GlobalActionBar extends ActionBarActivity implements NavigationDraw
 		    locationPrompt.show();
 		    flagLocation=1;
 		}
-	}
+	}*/
 	
 	@Override
 	protected void onResume () {
 		super.onResume();
 		//AppEventsLogger.activateApp(this);
-		if(global.getCity().equalsIgnoreCase("Location Off") && flagLocation==1) {
+		/*if(global.getCity().equalsIgnoreCase("Location Off") && flagLocation==1) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -185,7 +177,7 @@ public class GlobalActionBar extends ActionBarActivity implements NavigationDraw
 				}.execute(giver);
 				flagLocation=0;
 		}
-		bar.setTitle(global.getCity());
+		bar.setTitle(global.getCity());*/
 	}
 
 }

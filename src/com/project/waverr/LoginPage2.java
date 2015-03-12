@@ -3,6 +3,7 @@ package com.project.waverr;
 import org.json.JSONArray;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
@@ -43,6 +44,9 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 	//private FacebookFragment facebookFragment;
 
 	GlobalClass global;
+	ProgressDialog progressDialog;
+	String gotoActivity;
+	String dealString = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,14 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 		setContentView(R.layout.login_page);
 		global = (GlobalClass) getApplication();
 
+		Intent intent = getIntent();
+		if(intent.hasExtra("returnActivity")) {
+			dealString = intent.getStringExtra("deal");
+			gotoActivity = intent.getStringExtra("returnActivity");
+		}
+		else
+			gotoActivity = "com.project.waverr.HOMETWO";
+			
 		findViewById(R.id.btn_sign_in).setOnClickListener(this);
 		findViewById(R.id.nologin).setOnClickListener(this);
 
@@ -60,18 +72,11 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 		.addScope(Plus.SCOPE_PLUS_PROFILE)
 		.build();
 
-		/*if (savedInstanceState == null) {
-			// Add the fragment on initial activity setup
-			facebookFragment = new FacebookFragment();
-			getSupportFragmentManager()
-			.beginTransaction()
-			.add(android.R.id.content, facebookFragment)
-			.commit();
-		} else {
-			// Or set the fragment from restored state info
-			facebookFragment = (FacebookFragment) getSupportFragmentManager()
-					.findFragmentById(android.R.id.content);
-		}*/
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setMessage("Logging you in...");
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progressDialog.setIndeterminate(true);
+		progressDialog.setCancelable(false);
 	}
 
 	@Override
@@ -87,6 +92,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 		if(view.getId() == R.id.nologin) {
 			Intent intent = new Intent(this, com.project.waverr.Home2.class);
 			global.setloginstatus("none");
+			global.setLoggedIn(false);
 			startActivity(intent);
 		}
 	}
@@ -99,6 +105,8 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 				mIntentInProgress = true;
 				startIntentSenderForResult(mConnectionResult.getResolution().getIntentSender(),
 						RC_SIGN_IN, null, 0, 0, 0);
+				if(progressDialog!=null && !progressDialog.isShowing())
+					progressDialog.show();
 			} catch (SendIntentException e) {
 				// The intent was canceled before it was sent.  Return to the default
 				// state and attempt to connect to get an updated ConnectionResult.
@@ -178,6 +186,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 			global.setPersonGooglePlusProfile(personGooglePlusProfile);
 			global.setPersonEmail(personEmail);
 			global.setloginstatus("google");
+			global.setLoggedIn(true);
 
 			JSONObtainer checker = new JSONObtainer() {
 				@Override
@@ -202,7 +211,10 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 					"email", personEmail
 			});
 			global.setClient(mGoogleApiClient);
-			Intent intent = new Intent(this, com.project.waverr.Home2.class);
+			Intent intent = new Intent(gotoActivity);
+			intent.putExtra("deal", dealString);
+			if(progressDialog!=null && progressDialog.isShowing())
+				progressDialog.dismiss();
 			startActivity(intent);
 		}
 	}

@@ -1,6 +1,7 @@
 package com.project.waverr;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -23,16 +24,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.Toast;
 
-import com.facebook.Session;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.squareup.picasso.Picasso;
@@ -87,7 +84,7 @@ OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		global = (GlobalClass) getActivity().getApplication();
 		// Read in the flag indicating whether or not the user has demonstrated
 		// awareness of the
 		// drawer. See PREF_USER_LEARNED_DRAWER for details.
@@ -248,6 +245,7 @@ OnClickListener {
 
 				getActivity().supportInvalidateOptionsMenu(); // calls
 				// onPrepareOptionsMenu()
+				global.setDrawerOpen(false);
 			}
 
 			@Override
@@ -256,6 +254,7 @@ OnClickListener {
 				if (!isAdded()) {
 					return;
 				}
+				global.setDrawerOpen(true);
 
 				if (!mUserLearnedDrawer) {
 					// The user manually opened the drawer; store this flag to
@@ -303,13 +302,10 @@ OnClickListener {
 			//mDrawerListView.setItemChecked(position, true);
 
 			if (position == 3) {
-				/*Intent intent = new Intent(getActivity(),
-						com.project.waverr.PopUpActivity1.class);
-				startActivity(intent);*/
-				
-				@SuppressWarnings("static-access")
+
+				/*@SuppressWarnings("static-access")
 				LayoutInflater inflater = (LayoutInflater) getActivity().getBaseContext()
-						.getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
+				.getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
 				View popupview = inflater.inflate(R.layout.popup1, null);
 				final PopupWindow popupwindow = new PopupWindow(popupview,
 						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -323,18 +319,41 @@ OnClickListener {
 					}
 
 				});
-				popupwindow.showAsDropDown(popupview, 20, 20);
+				popupwindow.showAsDropDown(popupview, 20, 20);*/
+
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				builder.setTitle("About Waverr");
+				builder.setMessage(R.string.about_waverr);
+				builder.setPositiveButton(R.string.button_ok, new OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				});
+				AlertDialog dialog = builder.create();
+				dialog.show();
+
 			}
 			else if(position==4){
-				Intent intent = new Intent(getActivity(),
-						com.project.waverr.PopUpActivity2.class);
-				startActivity(intent);
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				builder.setTitle("Contact Us");
+				builder.setMessage(R.string.contact_us);
+				builder.setPositiveButton(R.string.button_ok, new OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				});
+				AlertDialog dialog = builder.create();
+				dialog.show();
 			}
 
 			if(position == 5 ) {
-				Intent intent = new Intent(getActivity(),
-						com.project.waverr.RestaurantList.class);
-				startActivity(intent);
+				
 			}
 
 			else if (position == 7) {
@@ -343,13 +362,8 @@ OnClickListener {
 					Intent intent = new Intent(getActivity(),
 							com.project.waverr.LoginPage2.class);
 					startActivity(intent);
-				} else if (mLoginStatus.equals("facebook")) {
-					logoutFacebook();
-					getActivity().finish();
-					Intent intent = new Intent(getActivity(),
-							com.project.waverr.LoginPage.class);
-					startActivity(intent);
-				} else if (mLoginStatus.equals("google")) {
+				}
+				else if (mLoginStatus.equals("google")) {
 					logoutGoogle();
 					getActivity().finish();
 					Intent intent = new Intent("com.project.waverr.LOGINPAGE");
@@ -371,26 +385,8 @@ OnClickListener {
 			Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
 			Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient);
 			mGoogleApiClient.disconnect();
-			//mGoogleApiClient.connect();
+			global.clearUser();
 		}
-	}
-
-	public static void logoutFacebook() {
-		Session session = Session.getActiveSession();
-		if (session != null) {
-			if (!session.isClosed()) {
-				session.closeAndClearTokenInformation();
-			}
-		} else {
-			Activity context = null;
-			Session session2 = Session.openActiveSession((Activity) context,
-					false, null);
-			if (session2 != null) {
-				session2.closeAndClearTokenInformation();
-			}
-
-		}
-		Session.setActiveSession(null);
 	}
 
 	@Override

@@ -7,7 +7,6 @@ import android.os.CountDownTimer;
 import android.view.Window;
 import android.widget.Toast;
 
-import com.facebook.AppEventsLogger;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -79,11 +78,10 @@ public class Splash extends Activity implements ConnectionCallbacks, OnConnectio
 	}
 	
 	@Override
-	protected void onPause() {
-		super.onPause();
+	protected void onStop() {
+		super.onStop();
 		// TODO Auto-generated method stub
 		finish();
-		super.onPause();
 	}
 	
 	@Override
@@ -124,6 +122,7 @@ public class Splash extends Activity implements ConnectionCallbacks, OnConnectio
 			global.setPersonGooglePlusProfile(personGooglePlusProfile);
 			global.setPersonEmail(personEmail);
 			global.setloginstatus("google");
+			global.setLoggedIn(true);
 		}
 		global.setClient(mGoogleApiClient);
 		Intent intent = new Intent(this, com.project.waverr.Home2.class);
@@ -143,11 +142,5 @@ public class Splash extends Activity implements ConnectionCallbacks, OnConnectio
 			else
 				goToLoginPage();
 		}
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		AppEventsLogger.activateApp(this);
 	}
 }

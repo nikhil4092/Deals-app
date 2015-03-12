@@ -4,9 +4,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -17,7 +20,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -41,9 +43,6 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	double latitude;
 	double longitude;
 	Button getDirections;
-	ImageButton favouriteStatus,share;;
-	String restaurantPhoneNumber;
-	String restaurantName;
 	GlobalClass global;
 	Button timerText;
 	String time;
@@ -53,12 +52,16 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	String dtext;
 	boolean login;
 	Deal deal;
-	
+	Boolean dealExpired;
+	String dealString;
+
 	DateTime start;
 	DateTime end;
 	CountDownTimer timer;
-	/*Integer[] imageIDs = {
-			 R.drawable.chinese1,R.drawable.ic_launcher,R.drawable.splash,R.drawable.chinese1};*/
+
+	String restaurantPhoneNumber;
+	String restaurantName;
+	String restaurantID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,34 +71,27 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		global = (GlobalClass) getApplication();
 
 		Intent intent = getIntent();
-		String dealString = intent.getStringExtra("deal");
+		dealString = intent.getStringExtra("deal");
+		dealExpired = false;
 		Gson gson = new Gson();
-		if(dealString!=null)
-		{
-			//Toast.makeText(this, dealString, Toast.LENGTH_LONG).show();
-			deal = gson.fromJson(dealString, Deal.class);
-			//deal = global.getDeal();
-			start = deal.getStartDateTime();
-			end = deal.getEndDateTime();
-			setLayout(deal);
-		}
-		else
-			Toast.makeText(this, "Deal string is null", Toast.LENGTH_SHORT).show();
+		deal = gson.fromJson(dealString, Deal.class);
+		start = deal.getStartDateTime();
+		end = deal.getEndDateTime();
 
 		ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
 		ImagePagerAdapter adapter = new ImagePagerAdapter();
 		viewPager.setAdapter(adapter);
 
 		th=(TabHost)findViewById(R.id.tabhost1);
-
-		findViewById(R.id.button_call).setOnClickListener(this);
-		favouriteStatus = (ImageButton) findViewById(R.id.favourite_status);
-		favouriteStatus.setOnClickListener(this);
 		restname=(TextView)findViewById(R.id.placeName);
 		dealtext=(TextView)findViewById(R.id.theDeal);
-		restaurantPhoneNumber = "+918105563395";
-		share=(ImageButton)findViewById(R.id.share);
-		share.setOnClickListener(this);
+		findViewById(R.id.get_directions).setOnClickListener(this);
+		findViewById(R.id.button_call).setOnClickListener(this);
+		findViewById(R.id.share).setOnClickListener(this);
+		timerText = (Button) findViewById(R.id.deal_countdown_button);
+		activate = (Button) findViewById(R.id.activatedeal);
+		activate.setOnClickListener(this);
+		
 		th.setup();
 		TabSpec specs = th.newTabSpec("Deal");
 		specs.setContent(R.id.dealtab1);
@@ -141,22 +137,16 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 
 		MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.the_map);
 		mapFragment.getMapAsync(this);
+		
 		latitude = 13.0092;
 		longitude = 74.7937;
 
-		getDirections = (Button) findViewById(R.id.get_directions);
-		getDirections.setOnClickListener(this);
-
-		timerText = (Button) findViewById(R.id.deal_countdown_button);
-		activate = (Button) findViewById(R.id.activatedeal);
-		activate.setOnClickListener(this);
-		//final String RestaurantName = deal.getRestaurantName();
+		final String RestaurantName = deal.getRestaurantName();
 		final int percentageDeal = deal.getPercentageDiscount();
 		final int minamount = deal.getMinimumAmount();
 		final int amountdiscount = deal.getAmountDiscount();
 		final String canvastext	= deal.getCanvasText();
 		final String freebie = deal.getFreebie();
-		Bundle b=getIntent().getExtras();
 		dtext="";
 		if(canvastext.compareTo("")!=0&&canvastext!=null)
 		{
@@ -174,21 +164,17 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		{
 			dtext="Get "+percentageDeal+"% off on a Minimum purchase of Rs."+minamount;
 		}
-		login=b.getBoolean("login");
+		dealtext.setText(dtext);
+		restname.setText(RestaurantName);
+		restname.setTypeface(null, Typeface.BOLD);
+		TextView duration = (TextView) findViewById(R.id.timeLimit);
+		duration.setText("The deal is valid from "+start.getDateTime()+" to "+end.getDateTime());
+		
+		login = global.getLoggedIn();
 		if(login==false)
 		{
-			activate.setEnabled(false);
+			//activate.setEnabled(false);
 			activate.setBackgroundColor(Color.parseColor("#f1f1f1"));
-		}
-
-		restaurantName = "Hao Ming";
-		if(global.isFavourited(restaurantName)) {
-			//Toast.makeText(this, "It's a favourite!!", Toast.LENGTH_SHORT).show();
-			favouriteStatus.setImageResource(R.drawable.favorite_full);
-		}
-		else {
-			//Toast.makeText(this, "Nope!!", Toast.LENGTH_SHORT).show();
-			favouriteStatus.setImageResource(R.drawable.favorite_empty);
 		}
 
 		detector = new SimpleGestureFilter(this, this);
@@ -272,20 +258,56 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 			startActivity(dialIntent);
 			break;
 
-		case R.id.favourite_status:
-			global.setFavourite(restaurantName, !global.isFavourited(restaurantName));
-			if(global.isFavourited(restaurantName))
-				favouriteStatus.setImageResource(R.drawable.favorite_full);
-			else
-				favouriteStatus.setImageResource(R.drawable.favorite_empty);
-			break;
-
 		case R.id.activatedeal:
 			// TODO Auto-generated method stub
-			Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-			intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-			intent.putExtra("PROMPT_MESSAGE", "");
-			startActivityForResult(intent, 0);
+			if(dealExpired == true) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
+				builder.setTitle("Deal expired");
+				builder.setMessage("Sorry... The deal has expired. Please have a look at other deals.");
+				builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				});
+				builder.create().show();
+			}
+			else if(login==false) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setMessage("You need to be logged in to activate deals. Go to login page?");
+				builder.setTitle("Not logged in");
+				builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						Intent intent = new Intent("com.project.waverr.LOGINPAGE");
+						intent.putExtra("returnActivity", "com.project.waverr.DEALPAGE");
+						intent.putExtra("deal", dealString);
+						finish();
+						//global.setDeal(deal);
+						startActivity(intent);
+					}
+				});
+				builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				});
+				builder.create().show();
+			}
+			else {
+				activate.setText("Activating...");
+				Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+				intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+				intent.putExtra("PROMPT_MESSAGE", "");
+				startActivityForResult(intent, 0);
+			}
 			break;
 		case R.id.share:
 			final String RestaurantName = deal.getRestaurantName();
@@ -296,6 +318,13 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 			startActivity(Intent.createChooser(i,"Share via"));
 			break;
 		}
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		activate.setText("Activate Deal");
 	}
 
 	@Override
@@ -329,7 +358,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 			if (resultCode == RESULT_OK) {
 
 				String contents = intent.getStringExtra("SCAN_RESULT");
-				if(contents.compareTo("Tritoria")==0)
+				if(contents.compareTo(restaurantID)==0)
 				{
 					Intent i=new Intent("com.project.waverr.SUCCESS");
 					i.putExtra("Working",true);
@@ -351,31 +380,19 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		}
 	}
 
-	private void setLayout(Deal deal) {
-		
-		TextView theThing = (TextView) findViewById(R.id.theDeal);
-		String dealThing = "Flat "+deal.getPercentageDiscount()+"% off on all food items!";
-		theThing.setText(dealThing);
-
-		TextView details = (TextView) findViewById(R.id.conditions);
-		details.setText("Minimum amount is Rs "+deal.getMinimumAmount()+"\n"+deal.getDetails());
-
-		TextView duration = (TextView) findViewById(R.id.timeLimit);
-		duration.setText("The deal is valid from "+start.getDateTime()+" to "+end.getDateTime());
-	}
-	
 	private void startTimer() {
 		final long startMillis = start.getTimeInMillis();
 		final long endMillis = end.getTimeInMillis();
-		
+
 		new JSONObtainer() {
 			DateTime current = new DateTime();
-			
+
 			@Override
 			protected void onProgressUpdate(Void... voids) {
 				timerText.setText("Calculating time left...");
+				activate.setBackgroundColor(Color.parseColor("#f1f1f1"));
 			}
-			
+
 			@Override
 			protected void onPostExecute(JSONArray array) {
 				try {
@@ -387,9 +404,9 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 					e.printStackTrace();
 				}
 				long currentMillis = current.getTimeInMillis();
-				
+
 				final long timeUntilStart, timeUntilEnd;
-				
+
 				if(startMillis > currentMillis)
 					timeUntilStart = startMillis - currentMillis;
 				else
@@ -398,10 +415,10 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 					timeUntilEnd = endMillis - currentMillis;
 				else
 					timeUntilEnd = 0;
-				
+
 				new CountDownTimer(timeUntilStart, 1000) {
 					final DateTime actual = new DateTime();
-					
+
 					@Override
 					public void onTick(long millisUntilFinished) {
 						// TODO Auto-generated method stub
@@ -413,12 +430,12 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 								+ actual.seconds + "s";
 						timerText.setText(text);
 					}
-					
+
 					@Override
 					public void onFinish() {
 						// TODO Auto-generated method stub
 						new CountDownTimer(timeUntilEnd, 1000) {
-							
+
 							@Override
 							public void onTick(long millisUntilFinished) {
 								// TODO Auto-generated method stub
@@ -430,12 +447,15 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 										+ actual.seconds + "s";
 								timerText.setText(text);
 							}
-							
+
 							@Override
 							public void onFinish() {
 								// TODO Auto-generated method stub
-								String text = "Deal has expired!";
+								String text = "Deal\nExpired!";
 								timerText.setText(text);
+								dealExpired = true;
+								//activate.setEnabled(false);
+								activate.setBackgroundColor(Color.parseColor("#f1f1f1"));
 							}
 						}.start();
 					}

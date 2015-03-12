@@ -45,7 +45,7 @@ public class DateTime {
 		temp /= 60;
 		minutes = (int) (temp % 60);
 		temp /= 60;
-		hours = (int) (temp % 60);
+		hours = (int) (temp % 24);
 		temp /= 24;
 		days = (int) temp;
 	}

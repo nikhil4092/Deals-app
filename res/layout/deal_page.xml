@@ -164,24 +164,32 @@
 						         >
 
 						      <LinearLayout
-									    android:layout_width="fill_parent"
-									        android:layout_height="wrap_content"
-									        android:orientation="horizontal"
-									        android:layout_weight="2"
-									        android:weightSum="2"
-									        android:layout_margin="4dp"
-									        android:background="#f1f1f1" >
-									
-									    <TextView
-									        android:id="@+id/namefulladdress"
-									        android:layout_width="wrap_content"
-									        android:layout_height="wrap_content"
-									        android:layout_weight="2"								        
-									        android:text="Hao Ming \n Balmatta, Mangalore \n Ph.No:9008002002"
-									        android:textAppearance="?android:attr/textAppearanceMedium" />
-								
-									
-									</LinearLayout>
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="4dp"
+                                        android:layout_weight="2"
+                                        android:background="#f1f1f1"
+                                        android:orientation="horizontal"
+                                        android:weightSum="2" >
+
+                                        <TextView
+                                            android:id="@+id/namefulladdress"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="2"
+                                            android:text="Hao Ming \n Balmatta, Mangalore \n Ph.No:9008002002"
+                                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                                        <ImageButton
+                                            android:id="@+id/button_call"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="4"
+                                            android:background="#0000"
+                                            android:padding="5dp"
+                                            android:scaleType="center"
+                                            android:src="@drawable/ic_action_call" />
+                                    </LinearLayout>
 						    </LinearLayout>
 						    <LinearLayout
 						        android:layout_width="fill_parent"
@@ -234,32 +242,7 @@
 									</LinearLayout>
 						    </LinearLayout>
 
-						    <LinearLayout
-						        android:layout_width="match_parent"
-						        android:layout_height="wrap_content"
-								android:gravity="center"
-								android:background="#5dbede"
-						        android:layout_weight="4" >
-
-						        <ImageButton
-						            android:id="@+id/favourite_status"
-						            android:layout_width="wrap_content"
-						            android:layout_height="wrap_content"
-						            android:layout_weight="4"
-						            android:scaleType="center"
-						            android:background="#0000" />
-
-						        <ImageButton
-						            android:id="@+id/button_call"
-						            android:layout_width="wrap_content"
-						            android:layout_height="wrap_content"
-						            android:layout_weight="4"
-						            android:scaleType="center"
-						            android:background="#0000"
-						            android:src="@drawable/ic_action_call" />
-
-						    </LinearLayout>
-
+						    
 				       </LinearLayout>
 				</ScrollView>
 					</LinearLayout>
@@ -327,16 +310,17 @@
     <Button
         android:id="@+id/deal_countdown_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="5"
         android:background="#fe5335"
+        android:textColor="#ffffff"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Deal Counter" />
+        android:text="Please wait...\nLoading" />
 
     <Button
         android:id="@+id/activatedeal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="5"
         android:textColor="#ffffff"
         android:textStyle="bold"

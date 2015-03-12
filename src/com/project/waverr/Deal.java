@@ -4,8 +4,6 @@ package com.project.waverr;
 public class Deal {
 	
 	int ID;
-	String restaurantID;
-	String restaurantName;
 	String details;
 	int percentageDiscount;
 	int amountDiscount;
@@ -18,6 +16,38 @@ public class Deal {
 	String dealID;
 	double distanceFromUser;
 	
+	String restaurantID;
+	String restaurantName;
+	String restaurantNumber;
+	String restaurantAddress;
+	String restaurantCoordinates;
+	String restaurantFinePrint;
+	
+	public String getRestaurantCoordinates() {
+		return restaurantCoordinates;
+	}
+	public void setRestaurantCoordinates(String restaurantCoordinates) {
+		this.restaurantCoordinates = restaurantCoordinates;
+	}
+	public String getRestaurantFinePrint() {
+		return restaurantFinePrint;
+	}
+	public void setRestaurantFinePrint(String restaurantFinePrint) {
+		this.restaurantFinePrint = restaurantFinePrint;
+	}
+	public String getRestaurantNumber() {
+		return restaurantNumber;
+	}
+	public void setRestaurantNumber(String restaurantNumber) {
+		this.restaurantNumber = restaurantNumber;
+	}
+	public String getRestaurantAddress() {
+		return restaurantAddress;
+	}
+	public void setRestaurantAddress(String restaurantAddress) {
+		this.restaurantAddress = restaurantAddress;
+	}
+
 	public int getID() {
 		return ID;
 	}

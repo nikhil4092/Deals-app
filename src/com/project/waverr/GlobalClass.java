@@ -1,7 +1,5 @@
 package com.project.waverr;
 
-import java.util.ArrayList;
-
 import android.app.Application;
 import android.content.Context;
 
@@ -33,16 +31,40 @@ public class GlobalClass extends Application {
     }
 	
 	private String city;
-	private ArrayList<String> favouritedRestaurants;
 	private String personName = "Not available";
 	private Image personPhoto;
 	private String personGooglePlusProfile;
 	private String personEmail = "Please login";
 	private String loginstatus;
+	private Boolean loggedIn;
 	private String lastitem;
 	private GoogleApiClient mGoogleApiClient;
 	private Deal currentDeal;
+	private Boolean drawerOpen = false;
 	
+	public Boolean getDrawerOpen() {
+		return drawerOpen;
+	}
+
+	public void setDrawerOpen(Boolean drawerOpen) {
+		this.drawerOpen = drawerOpen;
+	}
+
+	public void clearUser() {
+		personName = "Not available";
+		personEmail = "Please login";
+		personPhoto = null;
+		loggedIn = false;
+		loginstatus = "none";
+	}
+	public Boolean getLoggedIn() {
+		return loggedIn;
+	}
+
+	public void setLoggedIn(Boolean loggedIn) {
+		this.loggedIn = loggedIn;
+	}
+
 	public void setDeal(Deal deal) {
 		currentDeal = deal;
 	}
@@ -115,32 +137,5 @@ public class GlobalClass extends Application {
 	public String getCity() {
 		return city;
 	}
-	
-	public void setFavourite(String restaurant, boolean preference) {
-		if(favouritedRestaurants==null) {
-			favouritedRestaurants = new ArrayList<>();
-			//Toast.makeText(this, "List is empty", Toast.LENGTH_SHORT);
-		}
-			
-		if(preference==true) {
-			favouritedRestaurants.add(restaurant);
-			//Toast.makeText(this, "Restaurant "+restaurant+" added to favs", Toast.LENGTH_SHORT).show();
-		}
-		else
-			favouritedRestaurants.remove(restaurant);
-	}
-	
-	public boolean isFavourited(String restaurant) {
-		if(favouritedRestaurants==null)
-			return false;
-		
-		/*for(String i: favouritedRestaurants)
-			if(i.equalsIgnoreCase(restaurant))
-				return true;
-		
-		return false;*/
-		return favouritedRestaurants.contains(restaurant);
-	}
-	
 	
 }
