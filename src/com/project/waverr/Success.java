@@ -24,6 +24,7 @@ public class Success extends Activity{
 	Animation animblink;
 	RandAlphaNum gen = new RandAlphaNum();
 	GlobalClass global;
+	String actid;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		global = (GlobalClass) getApplication();
@@ -42,19 +43,22 @@ public class Success extends Activity{
 			Deal deal = global.getDeal();
 			String dealid = deal.getID();
 			name = deal.getRestaurantID();
+			actid = dealid+"-"+s;
 			tv1.setText("Congratulations");
 			tv2.setText("DEAL ACTIVATED");
-			tv3.setText("CODE:"+dealid+s);
+			tv3.setText("CODE:"+actid);
+			
 			animblink=AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
 			tv2.startAnimation(animblink);
 
 			//new PostData().execute();
 			String[] things = {
 					"http://waverr.in/sendactivateddeals.php",
-					"dealid", dealid+s,
+					"dealid", dealid,
 					"restaurantname", deal.getRestaurantName(),
 					"emailid", global.getPersonEmail(),
 					"customername", global.getPersonName(),
+					"actid", actid
 			};
 			
 			new JSONObtainer() {

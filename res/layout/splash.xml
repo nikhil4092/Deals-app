@@ -9,5 +9,16 @@
     tools:context="com.project.waverr.Splash"
     android:background="@drawable/splash_screen_beta" >
 
+    <TextView
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
+        android:layout_marginBottom="75dp"
+        android:textStyle="bold"
+        android:text="Loading..."
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

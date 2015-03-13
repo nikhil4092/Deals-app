@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.view.Window;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -22,26 +26,16 @@ public class Splash extends Activity implements ConnectionCallbacks, OnConnectio
 	private Boolean timerRunning;
 	private int SPLASH_TIME = 2000;
 	private Boolean googleConnected = false;
+	private TextView loading;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.splash);
-
-		/*Thread timer = new Thread(){
-			public void run(){
-				try{
-					sleep(2000);					
-				} catch (InterruptedException e){
-					e.printStackTrace();
-				}finally{
-					Intent openStartingPoint = new Intent("com.project.waverr.LOGINPAGE");
-					startActivity(openStartingPoint);
-				}
-			}
-		};
-		timer.start();*/
+		
+		loading = (TextView)findViewById(R.id.loading);
+		loading.setVisibility(View.INVISIBLE);
 		
 		timerRunning = true;
 		
@@ -141,6 +135,14 @@ public class Splash extends Activity implements ConnectionCallbacks, OnConnectio
 				goAheadWithGoogle();
 			else
 				goToLoginPage();
+		}
+		else {
+			Animation anim = new AlphaAnimation(0.0f, 1.0f);
+			anim.setDuration(1000);
+			anim.setRepeatMode(Animation.REVERSE);
+			anim.setRepeatCount(Animation.INFINITE);
+			loading.setVisibility(View.VISIBLE);
+			loading.startAnimation(anim);
 		}
 	}
 }

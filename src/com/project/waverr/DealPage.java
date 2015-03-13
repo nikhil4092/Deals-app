@@ -85,6 +85,13 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		deal = gson.fromJson(dealString, Deal.class);
 		start = deal.getStartDateTime();
 		end = deal.getEndDateTime();
+		
+		dialog = new ProgressDialog(this);
+		dialog.setMessage("Loading deal...");
+		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		dialog.setIndeterminate(true);
+		dialog.setCancelable(false);
+		dialog.show();
 
 		ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
 		ImagePagerAdapter adapter = new ImagePagerAdapter();
@@ -97,6 +104,14 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		instructions = (TextView) findViewById(R.id.instructions);
 		finePrint = (TextView) findViewById(R.id.fine_print);
 		placeDetails = (TextView) findViewById(R.id.namefulladdress);
+		placeDetails.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				th.setCurrentTab(3);
+			}
+		});
 		restaurantInfo = (TextView) findViewById(R.id.RestoIntro);
 		findViewById(R.id.get_directions).setOnClickListener(this);
 		findViewById(R.id.button_call).setOnClickListener(this);
@@ -183,7 +198,6 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		}
 
 		detector = new SimpleGestureFilter(this, this);
-		startTimer();
 	}
 
 	private class ImagePagerAdapter extends PagerAdapter {
@@ -196,7 +210,8 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 
 		@Override
 		public int getCount() {
-			return mImages.length;
+			//return mImages.length;
+			return 25;
 		}
 
 		@Override
@@ -212,7 +227,11 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 					R.dimen.padding_medium);
 			imageView.setPadding(padding, padding, padding, padding);
 			imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-			imageView.setImageResource(mImages[position]);
+			Picasso.with(context)
+			.load("http://waverr.in/restaurantmenuimages/"+deal.getRestaurantID()+"/"+(position+1)+".jpg")
+			.placeholder(R.drawable.placeholderimage)
+			.into(imageView);
+			//imageView.setImageResource(mImages[position]);
 			((ViewPager) container).addView(imageView, 0);
 			return imageView;
 		}
@@ -444,10 +463,10 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 						// TODO Auto-generated method stub
 						actual.setDateTimeByMillis(millisUntilFinished);
 						String text = "Deal starts in\n"
-								+ actual.days + " d "
-								+ actual.hours + " h "
-								+ actual.minutes + " m "
-								+ actual.seconds + " s";
+								+ actual.days + "d "
+								+ actual.hours + "h "
+								+ actual.minutes + "m "
+								+ actual.seconds + "s";
 						timerText.setText(text);
 						activate.setTextColor(Color.BLACK);
 						activate.setBackgroundColor(Color.parseColor("#f1f1f1"));
@@ -465,10 +484,10 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 								// TODO Auto-generated method stub
 								actual.setDateTimeByMillis(millisUntilFinished);
 								String text = "Deal ends in\n"
-										+ actual.days + " d "
-										+ actual.hours + " h "
-										+ actual.minutes + " m "
-										+ actual.seconds + " s";
+										+ actual.days + "d "
+										+ actual.hours + "h "
+										+ actual.minutes + "m "
+										+ actual.seconds + "s";
 								timerText.setText(text);
 							}
 
@@ -494,26 +513,21 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 				"http://waverr.in/getrestaurantlocation.php",
 				"restaurantname", deal.getRestaurantName()
 		};
-
-		dialog = new ProgressDialog(this);
-		dialog.setMessage("Loading deal...");
-		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		dialog.setIndeterminate(true);
-		dialog.setCancelable(true);
-		dialog.show();
 		
 		Picasso.with(this)
 		.load(deal.getImageURL())
-		.placeholder(R.drawable.soup1)
-		.error(R.drawable.soup5)
+		.placeholder(R.drawable.placeholderimage)
+		.error(R.drawable.placeholderimage)
 		.into(main);
 		
 		Picasso.with(this)
 		.load(deal.getImageURL())
-		.placeholder(R.drawable.soup1)
-		.error(R.drawable.soup5)
+		.placeholder(R.drawable.placeholderimage)
+		.error(R.drawable.placeholderimage)
 		.into(about);
 
+		startTimer();
+		
 		new JSONObtainer() {
 			@Override
 			protected void onPostExecute(JSONArray array) {
@@ -585,7 +599,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	void goStillAhead() {
 		restname.setText(deal.getRestaurantName());
 		restname.setTypeface(null, Typeface.BOLD);
-		dealtext.setText("Deal:\n"+dtext);
+		dealtext.setText(dtext);
 		duration.setText("The deal is valid from "+start.getDateTime()+" to "+end.getDateTime());
 		finePrint.setText("Fine Print:\n"+deal.getRestaurantFinePrint());
 		placeDetails.setText("Address:\n"+deal.getRestaurantAddress());
@@ -600,6 +614,5 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		mapFragment.getMapAsync(this);
 		
 		dialog.dismiss();
-		
 	}
 }

@@ -76,7 +76,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 		progressDialog.setMessage("Logging you in...");
 		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		progressDialog.setIndeterminate(true);
-		progressDialog.setCancelable(false);
+		progressDialog.setCancelable(true);
 	}
 
 	@Override

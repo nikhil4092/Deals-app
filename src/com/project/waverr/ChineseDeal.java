@@ -149,15 +149,15 @@ public class ChineseDeal extends GlobalActionBar {
 						LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 						ImageButton button = new ImageButton(getBaseContext());
 						button.setLayoutParams(params);
-						button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
+						//button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
 						button.setScaleType(ScaleType.FIT_XY);
 						button.setBackgroundColor(Color.TRANSPARENT);
 						button.setAdjustViewBounds(true);
 						buttons.add(button);
 						Picasso.with(getBaseContext())
 						.load(newDeal.getImageURL())
-						.placeholder(R.drawable.soup1)
-						.error(R.drawable.soup5)
+						.placeholder(R.drawable.placeholderimage)
+						.error(R.drawable.placeholderimage)
 						.into(button);
 						final String deal = gson.toJson(newDeal);
 

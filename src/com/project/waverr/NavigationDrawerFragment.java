@@ -14,9 +14,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -49,8 +46,7 @@ import com.squareup.picasso.Picasso;
  * implemented here.
  */
 @SuppressWarnings("deprecation")
-public class NavigationDrawerFragment extends Fragment implements
-OnClickListener {
+public class NavigationDrawerFragment extends Fragment {
 
 	/**
 	 * Remember the position of the selected item.
@@ -100,13 +96,12 @@ OnClickListener {
 		mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
 		if (savedInstanceState != null) {
-			mCurrentSelectedPosition = savedInstanceState
-					.getInt(STATE_SELECTED_POSITION);
+			//mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
 			mFromSavedInstanceState = true;
 		}
 
 		// Select either the default item (0) or the last selected item.
-		selectItem(mCurrentSelectedPosition);
+		selectItem(0);
 
 	}
 
@@ -118,13 +113,6 @@ OnClickListener {
 		setHasOptionsMenu(true);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-	 * android.view.ViewGroup, android.os.Bundle)
-	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -176,8 +164,10 @@ OnClickListener {
 		String imageURL = null;
 		if (global.getPersonPhoto() != null)
 			imageURL = global.getPersonPhoto().getUrl();
-		Picasso.with(getActivity()).load(imageURL + "0").resize(500, 500)
+		Picasso.with(getActivity()).load(imageURL + "0")
 		.error(R.drawable.com_facebook_profile_default_icon)
+		.placeholder(R.drawable.com_facebook_profile_default_icon)
+		.resize(500, 500)
 		.centerCrop().into(imageHeaderView);
 		mDrawerListView.addHeaderView(imageHeaderView);
 		mDrawerListView.setHeaderDividersEnabled(false);
@@ -298,36 +288,16 @@ OnClickListener {
 	}
 
 	private void selectItem(int position) {
-		mCurrentSelectedPosition = position;
-
-		/*
-		 * String[] restaurants = { "Smoke 'n' Clay", "Diesel Cafe",
-		 * "Chefs Xinlai", "Cafe Mojo", "Trattoria" }; Arrays.sort(restaurants);
-		 */
+		//mCurrentSelectedPosition = position;
 
 		if (mDrawerListView != null) {
-			//mDrawerListView.setItemChecked(position, true);
+			mDrawerListView.setItemChecked(position, false);
+			mDrawerLayout.closeDrawer(mFragmentContainerView);
+			if (mCallbacks != null) {
+				mCallbacks.onNavigationDrawerItemSelected(position);
+			}
 
 			if (position == 3) {
-
-				/*@SuppressWarnings("static-access")
-				LayoutInflater inflater = (LayoutInflater) getActivity().getBaseContext()
-				.getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
-				View popupview = inflater.inflate(R.layout.popup1, null);
-				final PopupWindow popupwindow = new PopupWindow(popupview,
-						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-				Button btnclose = (Button) popupview.findViewById(R.id.popupclose1);
-				btnclose.setOnClickListener(new Button.OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						popupwindow.dismiss();
-					}
-
-				});
-				popupwindow.showAsDropDown(popupview, 20, 20);*/
-
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setTitle("About Waverr");
 				builder.setMessage(R.string.about_waverr);
@@ -341,7 +311,6 @@ OnClickListener {
 				});
 				AlertDialog dialog = builder.create();
 				dialog.show();
-
 			}
 			else if(position==4){
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -413,14 +382,12 @@ OnClickListener {
 				}.execute(new String[] {
 						"http://waverr.in/restaurantpartners.php"
 				});
-
 			}
 
 			else if (position == 7) {
 				if (mLoginStatus.equals("none")) {
-					getActivity().finish();
-					Intent intent = new Intent(getActivity(),
-							com.project.waverr.LoginPage2.class);
+					//getActivity().finish();
+					Intent intent = new Intent("com.project.waverr.LOGINPAGE");
 					startActivity(intent);
 				}
 				else if (mLoginStatus.equals("google")) {
@@ -431,19 +398,13 @@ OnClickListener {
 				}
 			}
 		}
-		if (mDrawerLayout != null) {
-			mDrawerLayout.closeDrawer(mFragmentContainerView);
-		}
-		if (mCallbacks != null) {
-			mCallbacks.onNavigationDrawerItemSelected(position);
-		}
 	}
 
 	public void logoutGoogle() {
 		if(mGoogleApiClient.isConnected()){
 			Toast.makeText(getActivity(), "Logging out...", Toast.LENGTH_SHORT).show();
 			Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-			Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient);
+			//Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient);
 			mGoogleApiClient.disconnect();
 			global.clearUser();
 		}
@@ -526,52 +487,5 @@ OnClickListener {
 		 * Called when an item in the navigation drawer is selected.
 		 */
 		void onNavigationDrawerItemSelected(int position);
-	}
-
-	public static int calculateInSampleSize(BitmapFactory.Options options,
-			int reqWidth, int reqHeight) {
-		// Raw height and width of image
-		final int height = options.outHeight;
-		final int width = options.outWidth;
-		int inSampleSize = 1;
-
-		if (height > reqHeight || width > reqWidth) {
-
-			final int halfHeight = height / 2;
-			final int halfWidth = width / 2;
-
-			// Calculate the largest inSampleSize value that is a power of 2 and
-			// keeps both
-			// height and width larger than the requested height and width.
-			while ((halfHeight / inSampleSize) > reqHeight
-					&& (halfWidth / inSampleSize) > reqWidth) {
-				inSampleSize *= 2;
-			}
-		}
-
-		return inSampleSize;
-	}
-
-	public static Bitmap decodeSampledBitmapFromResource(Resources res,
-			int resId, int reqWidth, int reqHeight) {
-
-		// First decode with inJustDecodeBounds=true to check dimensions
-		final BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		BitmapFactory.decodeResource(res, resId, options);
-
-		// Calculate inSampleSize
-		options.inSampleSize = calculateInSampleSize(options, reqWidth,
-				reqHeight);
-
-		// Decode bitmap with inSampleSize set
-		options.inJustDecodeBounds = false;
-		return BitmapFactory.decodeResource(res, resId, options);
-	}
-
-	@Override
-	public void onClick(DialogInterface arg0, int arg1) {
-		// TODO Auto-generated method stub
-
 	}
 }

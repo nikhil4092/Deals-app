@@ -68,7 +68,15 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 	private Boolean firstTimeNearbyClicked;
 	private Boolean firstTimeNewClicked;
 	boolean login=true;
+	
+	final ArrayList<Deal> latestdeals = new ArrayList<Deal>();
+	final ArrayList<ImageButton> latestbuttons = new ArrayList<>();
+	final ArrayList<TextView> latesttexts = new ArrayList<>();
 
+	final ArrayList<Deal> deals = new ArrayList<Deal>();
+	final ArrayList<ImageButton> buttons = new ArrayList<>();
+	final ArrayList<TextView> texts = new ArrayList<>();
+	
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
 	 * navigation drawer.
@@ -94,7 +102,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		findViewById(R.id.cuisine8).setOnClickListener(this);
 		findViewById(R.id.cuisine9).setOnClickListener(this);
 		findViewById(R.id.cuisine10).setOnClickListener(this);
-		
+
 		th=(TabHost)findViewById(R.id.tabhost);
 		b=(Button)findViewById(R.id.slidemenu);
 		ib1.setOnClickListener(this);
@@ -660,10 +668,6 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 
 	private void getAllDeals() {
 
-		final ArrayList<Deal> deals = new ArrayList<Deal>();
-		final ArrayList<ImageButton> buttons = new ArrayList<>();
-		final ArrayList<TextView> texts = new ArrayList<>();
-
 		String[] url = {
 				"http://waverr.in/getalldeals.php",
 		};
@@ -684,7 +688,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 			protected void onPostExecute(JSONArray array) {
 
 				String things[] = {
-						"ID",
+						"dealID",
 						"Restaurant ID",
 						"Restaurant Name",
 						"Percentage Discount",
@@ -757,15 +761,15 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 							ImageButton button = new ImageButton(getBaseContext());
 							button.setLayoutParams(params);
-							button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
+							//button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
 							button.setScaleType(ScaleType.FIT_XY);
 							button.setBackgroundColor(Color.TRANSPARENT);
 							button.setAdjustViewBounds(true);
 							buttons.add(button);
 							Picasso.with(getBaseContext())
 							.load(newDeal.getImageURL())
-							.placeholder(R.drawable.soup1)
-							.error(R.drawable.soup5)
+							.placeholder(R.drawable.placeholderimage)
+							.error(R.drawable.placeholderimage)
 							.into(button);
 							final String deal = gson.toJson(newDeal);
 
@@ -861,9 +865,6 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 	}
 
 	private void getDealsByTime() {
-		final ArrayList<Deal> deals = new ArrayList<Deal>();
-		final ArrayList<ImageButton> buttons = new ArrayList<>();
-		final ArrayList<TextView> texts = new ArrayList<>();
 
 		String[] url = {
 				"http://waverr.in/getdealparameterstime.php",
@@ -885,7 +886,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 			protected void onPostExecute(JSONArray array) {
 
 				String things[] = {
-						"ID",
+						"dealID",
 						"Restaurant ID",
 						"Restaurant Name",
 						"Percentage Discount",
@@ -920,7 +921,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 						text.setTextColor(Color.parseColor("#a9a9a9"));
 						text.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 						text.setGravity(Gravity.CENTER);
-						texts.add(text);
+						latesttexts.add(text);
 
 						LinearLayout smallLayout=new LinearLayout(getBaseContext());
 						smallLayout.setOrientation(LinearLayout.VERTICAL);
@@ -953,20 +954,20 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							newDeal.setEndDateTime(end);
 							newDeal.setCuisine(object.getString(things[12]));
 							newDeal.setImageURL(object.getString(things[13]));
-							deals.add(newDeal);
+							latestdeals.add(newDeal);
 							//Toast.makeText(getBaseContext(), "Got the object", Toast.LENGTH_SHORT).show();
 							LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 							ImageButton button = new ImageButton(getBaseContext());
 							button.setLayoutParams(params);
-							button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
+							//button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
 							button.setScaleType(ScaleType.FIT_XY);
 							button.setBackgroundColor(Color.TRANSPARENT);
 							button.setAdjustViewBounds(true);
-							buttons.add(button);
+							latestbuttons.add(button);
 							Picasso.with(getBaseContext())
 							.load(newDeal.getImageURL())
-							.placeholder(R.drawable.soup1)
-							.error(R.drawable.soup5)
+							.placeholder(R.drawable.placeholderimage)
+							.error(R.drawable.placeholderimage)
 							.into(button);
 							final String deal = gson.toJson(newDeal);
 
@@ -1024,7 +1025,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							text.setTextSize(15);
 							text.setTextColor(Color.WHITE);
 							text.setLayoutParams(params);
-							texts.add(text);
+							latesttexts.add(text);
 							LayoutParams params2 = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 							//FrameLayout smallLayout = new FrameLayout(getBaseContext());
 							LinearLayout smallLayout=new LinearLayout(getBaseContext());

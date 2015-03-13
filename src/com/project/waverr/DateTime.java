@@ -51,7 +51,8 @@ public class DateTime {
 	}
 	
 	public String getDateTime() {
-		return date+" "+time;
+		String[] dateSplit = date.split("-");
+		return dateSplit[2]+"-"+dateSplit[1]+"-"+dateSplit[0]+" "+time;
 	}
 	
 	public void setDateTimeByMillis(long millis) {
