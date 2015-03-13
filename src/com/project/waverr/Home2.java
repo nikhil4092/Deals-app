@@ -40,7 +40,6 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.project.waverr.SimpleGestureFilter.SimpleGestureListener;
@@ -779,7 +778,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 								public void onClick(View v) {
 									// TODO Auto-generated method stub
 									Intent intent = new Intent(getBaseContext(), com.project.waverr.DealPage.class);
-									Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
+									//Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
 									intent.putExtra("deal", deal);
 									intent.putExtra("login", login);
 									startActivity(intent);
@@ -977,7 +976,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 								public void onClick(View v) {
 									// TODO Auto-generated method stub
 									Intent intent = new Intent(getBaseContext(), com.project.waverr.DealPage.class);
-									Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
+									//Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
 									intent.putExtra("deal", deal);
 									intent.putExtra("login", login);
 									startActivity(intent);

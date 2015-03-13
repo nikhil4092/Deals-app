@@ -9,7 +9,6 @@ import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -84,7 +83,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 		//Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
 		if (view.getId() == R.id.btn_sign_in) {
 			if(!mGoogleApiClient.isConnecting()) {
-				Toast.makeText(this, "Processing stuff", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, "Processing stuff", Toast.LENGTH_SHORT).show();
 				mSignInClicked = true;
 				resolveSignInError();
 			}
@@ -99,7 +98,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 
 	/* A helper method to resolve the current ConnectionResult error. */
 	private void resolveSignInError() {
-		Toast.makeText(this, "Resolving sign-in error", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(this, "Resolving sign-in error", Toast.LENGTH_SHORT).show();
 		if (mConnectionResult.hasResolution()) {
 			try {
 				mIntentInProgress = true;
@@ -117,7 +116,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 	}
 
 	public void onConnectionFailed(ConnectionResult result) {
-		Toast.makeText(this, "Connection failed!", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(this, "Connection failed!", Toast.LENGTH_SHORT).show();
 		if (!mIntentInProgress) {
 			// Store the ConnectionResult so that we can use it later when the user clicks
 			// 'sign-in'.
@@ -161,8 +160,6 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 	protected void onStart() {
 		super.onStart();
 		mGoogleApiClient.connect();
-		if(mGoogleApiClient.isConnecting())
-			Toast.makeText(this, "Connecting client...", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -172,7 +169,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 	}
 
 	private void goAheadWithGoogle() {
-		Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
+		//Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 		if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
 			Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
 			final String personName = currentPerson.getDisplayName();
@@ -193,8 +190,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 				protected void onPostExecute(JSONArray array) {
 
 					if(array==null) {
-						Toast.makeText(getBaseContext(),
-								"New user... Adding to database", Toast.LENGTH_SHORT).show();
+						//Toast.makeText(getBaseContext(), "New user... Adding to database", Toast.LENGTH_SHORT).show();
 						new JSONObtainer().execute(new String[] {
 								"http://waverr.in/adduser.php",
 								"name", personName,
@@ -202,8 +198,6 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 								"age", personBirthday
 						});
 					}
-					else
-						Toast.makeText(getBaseContext(), "User already exists in the database", Toast.LENGTH_SHORT).show();
 				}
 			};
 			checker.execute(new String[] {

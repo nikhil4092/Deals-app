@@ -26,7 +26,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -167,7 +166,7 @@ public class ChineseDeal extends GlobalActionBar {
 							public void onClick(View v) {
 								// TODO Auto-generated method stub
 								Intent intent = new Intent(getBaseContext(), com.project.waverr.DealPage.class);
-								Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
+								//Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
 								intent.putExtra("deal", deal);
 								intent.putExtra("login", login);
 								startActivity(intent);

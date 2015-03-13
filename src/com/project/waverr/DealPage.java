@@ -201,12 +201,12 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	}
 
 	private class ImagePagerAdapter extends PagerAdapter {
-		private int[] mImages = new int[] {
+		/*private int[] mImages = new int[] {
 				R.drawable.chinese,
 				R.drawable.ic_launcher,
 				R.drawable.soup3,
 				R.drawable.chinese1
-		};
+		};*/
 
 		@Override
 		public int getCount() {
@@ -413,7 +413,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 				// Handle successful scan
 			} else if (resultCode == RESULT_CANCELED) {
 				// Handle cancel
-				Toast.makeText(getApplicationContext(),"not working", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(),"Cancelled", Toast.LENGTH_SHORT).show();
 
 			}
 		}

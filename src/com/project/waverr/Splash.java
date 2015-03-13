@@ -9,7 +9,6 @@ import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -101,7 +100,7 @@ public class Splash extends Activity implements ConnectionCallbacks, OnConnectio
 	}
 	
 	private void goAheadWithGoogle() {
-		Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
+		//Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 		if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
 			Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
 			String personName = currentPerson.getDisplayName();

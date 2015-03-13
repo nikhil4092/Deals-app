@@ -63,7 +63,7 @@ public class Success extends Activity{
 			
 			new JSONObtainer() {
 				protected void onPostExecute(JSONArray array) {
-					Toast.makeText(getBaseContext(), "Done", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getBaseContext(), "Activation successful", Toast.LENGTH_SHORT).show();
 				}
 			}.execute(things);
 		}
