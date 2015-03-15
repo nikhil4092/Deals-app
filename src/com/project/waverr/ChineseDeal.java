@@ -155,7 +155,7 @@ public class ChineseDeal extends GlobalActionBar {
 						buttons.add(button);
 						Picasso.with(getBaseContext())
 						.load(newDeal.getImageURL())
-						.placeholder(R.drawable.placeholderimage)
+						.placeholder(R.drawable.placeholder_fetching)
 						.error(R.drawable.placeholderimage)
 						.into(button);
 						final String deal = gson.toJson(newDeal);

@@ -91,7 +91,7 @@ public class GlobalActionBar extends ActionBarActivity implements NavigationDraw
 			// if the drawer is not showing. Otherwise, let the drawer
 			// decide what to show in the action bar.
 			MenuInflater inflater = getMenuInflater();
-			inflater.inflate(R.menu.home2, menu);
+			inflater.inflate(R.menu.global, menu);
 			
 			restoreActionBar();
 			return true;

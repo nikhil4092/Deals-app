@@ -64,10 +64,10 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 	int flagLocation=0;
 	GlobalClass global;
 	private SimpleGestureFilter detector;
-	private Boolean firstTimeNearbyClicked;
-	private Boolean firstTimeNewClicked;
+	private boolean firstTimeNearbyClicked;
+	private boolean firstTimeNewClicked;
 	boolean login=true;
-	
+
 	final ArrayList<Deal> latestdeals = new ArrayList<Deal>();
 	final ArrayList<ImageButton> latestbuttons = new ArrayList<>();
 	final ArrayList<TextView> latesttexts = new ArrayList<>();
@@ -75,7 +75,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 	final ArrayList<Deal> deals = new ArrayList<Deal>();
 	final ArrayList<ImageButton> buttons = new ArrayList<>();
 	final ArrayList<TextView> texts = new ArrayList<>();
-	
+
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
 	 * navigation drawer.
@@ -287,6 +287,12 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		if (id == R.id.action_settings) {
 			locationChoose.show();
 			return true;
+		}
+		if(id == R.id.refresh_home) {
+			if(th.getCurrentTab()==1)
+				getAllDeals();
+			else if(th.getCurrentTab()==2)
+				getDealsByTime();
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -679,6 +685,12 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		progressDialog.show();
 
 		final LinearLayout mLayout = (LinearLayout) findViewById(R.id.all);
+		mLayout.removeAllViews();
+
+		deals.clear();
+		buttons.clear();
+		texts.clear();
+
 		mLayout.setGravity(Gravity.CENTER);
 		final DisplayMetrics display = mLayout.getResources().getDisplayMetrics();
 
@@ -767,7 +779,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							buttons.add(button);
 							Picasso.with(getBaseContext())
 							.load(newDeal.getImageURL())
-							.placeholder(R.drawable.placeholderimage)
+							.placeholder(R.drawable.placeholder_fetching)
 							.error(R.drawable.placeholderimage)
 							.into(button);
 							final String deal = gson.toJson(newDeal);
@@ -877,6 +889,11 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		progressDialog.show();
 
 		final LinearLayout mLayout = (LinearLayout) findViewById(R.id.latest);
+		mLayout.removeAllViews();
+		latestbuttons.clear();
+		latestdeals.clear();
+		latesttexts.clear();
+		
 		mLayout.setGravity(Gravity.CENTER);
 		final DisplayMetrics display = mLayout.getResources().getDisplayMetrics();
 
@@ -965,7 +982,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							latestbuttons.add(button);
 							Picasso.with(getBaseContext())
 							.load(newDeal.getImageURL())
-							.placeholder(R.drawable.placeholderimage)
+							.placeholder(R.drawable.placeholder_fetching)
 							.error(R.drawable.placeholderimage)
 							.into(button);
 							final String deal = gson.toJson(newDeal);

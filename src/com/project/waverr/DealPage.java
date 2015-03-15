@@ -55,8 +55,8 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	String dtext;
 	boolean login = false;
 	Deal deal;
-	Boolean dealExpired = false;
-	Boolean dealStarted = false;
+	boolean dealExpired = false;
+	boolean dealStarted = false;
 	String dealString;
 	ImageView main;
 	ImageView about;
@@ -193,7 +193,6 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		if(login==false)
 		{
 			//activate.setEnabled(false);
-			activate.setTextColor(Color.BLACK);
 			activate.setBackgroundColor(Color.parseColor("#f1f1f1"));
 		}
 
@@ -229,7 +228,8 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 			imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 			Picasso.with(context)
 			.load("http://waverr.in/restaurantmenuimages/"+deal.getRestaurantID()+"/"+(position+1)+".jpg")
-			.placeholder(R.drawable.placeholderimage)
+			.placeholder(R.drawable.placeholder_fetching)
+			.error(R.drawable.placeholderimage)
 			.into(imageView);
 			//imageView.setImageResource(mImages[position]);
 			((ViewPager) container).addView(imageView, 0);
@@ -353,7 +353,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 			Intent i=new Intent(android.content.Intent.ACTION_SEND);
 			i.setType("text/plain");
 			i.putExtra(android.content.Intent.EXTRA_SUBJECT,"Waverr");
-			i.putExtra(android.content.Intent.EXTRA_TEXT, dtext+" at "+RestaurantName+".\nFind such amazing deals nearby, at Waverr - India's First Live Deal Engine. Visit us at www.waverr.in");
+			i.putExtra(android.content.Intent.EXTRA_TEXT, dtext+" at "+RestaurantName+".\nAvail this deal and more, only on Waverr - India's First Live Deal Engine. Get the app from the Play Store - waverr.in/getwaverr");
 			startActivity(Intent.createChooser(i,"Share via"));
 			break;
 		}
@@ -429,7 +429,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 			@Override
 			protected void onProgressUpdate(Void... voids) {
 				timerText.setText("Calculating time left...");
-				activate.setBackgroundColor(Color.parseColor("#f1f1f1"));
+				activate.setBackgroundColor(Color.parseColor("#777777"));
 			}
 
 			@Override
@@ -468,8 +468,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 								+ actual.minutes + "m "
 								+ actual.seconds + "s";
 						timerText.setText(text);
-						activate.setTextColor(Color.BLACK);
-						activate.setBackgroundColor(Color.parseColor("#f1f1f1"));
+						activate.setBackgroundColor(Color.parseColor("#777777"));
 					}
 
 					@Override
@@ -498,8 +497,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 								timerText.setText(text);
 								dealExpired = true;
 								//activate.setEnabled(false);
-								activate.setTextColor(Color.BLACK);
-								activate.setBackgroundColor(Color.parseColor("#f1f1f1"));
+								activate.setBackgroundColor(Color.parseColor("#777777"));
 							}
 						}.start();
 					}
@@ -516,13 +514,13 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		
 		Picasso.with(this)
 		.load(deal.getImageURL())
-		.placeholder(R.drawable.placeholderimage)
+		.placeholder(R.drawable.placeholder_fetching)
 		.error(R.drawable.placeholderimage)
 		.into(main);
 		
 		Picasso.with(this)
 		.load(deal.getImageURL())
-		.placeholder(R.drawable.placeholderimage)
+		.placeholder(R.drawable.placeholder_fetching)
 		.error(R.drawable.placeholderimage)
 		.into(about);
 

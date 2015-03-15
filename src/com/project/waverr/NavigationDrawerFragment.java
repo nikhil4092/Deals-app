@@ -11,9 +11,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -316,8 +318,19 @@ public class NavigationDrawerFragment extends Fragment {
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setTitle("Contact Us");
 				builder.setMessage(R.string.contact_us);
-				builder.setPositiveButton(R.string.button_ok, new OnClickListener() {
+				builder.setPositiveButton("Send email", new OnClickListener() {
 
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						Intent intent = new Intent(Intent.ACTION_SENDTO,
+								Uri.fromParts("mailto", "contact@waverr.in", null));
+						intent.putExtra(Intent.EXTRA_SUBJECT, "Support - Android");
+						startActivity(Intent.createChooser(intent, "Send email..."));
+					}
+				});
+				builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
@@ -384,6 +397,34 @@ public class NavigationDrawerFragment extends Fragment {
 				});
 			}
 
+			else if(position == 6) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				builder.setMessage("Like our app? Please help us improve by rating us on the Play Store. Thank you!");
+				builder.setPositiveButton("Rate us", new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						try {
+							startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.project.waverr")));
+						}
+						catch (ActivityNotFoundException e) {
+							Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.project.waverr"));
+							startActivity(intent);
+						}
+					}
+				});
+				builder.setNegativeButton("No, thanks", new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				});
+				builder.setTitle("Rate Waverr");
+				builder.create().show();
+			}
 			else if (position == 7) {
 				if (mLoginStatus.equals("none")) {
 					//getActivity().finish();

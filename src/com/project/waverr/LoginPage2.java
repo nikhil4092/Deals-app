@@ -89,7 +89,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 			}
 		}
 		if(view.getId() == R.id.nologin) {
-			Intent intent = new Intent(this, com.project.waverr.Home2.class);
+			Intent intent = new Intent("com.project.waverr.HOMETWO");
 			global.setloginstatus("none");
 			global.setLoggedIn(false);
 			startActivity(intent);

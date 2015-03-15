@@ -22,9 +22,9 @@ public class Splash extends Activity implements ConnectionCallbacks, OnConnectio
 
 	private GoogleApiClient mGoogleApiClient;
 	private GlobalClass global;
-	private Boolean timerRunning;
+	private boolean timerRunning;
 	private int SPLASH_TIME = 2000;
-	private Boolean googleConnected = false;
+	private boolean googleConnected = false;
 	private TextView loading;
 	
 	@Override

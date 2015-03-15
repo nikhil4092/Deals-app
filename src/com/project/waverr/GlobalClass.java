@@ -11,6 +11,18 @@ import com.parse.PushService;
 
 public class GlobalClass extends Application {
 	
+	private String city;
+	private String personName = "Not available";
+	private Image personPhoto;
+	private String personGooglePlusProfile;
+	private String personEmail = "Please login";
+	private String loginstatus;
+	private boolean loggedIn;
+	private String lastitem;
+	private GoogleApiClient mGoogleApiClient;
+	private Deal currentDeal;
+	private boolean drawerOpen = false;
+	
 	private static GlobalClass instance = new GlobalClass();
 
     public void MainApplication() {
@@ -30,23 +42,11 @@ public class GlobalClass extends Application {
         ParseInstallation.getCurrentInstallation().saveInBackground();
     }
 	
-	private String city;
-	private String personName = "Not available";
-	private Image personPhoto;
-	private String personGooglePlusProfile;
-	private String personEmail = "Please login";
-	private String loginstatus;
-	private Boolean loggedIn;
-	private String lastitem;
-	private GoogleApiClient mGoogleApiClient;
-	private Deal currentDeal;
-	private Boolean drawerOpen = false;
-	
-	public Boolean getDrawerOpen() {
+	public boolean getDrawerOpen() {
 		return drawerOpen;
 	}
 
-	public void setDrawerOpen(Boolean drawerOpen) {
+	public void setDrawerOpen(boolean drawerOpen) {
 		this.drawerOpen = drawerOpen;
 	}
 
@@ -57,11 +57,11 @@ public class GlobalClass extends Application {
 		loggedIn = false;
 		loginstatus = "none";
 	}
-	public Boolean getLoggedIn() {
+	public boolean getLoggedIn() {
 		return loggedIn;
 	}
 
-	public void setLoggedIn(Boolean loggedIn) {
+	public void setLoggedIn(boolean loggedIn) {
 		this.loggedIn = loggedIn;
 	}
 
