@@ -434,21 +434,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 
 			@Override
 			protected void onPostExecute(JSONArray array) {
-				if(array==null) {
-					AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
-					builder.setMessage("Failed to load the deal. Please check your internet connection and try again.");
-					builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-							dialog.dismiss();
-							closeActivity();
-						}
-					});
-					builder.create().show();
-				}
-				else {
+				if(array!=null) {
 					try {
 						JSONObject object = array.getJSONObject(0);
 						current.setDate(object.getString("date"));
@@ -545,41 +531,58 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		new JSONObtainer() {
 			@Override
 			protected void onPostExecute(JSONArray array) {
-				JSONObject object = null;
-				try {
-					object = array.getJSONObject(0);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if(array==null) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(DealPage.this);
+					builder.setMessage("Failed to load the deal. Please check your internet connection and try again.");
+					builder.setTitle("No internet");
+					builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							dialog.dismiss();
+							closeActivity();
+						}
+					});
+					builder.create().show();
 				}
+				else {
+					JSONObject object = null;
+					try {
+						object = array.getJSONObject(0);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
-				String[] things = {
-						"Restaurant ID",
-						"Restaurant Name",
-						"Contact Number",
-						"Street Address",
-						"City",
-						"Pincode",
-						"Coordinates",
-						"FinePrint",
-						"Details"
-				};
-				try {
+					String[] things = {
+							"Restaurant ID",
+							"Restaurant Name",
+							"Contact Number",
+							"Street Address",
+							"City",
+							"Pincode",
+							"Coordinates",
+							"FinePrint",
+							"Details"
+					};
+					try {
 
-					deal.setRestaurantID(object.getString(things[0]));
-					deal.setRestaurantName(object.getString(things[1]));
-					deal.setRestaurantNumber(object.getString(things[2]));
-					deal.setRestaurantAddress(object.getString(things[3])+", "+object.getString(things[4])+" - "+object.getString(things[5]));
-					deal.setRestaurantCoordinates(object.getString(things[6]));
-					deal.setRestaurantFinePrint(object.getString(things[7]));
-					deal.setRestaurantDetails(object.getString(things[8]));
+						deal.setRestaurantID(object.getString(things[0]));
+						deal.setRestaurantName(object.getString(things[1]));
+						deal.setRestaurantNumber(object.getString(things[2]));
+						deal.setRestaurantAddress(object.getString(things[3])+", "+object.getString(things[4])+" - "+object.getString(things[5]));
+						deal.setRestaurantCoordinates(object.getString(things[6]));
+						deal.setRestaurantFinePrint(object.getString(things[7]));
+						deal.setRestaurantDetails(object.getString(things[8]));
 
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					goAhead();
 				}
-
-				goAhead();
 			}
 		}.execute(restaurantUrl);
 	}
