@@ -70,6 +70,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	String restaurantPhoneNumber;
 	String restaurantName;
 	String restaurantID;
+	int numOfImages = 15;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -200,17 +201,11 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	}
 
 	private class ImagePagerAdapter extends PagerAdapter {
-		/*private int[] mImages = new int[] {
-				R.drawable.chinese,
-				R.drawable.ic_launcher,
-				R.drawable.soup3,
-				R.drawable.chinese1
-		};*/
 
 		@Override
 		public int getCount() {
 			//return mImages.length;
-			return 25;
+			return numOfImages;
 		}
 
 		@Override
