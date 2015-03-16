@@ -6,7 +6,6 @@ import android.content.Context;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.model.people.Person.Image;
 import com.parse.Parse;
-import com.parse.ParseInstallation;
 import com.parse.PushService;
 
 public class GlobalClass extends Application {
@@ -33,13 +32,12 @@ public class GlobalClass extends Application {
         return instance;
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void onCreate() {
         super.onCreate();
         Parse.initialize(this, "i83LuSHlmyI7wTcI7Cmlh0n6v5glfRVXmFzpc5xb", "qWSCgY6QGgeSbAXVZfG7VVrFDxbSHZ3qQFlfbiEo");
         PushService.setDefaultPushCallback(this, Splash.class);
-        PushService.subscribe(this, "", Splash.class);
-        ParseInstallation.getCurrentInstallation().saveInBackground();
     }
 	
 	public boolean getDrawerOpen() {

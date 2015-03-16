@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.project.waverr"
-    android:versionCode="2"
-    android:versionName="1.1" >
+    android:versionCode="3"
+    android:versionName="1.1.1" >
 
     <uses-sdk
         android:minSdkVersion="12"
@@ -29,6 +29,8 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <permission android:name="com.project.waverr.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+	<uses-permission android:name="com.project.waverr.permission.C2D_MESSAGE"/>
 
     <application
         android:name=".GlobalClass"
