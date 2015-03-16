@@ -60,7 +60,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	String dealString;
 	ImageView main;
 	ImageView about;
-	
+
 
 	DateTime start;
 	DateTime end;
@@ -85,7 +85,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		deal = gson.fromJson(dealString, Deal.class);
 		start = deal.getStartDateTime();
 		end = deal.getEndDateTime();
-		
+
 		dialog = new ProgressDialog(this);
 		dialog.setMessage("Loading deal...");
 		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -105,7 +105,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		finePrint = (TextView) findViewById(R.id.fine_print);
 		placeDetails = (TextView) findViewById(R.id.namefulladdress);
 		placeDetails.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -188,7 +188,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 			dtext="Get "+percentageDeal+"% off on a Minimum purchase of Rs."+minamount;
 		}
 		getRestaurantDetails();
-		
+
 		login = global.getLoggedIn();
 		if(login==false)
 		{
@@ -434,74 +434,90 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 
 			@Override
 			protected void onPostExecute(JSONArray array) {
-				try {
-					JSONObject object = array.getJSONObject(0);
-					current.setDate(object.getString("date"));
-					current.setTime(object.getString("time"));
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if(array==null) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
+					builder.setMessage("Failed to load the deal. Please check your internet connection and try again.");
+					builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							dialog.dismiss();
+							closeActivity();
+						}
+					});
+					builder.create().show();
 				}
-				long currentMillis = current.getTimeInMillis();
-
-				final long timeUntilStart, timeUntilEnd;
-
-				if(startMillis > currentMillis)
-					timeUntilStart = startMillis - currentMillis;
-				else
-					timeUntilStart = 0;
-				if(endMillis > currentMillis)
-					timeUntilEnd = endMillis - currentMillis;
-				else
-					timeUntilEnd = 0;
-
-				new CountDownTimer(timeUntilStart, 1000) {
-					final DateTime actual = new DateTime();
-
-					@Override
-					public void onTick(long millisUntilFinished) {
-						// TODO Auto-generated method stub
-						actual.setDateTimeByMillis(millisUntilFinished);
-						String text = "Deal starts in\n"
-								+ actual.days + "d "
-								+ actual.hours + "h "
-								+ actual.minutes + "m "
-								+ actual.seconds + "s";
-						timerText.setText(text);
-						activate.setBackgroundColor(Color.parseColor("#777777"));
+				else {
+					try {
+						JSONObject object = array.getJSONObject(0);
+						current.setDate(object.getString("date"));
+						current.setTime(object.getString("time"));
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
+					long currentMillis = current.getTimeInMillis();
 
-					@Override
-					public void onFinish() {
-						// TODO Auto-generated method stub
-						dealStarted = true;
-						activate.setBackgroundColor(Color.parseColor("#00c15b"));
-						new CountDownTimer(timeUntilEnd, 1000) {
+					final long timeUntilStart, timeUntilEnd;
 
-							@Override
-							public void onTick(long millisUntilFinished) {
-								// TODO Auto-generated method stub
-								actual.setDateTimeByMillis(millisUntilFinished);
-								String text = "Deal ends in\n"
-										+ actual.days + "d "
-										+ actual.hours + "h "
-										+ actual.minutes + "m "
-										+ actual.seconds + "s";
-								timerText.setText(text);
-							}
+					if(startMillis > currentMillis)
+						timeUntilStart = startMillis - currentMillis;
+					else
+						timeUntilStart = 0;
+					if(endMillis > currentMillis)
+						timeUntilEnd = endMillis - currentMillis;
+					else
+						timeUntilEnd = 0;
 
-							@Override
-							public void onFinish() {
-								// TODO Auto-generated method stub
-								String text = "Deal\nExpired!";
-								timerText.setText(text);
-								dealExpired = true;
-								//activate.setEnabled(false);
-								activate.setBackgroundColor(Color.parseColor("#777777"));
-							}
-						}.start();
-					}
-				}.start();
+					new CountDownTimer(timeUntilStart, 1000) {
+						final DateTime actual = new DateTime();
+
+						@Override
+						public void onTick(long millisUntilFinished) {
+							// TODO Auto-generated method stub
+							actual.setDateTimeByMillis(millisUntilFinished);
+							String text = "Deal starts in\n"
+									+ actual.days + "d "
+									+ actual.hours + "h "
+									+ actual.minutes + "m "
+									+ actual.seconds + "s";
+							timerText.setText(text);
+							activate.setBackgroundColor(Color.parseColor("#777777"));
+						}
+
+						@Override
+						public void onFinish() {
+							// TODO Auto-generated method stub
+							dealStarted = true;
+							activate.setBackgroundColor(Color.parseColor("#00c15b"));
+							new CountDownTimer(timeUntilEnd, 1000) {
+
+								@Override
+								public void onTick(long millisUntilFinished) {
+									// TODO Auto-generated method stub
+									actual.setDateTimeByMillis(millisUntilFinished);
+									String text = "Deal ends in\n"
+											+ actual.days + "d "
+											+ actual.hours + "h "
+											+ actual.minutes + "m "
+											+ actual.seconds + "s";
+									timerText.setText(text);
+								}
+
+								@Override
+								public void onFinish() {
+									// TODO Auto-generated method stub
+									String text = "Deal\nExpired!";
+									timerText.setText(text);
+									dealExpired = true;
+									//activate.setEnabled(false);
+									activate.setBackgroundColor(Color.parseColor("#777777"));
+								}
+							}.start();
+						}
+					}.start();
+				}
 			}
 		}.execute(new String[] {"http://waverr.in/getcurrenttime.php"});
 	}
@@ -511,13 +527,13 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 				"http://waverr.in/getrestaurantlocation.php",
 				"restaurantname", deal.getRestaurantName()
 		};
-		
+
 		Picasso.with(this)
 		.load(deal.getImageURL())
 		.placeholder(R.drawable.placeholder_fetching)
 		.error(R.drawable.placeholderimage)
 		.into(main);
-		
+
 		Picasso.with(this)
 		.load(deal.getImageURL())
 		.placeholder(R.drawable.placeholder_fetching)
@@ -525,7 +541,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		.into(about);
 
 		startTimer();
-		
+
 		new JSONObtainer() {
 			@Override
 			protected void onPostExecute(JSONArray array) {
@@ -557,7 +573,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 					deal.setRestaurantCoordinates(object.getString(things[6]));
 					deal.setRestaurantFinePrint(object.getString(things[7]));
 					deal.setRestaurantDetails(object.getString(things[8]));
-					
+
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -603,14 +619,18 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		placeDetails.setText("Address:\n"+deal.getRestaurantAddress());
 		restaurantPhoneNumber = deal.getRestaurantNumber();
 		restaurantInfo.setText("About "+deal.getRestaurantName()+":\n"+deal.getRestaurantDetails());
-		
+
 		String[] latlng = deal.getRestaurantCoordinates().split(",");
 		latitude = Double.parseDouble(latlng[0]);
 		longitude = Double.parseDouble(latlng[1]);
-		
+
 		MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.the_map);
 		mapFragment.getMapAsync(this);
-		
+
 		dialog.dismiss();
+	}
+
+	private void closeActivity() {
+		finish();
 	}
 }
