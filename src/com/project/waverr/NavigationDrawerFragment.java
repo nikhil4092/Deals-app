@@ -9,9 +9,9 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -448,6 +448,7 @@ public class NavigationDrawerFragment extends Fragment {
 			//Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient);
 			mGoogleApiClient.disconnect();
 			global.clearUser();
+			getActivity().finish();
 		}
 	}
 

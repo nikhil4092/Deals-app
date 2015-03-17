@@ -93,6 +93,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 			global.setloginstatus("none");
 			global.setLoggedIn(false);
 			startActivity(intent);
+			finish();
 		}
 	}
 
@@ -146,6 +147,8 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 		if (requestCode == RC_SIGN_IN) {
 			if (responseCode != RESULT_OK) {
 				mSignInClicked = false;
+				if(progressDialog.isShowing())
+					progressDialog.dismiss();
 			}
 
 			mIntentInProgress = false;
@@ -160,12 +163,6 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 	protected void onStart() {
 		super.onStart();
 		mGoogleApiClient.connect();
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		finish();
 	}
 
 	private void goAheadWithGoogle() {
@@ -210,6 +207,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 			if(progressDialog!=null && progressDialog.isShowing())
 				progressDialog.dismiss();
 			startActivity(intent);
+			finish();
 		}
 	}
 }
