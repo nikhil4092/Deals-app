@@ -60,7 +60,7 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 		}
 		else
 			gotoActivity = "com.project.waverr.HOMETWO";
-			
+
 		findViewById(R.id.btn_sign_in).setOnClickListener(this);
 		findViewById(R.id.nologin).setOnClickListener(this);
 
@@ -100,6 +100,11 @@ public class LoginPage2 extends Activity implements OnClickListener, ConnectionC
 	/* A helper method to resolve the current ConnectionResult error. */
 	private void resolveSignInError() {
 		//Toast.makeText(this, "Resolving sign-in error", Toast.LENGTH_SHORT).show();
+		if (mConnectionResult==null) {
+			startActivity(new Intent(this, com.project.waverr.Splash.class));
+			finish();
+		}
+		
 		if (mConnectionResult.hasResolution()) {
 			try {
 				mIntentInProgress = true;

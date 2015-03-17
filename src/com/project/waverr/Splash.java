@@ -71,13 +71,6 @@ public class Splash extends Activity implements ConnectionCallbacks, OnConnectio
 	}
 	
 	@Override
-	protected void onStop() {
-		super.onStop();
-		// TODO Auto-generated method stub
-		finish();
-	}
-	
-	@Override
 	public void onConnected(Bundle arg0) {
 		// TODO Auto-generated method stub
 		if(!timerRunning)
@@ -120,11 +113,13 @@ public class Splash extends Activity implements ConnectionCallbacks, OnConnectio
 		global.setClient(mGoogleApiClient);
 		Intent intent = new Intent(this, com.project.waverr.Home2.class);
 		startActivity(intent);
+		finish();
 	}
 	
 	private void goToLoginPage() {
 		Intent intent = new Intent("com.project.waverr.LOGINPAGE");
 		startActivity(intent);
+		finish();
 	}
 	
 	private void goAhead() {

@@ -727,7 +727,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 						//text.setText(newDeal.getDetails());
 						else
 						{
-							text.setText("No deals currently. Please check back later");
+							text.setText("No deals currently. Please reload or check back later");
 						}
 						int height = display.heightPixels; 
 						text.setPadding(0, height/3,0, 0);
@@ -930,7 +930,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 						//text.setText(newDeal.getDetails());
 						else
 						{
-							text.setText("No deals currently. Please check back later");
+							text.setText("No deals currently. Please reload or check back later");
 						}
 						int height = display.heightPixels; 
 						text.setPadding(0, height/3,0, 0);

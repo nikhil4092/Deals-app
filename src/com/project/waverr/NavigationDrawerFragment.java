@@ -79,9 +79,10 @@ public class NavigationDrawerFragment extends Fragment {
 	private int mCurrentSelectedPosition = 0;
 	private boolean mFromSavedInstanceState;
 	private boolean mUserLearnedDrawer;
-	private String mLoginStatus;
 	private GoogleApiClient mGoogleApiClient;
 	GlobalClass global;
+	ArrayAdapter<String> adapter;
+	String[] things;
 
 	public NavigationDrawerFragment() {
 	}
@@ -138,10 +139,8 @@ public class NavigationDrawerFragment extends Fragment {
 		GlobalClass global = (GlobalClass) getActivity().getApplication();
 
 		// String url = "http://waverr.in/getusernames.php";
-		final String[] things = new String[] {
-				// getString(R.string.title_section1),
+		things = new String[] {
 				global.getPersonName(),
-				// getString(R.string.title_section2),
 				global.getPersonEmail(),
 				getString(R.string.title_section4),
 				getString(R.string.title_section5),
@@ -149,10 +148,9 @@ public class NavigationDrawerFragment extends Fragment {
 				getString(R.string.title_section7),
 				global.getlastitem() };
 
-		mLoginStatus = global.getloginstatus();
 		mGoogleApiClient=global.getClient();
 
-		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+		adapter = new ArrayAdapter<String>(
 				getActionBar().getThemedContext(),
 				android.R.layout.simple_list_item_activated_1,
 				android.R.id.text1, things);
@@ -254,6 +252,10 @@ public class NavigationDrawerFragment extends Fragment {
 					return;
 				}
 				global.setDrawerOpen(true);
+				things[0] = global.getPersonName();
+				things[1] = global.getPersonEmail();
+				things[6] = global.getlastitem();
+				adapter.notifyDataSetChanged();
 
 				if (!mUserLearnedDrawer) {
 					// The user manually opened the drawer; store this flag to
@@ -426,12 +428,12 @@ public class NavigationDrawerFragment extends Fragment {
 				builder.create().show();
 			}
 			else if (position == 7) {
-				if (mLoginStatus.equals("none")) {
+				if (global.getloginstatus().equals("none")) {
 					//getActivity().finish();
 					Intent intent = new Intent("com.project.waverr.LOGINPAGE");
 					startActivity(intent);
 				}
-				else if (mLoginStatus.equals("google")) {
+				else if (global.getloginstatus().equals("google")) {
 					logoutGoogle();
 					getActivity().finish();
 					Intent intent = new Intent("com.project.waverr.LOGINPAGE");
@@ -442,11 +444,12 @@ public class NavigationDrawerFragment extends Fragment {
 	}
 
 	public void logoutGoogle() {
+		mGoogleApiClient = global.getClient();
 		if(mGoogleApiClient.isConnected()){
 			Toast.makeText(getActivity(), "Logging out...", Toast.LENGTH_SHORT).show();
 			Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-			//Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient);
-			mGoogleApiClient.disconnect();
+			Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient);
+			//mGoogleApiClient.disconnect();
 			global.clearUser();
 			getActivity().finish();
 		}

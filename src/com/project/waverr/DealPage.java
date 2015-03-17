@@ -1,5 +1,7 @@
 package com.project.waverr;
 
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,6 +11,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -339,6 +342,17 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 				Intent intent = new Intent("com.google.zxing.client.android.SCAN");
 				intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
 				intent.putExtra("PROMPT_MESSAGE", "");
+
+				List<ResolveInfo> resInfo = getPackageManager().queryIntentActivities(intent, 0);
+				if (!resInfo.isEmpty()){
+					for (ResolveInfo info : resInfo) {
+						if (info.activityInfo.packageName.equalsIgnoreCase("com.project.waverr") || 
+								info.activityInfo.name.equalsIgnoreCase("Waverr") ) {
+							intent.setPackage(info.activityInfo.packageName);
+							break;
+						}
+					}
+				}
 				global.setDeal(deal);
 				startActivityForResult(intent, 0);
 			}
@@ -396,6 +410,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 				{
 					Intent i=new Intent("com.project.waverr.SUCCESS");
 					i.putExtra("Working",true);
+					i.putExtra("Share", dtext+" at "+deal.getRestaurantName());
 					startActivity(i);
 				}
 				else
@@ -618,14 +633,14 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		restaurantPhoneNumber = deal.getRestaurantNumber();
 		restaurantInfo.setText("About "+deal.getRestaurantName()+":\n"+deal.getRestaurantDetails());
 
+		dialog.dismiss();
+		
 		String[] latlng = deal.getRestaurantCoordinates().split(",");
 		latitude = Double.parseDouble(latlng[0]);
 		longitude = Double.parseDouble(latlng[1]);
 
 		MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.the_map);
 		mapFragment.getMapAsync(this);
-
-		dialog.dismiss();
 	}
 
 	private void closeActivity() {

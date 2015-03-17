@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.project.waverr"
-    android:versionCode="3"
-    android:versionName="1.1.1" >
+    android:versionCode="4"
+    android:versionName="1.2" >
 
     <uses-sdk
         android:minSdkVersion="12"
@@ -152,6 +152,12 @@
             android:label="@string/title_activity_login_page"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
+            
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.project.waverr.DealPage" />
+            
             <intent-filter>
                 <action android:name="com.project.waverr.SUCCESS" />
 

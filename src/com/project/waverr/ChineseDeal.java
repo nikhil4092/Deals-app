@@ -103,7 +103,7 @@ public class ChineseDeal extends GlobalActionBar {
 						//text.setText(newDeal.getDetails());
 						else
 						{
-							text.setText("No "+s+" Deals Currently. Please check back later.");
+							text.setText("No "+s+" Deals Currently. Please reload or check back later.");
 						}
 				        int height = display.heightPixels; 
 						text.setPadding(0, height/3,0, 0);
