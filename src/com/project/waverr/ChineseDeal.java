@@ -208,7 +208,7 @@ public class ChineseDeal extends GlobalActionBar {
 						}
 						
 						TextView text = new TextView(getBaseContext());
-						text.setText(object.getString(things[2])+"\n"+dtext+"\nDeal is valid till "+end.getDateTime());
+						text.setText(object.getString(things[2])+"\n"+dtext+"\nDeal is valid from "+start.getDateTime()+" till "+end.getDateTime());
 						text.setBackgroundResource(R.drawable.deal_details);
 						text.setPadding(15,25, 15, 25);
 						text.setTextSize(15);

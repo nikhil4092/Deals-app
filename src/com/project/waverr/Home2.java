@@ -770,7 +770,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							deals.add(newDeal);
 							//Toast.makeText(getBaseContext(), "Got the object", Toast.LENGTH_SHORT).show();
 							LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-							ImageButton button = new ImageButton(getBaseContext());
+							/*ImageButton button = new ImageButton(getBaseContext());
 							button.setLayoutParams(params);
 							//button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
 							button.setScaleType(ScaleType.FIT_XY);
@@ -781,10 +781,10 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							.load(newDeal.getImageURL())
 							.placeholder(R.drawable.placeholder_fetching)
 							.error(R.drawable.placeholderimage)
-							.into(button);
+							.into(button);*/
 							final String deal = gson.toJson(newDeal);
 
-							button.setOnClickListener(new View.OnClickListener() {
+							/*button.setOnClickListener(new View.OnClickListener() {
 
 								@Override
 								public void onClick(View v) {
@@ -795,7 +795,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 									intent.putExtra("login", login);
 									startActivity(intent);
 								}
-							});
+							});*/
 							/*String things[] = {
 								"ID",
 								"Restaurant ID",
@@ -832,26 +832,38 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							}
 
 							TextView text = new TextView(getBaseContext());
-							text.setText(object.getString(things[2])+"\n"+dtext+"\nDeal is valid till "+end.getDateTime());
+							text.setText(object.getString(things[2])+"\n"+dtext+"\nDeal is valid from "+start.getDateTime()+" till "+end.getDateTime());
 							text.setBackgroundResource(R.drawable.deal_details);
 							text.setPadding(15,25, 15, 25);
 							text.setTextSize(15);
 							text.setTextColor(Color.WHITE);
 							text.setLayoutParams(params);
+							text.setOnClickListener(new View.OnClickListener() {
+
+								@Override
+								public void onClick(View v) {
+									// TODO Auto-generated method stub
+									Intent intent = new Intent(getBaseContext(), com.project.waverr.DealPage.class);
+									//Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
+									intent.putExtra("deal", deal);
+									intent.putExtra("login", login);
+									startActivity(intent);
+								}
+							});
 							texts.add(text);
 							LayoutParams params2 = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 							//FrameLayout smallLayout = new FrameLayout(getBaseContext());
 							LinearLayout smallLayout=new LinearLayout(getBaseContext());
 							smallLayout.setOrientation(LinearLayout.VERTICAL);
 							smallLayout.setLayoutParams(params);
-							smallLayout.setPadding(0, 0,0, 10);
+							smallLayout.setPadding(0, 0,0, 30);
 
 							LinearLayout smallLayout2=new LinearLayout(getBaseContext());
 							smallLayout2.setOrientation(LinearLayout.VERTICAL);
 							smallLayout2.setLayoutParams(params);
 							smallLayout2.setPadding(0, 0,0, -20);
 							smallLayout.addView(smallLayout2);
-							smallLayout2.addView(button);
+						//	smallLayout2.addView(button);
 							LinearLayout smallLayout3=new LinearLayout(getBaseContext());
 							smallLayout3.setOrientation(LinearLayout.VERTICAL);
 							smallLayout3.setLayoutParams(params2);
@@ -973,7 +985,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							latestdeals.add(newDeal);
 							//Toast.makeText(getBaseContext(), "Got the object", Toast.LENGTH_SHORT).show();
 							LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-							ImageButton button = new ImageButton(getBaseContext());
+						/*	ImageButton button = new ImageButton(getBaseContext());
 							button.setLayoutParams(params);
 							//button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
 							button.setScaleType(ScaleType.FIT_XY);
@@ -984,10 +996,10 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							.load(newDeal.getImageURL())
 							.placeholder(R.drawable.placeholder_fetching)
 							.error(R.drawable.placeholderimage)
-							.into(button);
+							.into(button);*/
 							final String deal = gson.toJson(newDeal);
 
-							button.setOnClickListener(new View.OnClickListener() {
+							/*button.setOnClickListener(new View.OnClickListener() {
 
 								@Override
 								public void onClick(View v) {
@@ -998,7 +1010,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 									intent.putExtra("login", login);
 									startActivity(intent);
 								}
-							});
+							});*/
 							/*String things[] = {
 								"ID",
 								"Restaurant ID",
@@ -1035,26 +1047,38 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							}
 
 							TextView text = new TextView(getBaseContext());
-							text.setText(object.getString(things[2])+"\n"+dtext+"\nDeal is valid till "+end.getDateTime());
+							text.setText(object.getString(things[2])+"\n"+dtext+"\nDeal is valid from "+start.getDateTime()+" till "+end.getDateTime());
 							text.setBackgroundResource(R.drawable.deal_details);
 							text.setPadding(15,25, 15, 25);
 							text.setTextSize(15);
 							text.setTextColor(Color.WHITE);
 							text.setLayoutParams(params);
+							text.setOnClickListener(new View.OnClickListener() {
+
+								@Override
+								public void onClick(View v) {
+									// TODO Auto-generated method stub
+									Intent intent = new Intent(getBaseContext(), com.project.waverr.DealPage.class);
+									//Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
+									intent.putExtra("deal", deal);
+									intent.putExtra("login", login);
+									startActivity(intent);
+								}
+							});
 							latesttexts.add(text);
 							LayoutParams params2 = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 							//FrameLayout smallLayout = new FrameLayout(getBaseContext());
 							LinearLayout smallLayout=new LinearLayout(getBaseContext());
 							smallLayout.setOrientation(LinearLayout.VERTICAL);
 							smallLayout.setLayoutParams(params);
-							smallLayout.setPadding(0, 0,0, 10);
+							smallLayout.setPadding(0, 0,0, 30);
 
 							LinearLayout smallLayout2=new LinearLayout(getBaseContext());
 							smallLayout2.setOrientation(LinearLayout.VERTICAL);
 							smallLayout2.setLayoutParams(params);
 							smallLayout2.setPadding(0, 0,0, -20);
 							smallLayout.addView(smallLayout2);
-							smallLayout2.addView(button);
+						//	smallLayout2.addView(button);
 							LinearLayout smallLayout3=new LinearLayout(getBaseContext());
 							smallLayout3.setOrientation(LinearLayout.VERTICAL);
 							smallLayout3.setLayoutParams(params2);
