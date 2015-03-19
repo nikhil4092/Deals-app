@@ -228,7 +228,10 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*
 			.load("http://waverr.in/restaurantmenuimages/"+deal.getRestaurantID()+"/"+(position+1)+".jpg")
 			.placeholder(R.drawable.placeholder_fetching)
 			.error(R.drawable.placeholderimage)
+			.fit()
+			.centerCrop()
 			.into(imageView);
+			System.gc();
 			//imageView.setImageResource(mImages[position]);
 			((ViewPager) container).addView(imageView, 0);
 			return imageView;
@@ -528,14 +531,19 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*
 		.load(deal.getImageURL())
 		.placeholder(R.drawable.placeholder_fetching)
 		.error(R.drawable.placeholderimage)
+		.fit()
+		.centerCrop()
 		.into(main);
+		System.gc();
 
 		Picasso.with(this)
 		.load(deal.getImageURL())
 		.placeholder(R.drawable.placeholder_fetching)
 		.error(R.drawable.placeholderimage)
+		.fit()
+		.centerCrop()
 		.into(about);
-
+		System.gc();
 		startTimer();
 
 		new JSONObtainer() {

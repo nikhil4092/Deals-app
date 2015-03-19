@@ -157,7 +157,10 @@ public class ChineseDeal extends GlobalActionBar {
 						.load(newDeal.getImageURL())
 						.placeholder(R.drawable.placeholder_fetching)
 						.error(R.drawable.placeholderimage)
+						.fit()
+						.centerCrop()
 						.into(button);
+						System.gc();
 						final String deal = gson.toJson(newDeal);
 
 						button.setOnClickListener(new View.OnClickListener() {

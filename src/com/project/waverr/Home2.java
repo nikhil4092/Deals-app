@@ -770,7 +770,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							deals.add(newDeal);
 							//Toast.makeText(getBaseContext(), "Got the object", Toast.LENGTH_SHORT).show();
 							LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-							/*ImageButton button = new ImageButton(getBaseContext());
+							ImageButton button = new ImageButton(getBaseContext());
 							button.setLayoutParams(params);
 							//button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
 							button.setScaleType(ScaleType.FIT_XY);
@@ -781,10 +781,13 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							.load(newDeal.getImageURL())
 							.placeholder(R.drawable.placeholder_fetching)
 							.error(R.drawable.placeholderimage)
-							.into(button);*/
+							.fit()
+							.centerCrop()
+							.into(button);
+							System.gc();
 							final String deal = gson.toJson(newDeal);
 
-							/*button.setOnClickListener(new View.OnClickListener() {
+							button.setOnClickListener(new View.OnClickListener() {
 
 								@Override
 								public void onClick(View v) {
@@ -795,7 +798,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 									intent.putExtra("login", login);
 									startActivity(intent);
 								}
-							});*/
+							});
 							/*String things[] = {
 								"ID",
 								"Restaurant ID",
@@ -863,7 +866,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							smallLayout2.setLayoutParams(params);
 							smallLayout2.setPadding(0, 0,0, -20);
 							smallLayout.addView(smallLayout2);
-						//	smallLayout2.addView(button);
+							smallLayout2.addView(button);
 							LinearLayout smallLayout3=new LinearLayout(getBaseContext());
 							smallLayout3.setOrientation(LinearLayout.VERTICAL);
 							smallLayout3.setLayoutParams(params2);
@@ -985,7 +988,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							latestdeals.add(newDeal);
 							//Toast.makeText(getBaseContext(), "Got the object", Toast.LENGTH_SHORT).show();
 							LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-						/*	ImageButton button = new ImageButton(getBaseContext());
+							ImageButton button = new ImageButton(getBaseContext());
 							button.setLayoutParams(params);
 							//button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
 							button.setScaleType(ScaleType.FIT_XY);
@@ -996,10 +999,13 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							.load(newDeal.getImageURL())
 							.placeholder(R.drawable.placeholder_fetching)
 							.error(R.drawable.placeholderimage)
-							.into(button);*/
+							.fit()
+							.centerCrop()
+							.into(button);
+							System.gc();
 							final String deal = gson.toJson(newDeal);
 
-							/*button.setOnClickListener(new View.OnClickListener() {
+							button.setOnClickListener(new View.OnClickListener() {
 
 								@Override
 								public void onClick(View v) {
@@ -1010,7 +1016,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 									intent.putExtra("login", login);
 									startActivity(intent);
 								}
-							});*/
+							});
 							/*String things[] = {
 								"ID",
 								"Restaurant ID",
@@ -1078,7 +1084,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							smallLayout2.setLayoutParams(params);
 							smallLayout2.setPadding(0, 0,0, -20);
 							smallLayout.addView(smallLayout2);
-						//	smallLayout2.addView(button);
+							smallLayout2.addView(button);
 							LinearLayout smallLayout3=new LinearLayout(getBaseContext());
 							smallLayout3.setOrientation(LinearLayout.VERTICAL);
 							smallLayout3.setLayoutParams(params2);
