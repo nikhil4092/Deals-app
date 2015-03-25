@@ -34,7 +34,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
+//import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
@@ -42,7 +42,7 @@ import com.project.waverr.SimpleGestureFilter.SimpleGestureListener;
 import com.squareup.picasso.Picasso;
 //import com.google.android.gms.maps.OnMapReadyCallback;
 
-public class DealPage extends GlobalActionBar implements OnTabChangeListener, OnMapReadyCallback, OnClickListener, SimpleGestureListener{
+public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*OnMapReadyCallback,*/ OnClickListener, SimpleGestureListener{
 
 	TabHost th;
 	TextView x, restname, dealtext, duration, instructions, finePrint;
@@ -257,7 +257,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 
 	}
 
-	@Override
+	/*@Override
 	public void onMapReady(GoogleMap map) {
 		// TODO Auto-generated method stub
 
@@ -265,7 +265,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		map.addMarker(new MarkerOptions()
 		.position(new LatLng(latitude, longitude))
 		.title("Location"));
-	}
+	}*/
 
 	@Override
 	public void onClick(View v) {
@@ -497,7 +497,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 								public void onTick(long millisUntilFinished) {
 									// TODO Auto-generated method stub
 									actual.setDateTimeByMillis(millisUntilFinished);
-									dealactivetest=true;
+							//dealactivetest=true;
 									String text = "Deal ends in\n"
 											+ actual.days + "d "
 											+ actual.hours + "h "
@@ -651,7 +651,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		longitude = Double.parseDouble(latlng[1]);
 
 		MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.the_map);
-		mapFragment.getMapAsync(this);
+//		mapFragment.getMapAsync(this);
 	}
 
 	private void closeActivity() {
