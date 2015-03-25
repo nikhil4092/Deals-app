@@ -1,6 +1,8 @@
 package com.project.waverr;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,9 +16,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -40,6 +47,7 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.project.waverr.SimpleGestureFilter.SimpleGestureListener;
@@ -48,9 +56,12 @@ import com.squareup.picasso.Picasso;
 public class Home2 extends ActionBarActivity implements
 NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChangeListener, SimpleGestureListener{
 
+	static boolean activedealtest;
 	int LAC;
+	String temp;
 	ImageButton ib1,ib2,ib3,ib4,ib5,ib6,ib7;
 	TabHost th;
+	DateTime start,end;
 	TextView tv;
 	TextView x;
 	//String cityName;
@@ -65,7 +76,8 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 	GlobalClass global;
 	private SimpleGestureFilter detector;
 	private boolean firstTimeNearbyClicked;
-	private boolean firstTimeNewClicked;
+	private boolean firstTimeLocationClicked;
+	private boolean firstTimeRestClicked;
 	boolean login=true;
 
 	final ArrayList<Deal> latestdeals = new ArrayList<Deal>();
@@ -131,22 +143,31 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		x.setTextSize(15);
 		x.setTextColor(Color.parseColor("#424242"));
 
-		specs = th.newTabSpec("All");
+			
+		specs = th.newTabSpec("Restaurants");
 		specs.setContent(R.id.tab2);
-		specs.setIndicator("All");
+		specs.setIndicator("Restaurants");
 		th.addTab(specs);
 		x = (TextView) th.getTabWidget().getChildAt(1).findViewById(android.R.id.title);
 		x.setTextSize(15);
 		x.setTextColor(Color.parseColor("#424242"));
 
-		specs = th.newTabSpec("New");
+		specs = th.newTabSpec("Top Deals");
 		specs.setContent(R.id.tab3);
-		specs.setIndicator("New");
+		specs.setIndicator("Top Deals");
 		th.addTab(specs);
 		x = (TextView) th.getTabWidget().getChildAt(2).findViewById(android.R.id.title);
 		x.setTextSize(15);
 		x.setTextColor(Color.parseColor("#424242"));
 
+		specs = th.newTabSpec("Nearby");
+		specs.setContent(R.id.tab4);
+		specs.setIndicator("Nearby");
+		th.addTab(specs);
+		x = (TextView) th.getTabWidget().getChildAt(3).findViewById(android.R.id.title);
+		x.setTextSize(15);
+		x.setTextColor(Color.parseColor("#424242"));
+		
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
 		getTitle();
@@ -201,14 +222,16 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 
 		detector = new SimpleGestureFilter(this, this);
 		firstTimeNearbyClicked = true;
-		firstTimeNewClicked = true;
-
+		firstTimeRestClicked = true;
+		firstTimeLocationClicked = true;
 		//getDealsByDistance();
 
 		/*GetDistance sample = new GetDistance();
 		float distance = sample.getDistance(13.013758, 74.798322, 13.004930, 74.792860);
 		Toast.makeText(this, Float.toString(distance), Toast.LENGTH_LONG).show();*/
 	}
+	
+	
 
 	/*private void checkStuff() {
 		if(((String) global.getCity()).compareTo("Location Off")==0) {
@@ -290,9 +313,12 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		}
 		if(id == R.id.refresh_home) {
 			if(th.getCurrentTab()==1)
-				getAllDeals();
+				getAllRestaurants();
 			else if(th.getCurrentTab()==2)
-				getDealsByTime();
+				getBestDeals();
+			else if(th.getCurrentTab()==2)
+				getDealsByDistance();
+			
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -389,7 +415,13 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-		super.onResume();
+		
+		try{
+			super.onResume();
+		} catch(java.lang.NullPointerException e ){
+			Intent intent = new Intent(getBaseContext(), com.project.waverr.Splash.class);
+			startActivity(intent);
+		}
 		/*if(global.getCity().equalsIgnoreCase("Location Off") && flagLocation==1) {
 			try {
 				Thread.sleep(1000);
@@ -425,13 +457,17 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		th.getTabWidget().getChildAt(th.getCurrentTab()).setBackgroundResource(R.drawable.tab_selected_pressed_waverraccent);
 
 		int current = th.getCurrentTab();
-		if(current==1 && firstTimeNearbyClicked) {
-			firstTimeNearbyClicked = false;
-			getAllDeals();
+		if(current==1 && firstTimeRestClicked) {
+			firstTimeRestClicked = false;
+			getAllRestaurants();
 		}
-		if(current==2 && firstTimeNewClicked) {
-			firstTimeNewClicked = false;
-			getDealsByTime();
+		if(current==2 && firstTimeNearbyClicked) {
+			firstTimeNearbyClicked = false;
+			getBestDeals();
+		}
+		if(current==3 && firstTimeLocationClicked) {
+			firstTimeLocationClicked = false;
+		getDealsByDistance();
 		}
 	}
 
@@ -463,7 +499,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		//Toast.makeText(this, "Double Tap", Toast.LENGTH_SHORT).show();
 	}
 
-	/*private void getDealsByDistance() {
+	private void getDealsByDistance() {
 		final ArrayList<Deal> deals = new ArrayList<Deal>();
 		final ArrayList<ImageButton> buttons = new ArrayList<>();
 		final ArrayList<TextView> texts = new ArrayList<>();
@@ -471,6 +507,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		LocationManager locationManager;
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
+		criteria.setAccuracy(Criteria.ACCURACY_FINE);
 		String provider = locationManager.getBestProvider(criteria, true);
 		final Location location;
 		//final Location location = getLastKnownLocation();
@@ -479,7 +516,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 			location = locationManager.getLastKnownLocation(provider);
 		}
 		else
-			location = null;
+			location =  locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 		if(location == null) {
 			Toast.makeText(this, "No provider", Toast.LENGTH_SHORT).show();
 			AlertDialog.Builder promptBuilder = new AlertDialog.Builder(this);
@@ -544,7 +581,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 						for(int i=0; i<array.length(); i++) {
 							JSONObject object = array.getJSONObject(i);
 							Deal newDeal = new Deal();
-							newDeal.setID(object.getInt(things[0]));
+							newDeal.setID(object.getString(things[0]));
 							newDeal.setRestaurantID(object.getString(things[1]));
 							newDeal.setRestaurantName(object.getString(things[2]));
 							newDeal.setPercentageDiscount(object.getInt(things[3]));
@@ -619,7 +656,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 
 							ImageButton button = new ImageButton(getBaseContext());
 							button.setLayoutParams(params);
-							button.setImageResource(R.drawable.soup1);
+							button.setImageResource(R.drawable.biriyani);
 							button.setScaleType(ScaleType.FIT_XY);
 							button.setBackgroundColor(Color.TRANSPARENT);
 							button.setAdjustViewBounds(true);
@@ -669,12 +706,270 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 			Toast.makeText(this, "Nope!", Toast.LENGTH_SHORT).show();
 
 
-	}*/
+	}
 
-	private void getAllDeals() {
+	private void getAllRestaurants() {
+		String[] url = {
+				"http://waverr.in/restaurantpartners.php",
+		};
+
+		final ProgressDialog progressDialog = new ProgressDialog(this);
+		progressDialog.setMessage("Getting Restaurant List...");
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progressDialog.setIndeterminate(true);
+		progressDialog.setCancelable(true);
+		progressDialog.show();
+
+		final LinearLayout mLayout = (LinearLayout) findViewById(R.id.allrestaurants);
+		mLayout.removeAllViews();
+		latestbuttons.clear();
+		latestdeals.clear();
+		latesttexts.clear();
+		
+		mLayout.setGravity(Gravity.CENTER);
+		final DisplayMetrics display = mLayout.getResources().getDisplayMetrics();
+
+		JSONObtainer obtainer = new JSONObtainer() {
+			@Override
+			protected void onPostExecute(JSONArray array) {
+
+				final String things[] = {
+						"Restaurant Name"
+				};
+
+				try {
+					if(array==null){
+						LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+						TextView text = new TextView(getBaseContext());
+						boolean network=isNetworkAvailable();
+						if(network==false)
+						{
+							text.setText("Please check your internet connection and try again.");
+						}
+						//text.setText(newDeal.getDetails());
+						else
+						{
+							text.setText("No deals currently. Please reload or check back later");
+						}
+						int height = display.heightPixels; 
+						text.setPadding(0, height/3,0, 0);
+						text.setTextColor(Color.parseColor("#a9a9a9"));
+						text.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+						text.setGravity(Gravity.CENTER);
+						latesttexts.add(text);
+
+						LinearLayout smallLayout=new LinearLayout(getBaseContext());
+						smallLayout.setOrientation(LinearLayout.VERTICAL);
+						smallLayout.setLayoutParams(params);
+						smallLayout.setPadding(0, 0,0, 10);
+						smallLayout.addView(text);
+						mLayout.addView(smallLayout);
+					}
+					if(array!=null){
+						for(int i=0; i<array.length(); i++) {
+							final JSONObject object = array.getJSONObject(i);
+
+							Gson gson = new Gson();
+							Deal newDeal = new Deal();
+							
+							newDeal.setRestaurantName(object.getString(things[0]));
+							DateTime start = new DateTime();
+							DateTime end = new DateTime();
+							latestdeals.add(newDeal);
+							//Toast.makeText(getBaseContext(), "Got the object", Toast.LENGTH_SHORT).show();
+							LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+							ImageButton button = new ImageButton(getBaseContext());
+							button.setLayoutParams(params);
+							//button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
+							button.setScaleType(ScaleType.FIT_XY);
+							button.setBackgroundColor(Color.TRANSPARENT);
+							button.setAdjustViewBounds(true);
+							latestbuttons.add(button);
+							
+							System.gc();
+							final String deal = gson.toJson(newDeal);
+
+							button.setOnClickListener(new View.OnClickListener() {
+
+								@Override
+								public void onClick(View v) {
+									// TODO Auto-generated method stub
+									Intent intent = new Intent(getBaseContext(), com.project.waverr.ChineseDeal.class);
+									//Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
+									try {
+										intent.putExtra("restaurant", object.getString(things[0]));
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									intent.putExtra("login", login);
+									startActivity(intent);
+								}
+							});
+							/*String things[] = {
+								"ID",
+								"Restaurant ID",
+								"Restaurant Name",
+								"Percentage Discount",
+								"Amount Discount",
+								"Freebie",
+								"CanvasText",
+								"Min Purchase Amount",
+								"Deal Start Date",
+								"Deal End Date",
+								"Start Time",
+								"End Time",
+								"Cuisine",
+						};*/
+
+							//text.setText(newDeal.getDetails());
+							TextView text = new TextView(getBaseContext());
+							text.setText(object.getString(things[0]));
+							text.setBackgroundResource(R.drawable.deal_details);
+							text.setPadding(15,25, 15, 25);
+							text.setTextSize(15);
+							text.setTextColor(Color.WHITE);
+							text.setLayoutParams(params);
+							text.setOnClickListener(new View.OnClickListener() {
+
+								@Override
+								public void onClick(View v) {
+									// TODO Auto-generated method stub
+									Intent intent = new Intent(getBaseContext(), com.project.waverr.ChineseDeal.class);
+									//Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
+									try {
+										intent.putExtra("restaurant", object.getString(things[0]));
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									intent.putExtra("login", login);
+									startActivity(intent);
+								}
+							});
+							latesttexts.add(text);
+							LayoutParams params2 = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+							//FrameLayout smallLayout = new FrameLayout(getBaseContext());
+							LinearLayout smallLayout=new LinearLayout(getBaseContext());
+							smallLayout.setOrientation(LinearLayout.VERTICAL);
+							smallLayout.setLayoutParams(params);
+							smallLayout.setPadding(0, 0,0, 30);
+
+							LinearLayout smallLayout2=new LinearLayout(getBaseContext());
+							smallLayout2.setOrientation(LinearLayout.VERTICAL);
+							smallLayout2.setLayoutParams(params);
+							smallLayout2.setPadding(0, 0,0, -20);
+							smallLayout.addView(smallLayout2);
+							smallLayout2.addView(button);
+							LinearLayout smallLayout3=new LinearLayout(getBaseContext());
+							smallLayout3.setOrientation(LinearLayout.VERTICAL);
+							smallLayout3.setLayoutParams(params2);
+							smallLayout3.setPadding(24, 0,24, 0);
+							smallLayout.addView(smallLayout3);
+							smallLayout3.addView(text);
+
+							mLayout.addView(smallLayout);
+						}
+					}
+					//pullToRefreshView.onRefreshComplete();
+					progressDialog.dismiss();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		};
+
+		obtainer.execute(url);
+		
+	}
+public void startTime(){
+	
+	
+	final long startMillis = start.getTimeInMillis();
+	final long endMillis = end.getTimeInMillis();
+
+	new JSONObtainer() {
+		DateTime current = new DateTime();
+
+		@Override
+		protected void onProgressUpdate(Void... voids) {
+			
+		}
+
+		@Override
+		protected void onPostExecute(JSONArray array) {
+			if(array!=null) {
+				try {
+					JSONObject object = array.getJSONObject(0);
+					current.setDate(object.getString("date"));
+					current.setTime(object.getString("time"));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				long currentMillis = current.getTimeInMillis();
+
+				final long timeUntilStart, timeUntilEnd;
+
+				if(startMillis > currentMillis)
+					timeUntilStart = startMillis - currentMillis;
+				else
+					timeUntilStart = 0;
+				if(endMillis > currentMillis)
+					timeUntilEnd = endMillis - currentMillis;
+				else
+					timeUntilEnd = 0;
+
+				
+				new CountDownTimer(timeUntilStart, 1000) {
+					final DateTime actual = new DateTime();
+
+					@Override
+					public void onTick(long millisUntilFinished) {
+						// TODO Auto-generated method stub
+						actual.setDateTimeByMillis(millisUntilFinished);
+						
+						
+					}
+
+					@Override
+					public void onFinish() {
+						// TODO Auto-generated method stub
+						activedealtest=true;
+						new CountDownTimer(timeUntilEnd, 1000) {
+
+							@Override
+							public void onTick(long millisUntilFinished) {
+								// TODO Auto-generated method stub
+								actual.setDateTimeByMillis(millisUntilFinished);
+								
+							
+							}
+
+							@Override
+							public void onFinish() {
+								// TODO Auto-generated method stub
+								
+							}
+						}.start();
+					}
+				}.start();
+			}
+		}
+	}.execute(new String[] {"http://waverr.in/getcurrenttime.php"});
+}
+public static boolean hasstarted(){
+	
+	return activedealtest;
+	
+}
+
+	private void getBestDeals() {
 
 		String[] url = {
-				"http://waverr.in/getalldeals.php",
+				"http://waverr.in/getbest.php",
 		};
 
 		final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -686,7 +981,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 
 		final LinearLayout mLayout = (LinearLayout) findViewById(R.id.all);
 		mLayout.removeAllViews();
-
+		
 		deals.clear();
 		buttons.clear();
 		texts.clear();
@@ -757,10 +1052,10 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							newDeal.setFreebie(object.getString(things[5]));
 							newDeal.setCanvasText(object.getString(things[6]));
 							newDeal.setMinimumAmount(object.getInt(things[7]));
-							DateTime start = new DateTime();
+							start = new DateTime();
 							start.setDate(object.getString(things[8]));
 							start.setTime(object.getString(things[10]));
-							DateTime end = new DateTime();
+							end = new DateTime();
 							end.setDate(object.getString(things[9]));
 							end.setTime(object.getString(things[11]));
 							newDeal.setStartDateTime(start);
@@ -772,7 +1067,6 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 							ImageButton button = new ImageButton(getBaseContext());
 							button.setLayoutParams(params);
-							//button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
 							button.setScaleType(ScaleType.FIT_XY);
 							button.setBackgroundColor(Color.TRANSPARENT);
 							button.setAdjustViewBounds(true);
@@ -785,8 +1079,28 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							.centerCrop()
 							.into(button);
 							System.gc();
-							final String deal = gson.toJson(newDeal);
+							LayoutParams params1 = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+							ImageButton button2 = new ImageButton(getBaseContext());
+							button2.setLayoutParams(params1);
+							button.setScaleType(ScaleType.FIT_XY);
+							button2.setBackgroundColor(Color.TRANSPARENT);
+							button2.setAdjustViewBounds(true);
+							buttons.add(button2);
 
+							final String deal = gson.toJson(newDeal);
+							Deal d = gson.fromJson(deal,Deal.class);
+							start = d.getStartDateTime();
+							end = d.getEndDateTime();
+							startTime();
+							boolean test=hasstarted();
+							if(test==true){
+								button2.setBackgroundColor(Color.GREEN);
+								
+							}
+							else {
+								button2.setBackgroundColor(Color.RED);
+							}
+							
 							button.setOnClickListener(new View.OnClickListener() {
 
 								@Override
@@ -873,225 +1187,12 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							smallLayout3.setPadding(24, 0,24, 0);
 							smallLayout.addView(smallLayout3);
 							smallLayout3.addView(text);
-
-							mLayout.addView(smallLayout);
-						}
-					}
-					//pullToRefreshView.onRefreshComplete();
-					progressDialog.dismiss();
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-
-		};
-
-		obtainer.execute(url);
-	}
-
-	private void getDealsByTime() {
-
-		String[] url = {
-				"http://waverr.in/getdealparameterstime.php",
-		};
-
-		final ProgressDialog progressDialog = new ProgressDialog(this);
-		progressDialog.setMessage("Getting deals...");
-		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		progressDialog.setIndeterminate(true);
-		progressDialog.setCancelable(true);
-		progressDialog.show();
-
-		final LinearLayout mLayout = (LinearLayout) findViewById(R.id.latest);
-		mLayout.removeAllViews();
-		latestbuttons.clear();
-		latestdeals.clear();
-		latesttexts.clear();
-		
-		mLayout.setGravity(Gravity.CENTER);
-		final DisplayMetrics display = mLayout.getResources().getDisplayMetrics();
-
-		JSONObtainer obtainer = new JSONObtainer() {
-			@Override
-			protected void onPostExecute(JSONArray array) {
-
-				String things[] = {
-						"dealID",
-						"Restaurant ID",
-						"Restaurant Name",
-						"Percentage Discount",
-						"Amount Discount",
-						"Freebie",
-						"CanvasText",
-						"Min Purchase Amount",
-						"Deal Start Date",
-						"Deal End Date",
-						"Start Time",
-						"End Time",
-						"Cuisine",
-						"url"
-				};
-
-				try {
-					if(array==null){
-						LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-						TextView text = new TextView(getBaseContext());
-						boolean network=isNetworkAvailable();
-						if(network==false)
-						{
-							text.setText("Please check your internet connection and try again.");
-						}
-						//text.setText(newDeal.getDetails());
-						else
-						{
-							text.setText("No deals currently. Please reload or check back later");
-						}
-						int height = display.heightPixels; 
-						text.setPadding(0, height/3,0, 0);
-						text.setTextColor(Color.parseColor("#a9a9a9"));
-						text.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-						text.setGravity(Gravity.CENTER);
-						latesttexts.add(text);
-
-						LinearLayout smallLayout=new LinearLayout(getBaseContext());
-						smallLayout.setOrientation(LinearLayout.VERTICAL);
-						smallLayout.setLayoutParams(params);
-						smallLayout.setPadding(0, 0,0, 10);
-						smallLayout.addView(text);
-						mLayout.addView(smallLayout);
-					}
-					if(array!=null){
-						for(int i=0; i<array.length(); i++) {
-							JSONObject object = array.getJSONObject(i);
-
-							Gson gson = new Gson();
-							Deal newDeal = new Deal();
-							newDeal.setID(object.getString(things[0]));
-							newDeal.setRestaurantID(object.getString(things[1]));
-							newDeal.setRestaurantName(object.getString(things[2]));
-							newDeal.setPercentageDiscount(object.getInt(things[3]));
-							newDeal.setAmountDiscount(object.getInt(things[4]));
-							newDeal.setFreebie(object.getString(things[5]));
-							newDeal.setCanvasText(object.getString(things[6]));
-							newDeal.setMinimumAmount(object.getInt(things[7]));
-							DateTime start = new DateTime();
-							start.setDate(object.getString(things[8]));
-							start.setTime(object.getString(things[10]));
-							DateTime end = new DateTime();
-							end.setDate(object.getString(things[9]));
-							end.setTime(object.getString(things[11]));
-							newDeal.setStartDateTime(start);
-							newDeal.setEndDateTime(end);
-							newDeal.setCuisine(object.getString(things[12]));
-							newDeal.setImageURL(object.getString(things[13]));
-							latestdeals.add(newDeal);
-							//Toast.makeText(getBaseContext(), "Got the object", Toast.LENGTH_SHORT).show();
-							LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-							ImageButton button = new ImageButton(getBaseContext());
-							button.setLayoutParams(params);
-							//button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
-							button.setScaleType(ScaleType.FIT_XY);
-							button.setBackgroundColor(Color.TRANSPARENT);
-							button.setAdjustViewBounds(true);
-							latestbuttons.add(button);
-							Picasso.with(getBaseContext())
-							.load(newDeal.getImageURL())
-							.placeholder(R.drawable.placeholder_fetching)
-							.error(R.drawable.placeholderimage)
-							.fit()
-							.centerCrop()
-							.into(button);
-							System.gc();
-							final String deal = gson.toJson(newDeal);
-
-							button.setOnClickListener(new View.OnClickListener() {
-
-								@Override
-								public void onClick(View v) {
-									// TODO Auto-generated method stub
-									Intent intent = new Intent(getBaseContext(), com.project.waverr.DealPage.class);
-									//Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
-									intent.putExtra("deal", deal);
-									intent.putExtra("login", login);
-									startActivity(intent);
-								}
-							});
-							/*String things[] = {
-								"ID",
-								"Restaurant ID",
-								"Restaurant Name",
-								"Percentage Discount",
-								"Amount Discount",
-								"Freebie",
-								"CanvasText",
-								"Min Purchase Amount",
-								"Deal Start Date",
-								"Deal End Date",
-								"Start Time",
-								"End Time",
-								"Cuisine",
-						};*/
-
-							//text.setText(newDeal.getDetails());
-							String dtext="";
-							if(object.getString(things[6]).compareTo("")!=0&&object.getString(things[3])!=null)
-							{
-								dtext=object.getString(things[6]);
-							}
-							if(object.getString(things[5]).compareTo("")!=0&&object.getString(things[5])!=null)
-							{
-								dtext="Get "+object.getString(things[5])+" free on purchase of "+object.getString(things[7]);
-							}
-							if(object.getString(things[4]).compareTo("0")!=0&&object.getString(things[4])!=null)
-							{
-								dtext="Get Rs."+object.getString(things[4])+" off on a Minimum purchase of Rs."+object.getString(things[7]);
-							}
-							if(object.getString(things[3]).compareTo("0")!=0&&object.getString(things[3])!=null)
-							{
-								dtext="Get "+object.getString(things[3])+"% off on a Minimum purchase of Rs."+object.getString(things[7]);
-							}
-
-							TextView text = new TextView(getBaseContext());
-							text.setText(object.getString(things[2])+"\n"+dtext+"\nDeal is valid from "+start.getDateTime()+" till "+end.getDateTime());
-							text.setBackgroundResource(R.drawable.deal_details);
-							text.setPadding(15,25, 15, 25);
-							text.setTextSize(15);
-							text.setTextColor(Color.WHITE);
-							text.setLayoutParams(params);
-							text.setOnClickListener(new View.OnClickListener() {
-
-								@Override
-								public void onClick(View v) {
-									// TODO Auto-generated method stub
-									Intent intent = new Intent(getBaseContext(), com.project.waverr.DealPage.class);
-									//Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
-									intent.putExtra("deal", deal);
-									intent.putExtra("login", login);
-									startActivity(intent);
-								}
-							});
-							latesttexts.add(text);
-							LayoutParams params2 = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-							//FrameLayout smallLayout = new FrameLayout(getBaseContext());
-							LinearLayout smallLayout=new LinearLayout(getBaseContext());
-							smallLayout.setOrientation(LinearLayout.VERTICAL);
-							smallLayout.setLayoutParams(params);
-							smallLayout.setPadding(0, 0,0, 30);
-
-							LinearLayout smallLayout2=new LinearLayout(getBaseContext());
-							smallLayout2.setOrientation(LinearLayout.VERTICAL);
-							smallLayout2.setLayoutParams(params);
-							smallLayout2.setPadding(0, 0,0, -20);
-							smallLayout.addView(smallLayout2);
-							smallLayout2.addView(button);
-							LinearLayout smallLayout3=new LinearLayout(getBaseContext());
-							smallLayout3.setOrientation(LinearLayout.VERTICAL);
-							smallLayout3.setLayoutParams(params2);
-							smallLayout3.setPadding(24, 0,24, 0);
-							smallLayout.addView(smallLayout3);
-							smallLayout3.addView(text);
-
+							LinearLayout smallLayout4=new LinearLayout(getBaseContext());
+							smallLayout4.setOrientation(LinearLayout.VERTICAL);
+							smallLayout4.setLayoutParams(params2);
+							smallLayout4.setPadding(24, 0,24, 0);
+							smallLayout.addView(smallLayout4);
+							smallLayout4.addView(button2);
 							mLayout.addView(smallLayout);
 						}
 					}
@@ -1114,6 +1215,26 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+	@Override
+	protected void onRestart() {
+		// TODO Auto-generated method stub
+		try{
+			super.onRestart();
+		} catch(java.lang.NullPointerException e ){
+			Intent intent = new Intent(getBaseContext(), com.project.waverr.Splash.class);
+			startActivity(intent);
+		}
+	}
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		try{
+			super.onStart();
+		} catch(java.lang.NullPointerException e ){
+			Intent intent = new Intent(getBaseContext(), com.project.waverr.Splash.class);
+			startActivity(intent);
+		}
 	}
 }
 

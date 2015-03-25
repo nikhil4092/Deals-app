@@ -33,13 +33,22 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Deal deal = deals.get(i);
-        viewHolder.dealName.setText(deal.getCanvasText());
+        viewHolder.dealText.setText(deal.getCanvasText());
+        String start = deal.getStartDateTime().getDateTime().split(" ")[0];
+        String end = deal.getEndDateTime().getDateTime().split(" ")[0];
+        if(start.equals(end))
+        	viewHolder.date.setText("\n\n"+start);
+        else
+        	viewHolder.date.setText(start+"\n\nto\n\n"+end);
+        
+        viewHolder.time.setText(deal.getStartDateTime().getDateTime().split(" ")[1]+"\n\nto\n\n"
+        						+ deal.getEndDateTime().getDateTime().split(" ")[1]);
+        viewHolder.restaurantName.setText(deal.getRestaurantName());
         Picasso.with(mContext)
         .load(deal.getImageURL())
         .placeholder(R.drawable.placeholder_fetching)
         .error(R.drawable.placeholderimage)
         .into(viewHolder.dealImage);
-        //viewHolder.DealImage.setImageDrawable(mContext.getDrawable(deal.getImageResourceId(mContext)));
     }
 
     @Override
@@ -48,13 +57,20 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView dealName;
+        public TextView dealText;
         public ImageView dealImage;
+        public TextView date;
+        public TextView time;
+        public TextView restaurantName;
+        
 
         public ViewHolder(View itemView) {
             super(itemView);
-            dealName = (TextView) itemView.findViewById(R.id.dealName);
+            dealText = (TextView) itemView.findViewById(R.id.dealText);
             dealImage = (ImageView)itemView.findViewById(R.id.dealImage);
+            date = (TextView) itemView.findViewById(R.id.dealDate);
+            time = (TextView) itemView.findViewById(R.id.dealTime);
+            restaurantName = (TextView) itemView.findViewById(R.id.restaurantName);
         }
 
     }

@@ -21,4 +21,15 @@
         android:layout_height="match_parent"
         tools:context=".ChineseDeal2" />
     
+    <TextView
+	    android:id="@+id/noDeals"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="5dp"
+	    android:background="#ffffff"
+	    android:textColor="#bababa"
+	    android:text=""
+	    android:gravity="center"
+	    android:textAppearance="?android:attr/textAppearanceMedium" />
+   
 </LinearLayout>

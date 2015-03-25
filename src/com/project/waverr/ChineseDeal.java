@@ -32,9 +32,10 @@ import com.squareup.picasso.Picasso;
 
 public class ChineseDeal extends GlobalActionBar {
 
+	String[] url={"","",""};
 	JSONObtainer obtainer;
 	TextView DealType;
-	String s;
+	String s,restaurantname,type;
 	boolean login;
 	ArrayList<Deal> deals = new ArrayList<Deal>();
 	ArrayList<ImageButton> buttons = new ArrayList<>();
@@ -43,7 +44,7 @@ public class ChineseDeal extends GlobalActionBar {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.chinese_deal2);
+		setContentView(R.layout.chinese_deal);
 
 		final ProgressDialog progressDialog = new ProgressDialog(ChineseDeal.this);
 		progressDialog.setMessage("Getting deals...");
@@ -53,10 +54,11 @@ public class ChineseDeal extends GlobalActionBar {
 		progressDialog.show();
 		Bundle b=getIntent().getExtras();
         s=b.getString("cuisine");
+        restaurantname=b.getString("restaurant");
         login=b.getBoolean("login");
 		DealType=(TextView)findViewById(R.id.DealType);
 		
-		DealType.setText(s+" Deals");
+		
 		DealType.setTextSize(25);
 		DealType.setTextColor(Color.parseColor("#fe5335"));
 		Typeface typeface = Typeface.createFromAsset(getAssets(),"fonts/script.ttf");
@@ -65,10 +67,30 @@ public class ChineseDeal extends GlobalActionBar {
 		final LinearLayout mLayout = (LinearLayout) findViewById(R.id.deallist);
 		mLayout.setGravity(Gravity.CENTER);
 		final DisplayMetrics display = mLayout.getResources().getDisplayMetrics();
-		String[] url = {
+		if (restaurantname!=null)
+		{
+		/*	url = {
+					"http://waverr.in/getdealparametersrest.php",
+					"restaurant", restaurantname
+			};*/
+			url[0]="http://waverr.in/getdealparametersrest.php";
+			url[1]="restaurant";
+			url[2]=restaurantname;
+			DealType.setText(restaurantname+" Deals");
+			type=restaurantname;
+		}
+		else
+		{
+			/*url = {
 				"http://waverr.in/getdealparameters.php",
 				"cuisine", s
-		};
+			};*/
+			url[0]="http://waverr.in/getdealparameters.php";
+			url[1]="cuisine";
+			url[2]=s;
+			DealType.setText(s+" Deals");
+			type=s;
+		}
 		
 		obtainer = new JSONObtainer() {
 			@Override
@@ -103,7 +125,7 @@ public class ChineseDeal extends GlobalActionBar {
 						//text.setText(newDeal.getDetails());
 						else
 						{
-							text.setText("No "+s+" Deals Currently. Please reload or check back later.");
+							text.setText("No "+type+" Deals Currently. Please reload or check back later.");
 						}
 				        int height = display.heightPixels; 
 						text.setPadding(0, height/3,0, 0);

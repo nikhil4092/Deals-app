@@ -6,25 +6,30 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ChineseDeal2 extends Activity {
+public class ChineseDeal2 extends GlobalActionBar {
 
 	private RecyclerView mRecyclerView;
 	private DealAdapter mAdapter;
 	private ArrayList<Deal> deals;
 	private String s;
-
+	private TextView text;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,7 +41,8 @@ public class ChineseDeal2 extends Activity {
 		mRecyclerView = (RecyclerView)findViewById(R.id.dealRecycleView);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 		mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
+		text = (TextView) findViewById(R.id.noDeals);
+		
 		getDeals();
 
 		Toast.makeText(this, "Number of deals: "+deals.size(), Toast.LENGTH_SHORT).show();
@@ -44,6 +50,39 @@ public class ChineseDeal2 extends Activity {
 		mRecyclerView.setAdapter(mAdapter);
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		//if (!mNavigationDrawerFragment.isDrawerOpen()) {
+			// Only show items in the action bar relevant to this screen
+			// if the drawer is not showing. Otherwise, let the drawer
+			// decide what to show in the action bar.
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.chinese_deal, menu);
+			
+			restoreActionBar();
+			return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.refresh_deal) {
+			finish();
+			Intent intent = getIntent();
+			intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(intent);
+			return true;
+		}
+		if (id == android.R.id.home) {
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
 	private void getDeals() {
 		String[] url = {
 				"http://waverr.in/getdealparameters.php",
@@ -80,8 +119,6 @@ public class ChineseDeal2 extends Activity {
 
 				try {
 					if(array==null){
-						//LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-						TextView text = new TextView(getBaseContext());
 						boolean network=isNetworkAvailable();
 						if(network==false)
 						{
@@ -92,19 +129,7 @@ public class ChineseDeal2 extends Activity {
 						{
 							text.setText("No "+s+" Deals Currently. Please reload or check back later.");
 						}
-						/*int height = display.heightPixels; 
-						text.setPadding(0, height/3,0, 0);
-						text.setTextColor(Color.parseColor("#a9a9a9"));
-						text.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-						text.setGravity(Gravity.CENTER);
-						texts.add(text);
-
-						LinearLayout smallLayout=new LinearLayout(getBaseContext());
-						smallLayout.setOrientation(LinearLayout.VERTICAL);
-						smallLayout.setLayoutParams(params);
-						smallLayout.setPadding(0, 0,0, 10);
-						smallLayout.addView(text);
-						mLayout.addView(smallLayout);*/
+						
 					}
 					if(array!=null){
 						for(int i=0; i<array.length(); i++) {
@@ -131,101 +156,6 @@ public class ChineseDeal2 extends Activity {
 							newDeal.setCuisine(object.getString(things[12]));
 							newDeal.setImageURL(object.getString(things[13]));
 							deals.add(newDeal);
-							//Toast.makeText(getBaseContext(), "Got the object", Toast.LENGTH_SHORT).show();
-							/*LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-							ImageButton button = new ImageButton(getBaseContext());
-							button.setLayoutParams(params);
-							//button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
-							button.setScaleType(ScaleType.FIT_XY);
-							button.setBackgroundColor(Color.TRANSPARENT);
-							button.setAdjustViewBounds(true);
-							buttons.add(button);
-							Picasso.with(getBaseContext())
-							.load(newDeal.getImageURL())
-							.placeholder(R.drawable.placeholder_fetching)
-							.error(R.drawable.placeholderimage)
-							.fit()
-							.centerCrop()
-							.into(button);
-							System.gc();
-							final String deal = gson.toJson(newDeal);*/
-
-							/*button.setOnClickListener(new View.OnClickListener() {
-
-								@Override
-								public void onClick(View v) {
-									// TODO Auto-generated method stub
-									Intent intent = new Intent(getBaseContext(), com.project.waverr.DealPage.class);
-									//Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
-									intent.putExtra("deal", deal);
-									intent.putExtra("login", login);
-									startActivity(intent);
-								}
-							});*/
-							/*String things[] = {
-							"ID",
-							"Restaurant ID",
-							"Restaurant Name",
-							"Percentage Discount",
-							"Amount Discount",
-							"Freebie",
-							"CanvasText",
-							"Min Purchase Amount",
-							"Deal Start Date",
-							"Deal End Date",
-							"Start Time",
-							"End Time",
-							"Cuisine",
-					};*/
-
-							//text.setText(newDeal.getDetails());
-							/*String dtext="";
-							if(object.getString(things[6]).compareTo("")!=0&&object.getString(things[3])!=null)
-							{
-								dtext=object.getString(things[6]);
-							}
-							if(object.getString(things[5]).compareTo("")!=0&&object.getString(things[5])!=null)
-							{
-								dtext="Get "+object.getString(things[5])+" free on purchase of "+object.getString(things[7]);
-							}
-							if(object.getString(things[4]).compareTo("0")!=0&&object.getString(things[4])!=null)
-							{
-								dtext="Get Rs."+object.getString(things[4])+" off on a Minimum purchase of Rs."+object.getString(things[7]);
-							}
-							if(object.getString(things[3]).compareTo("0")!=0&&object.getString(things[3])!=null)
-							{
-								dtext="Get "+object.getString(things[3])+"% off on a Minimum purchase of Rs."+object.getString(things[7]);
-							}*/
-
-							/*TextView text = new TextView(getBaseContext());
-							text.setText(object.getString(things[2])+"\n"+dtext+"\nDeal is valid from "+start.getDateTime()+" till "+end.getDateTime());
-							text.setBackgroundResource(R.drawable.deal_details);
-							text.setPadding(15,25, 15, 25);
-							text.setTextSize(15);
-							text.setTextColor(Color.WHITE);
-							text.setLayoutParams(params);
-							texts.add(text);
-							LayoutParams params2 = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-							//FrameLayout smallLayout = new FrameLayout(getBaseContext());
-							LinearLayout smallLayout=new LinearLayout(getBaseContext());
-							smallLayout.setOrientation(LinearLayout.VERTICAL);
-							smallLayout.setLayoutParams(params);
-							smallLayout.setPadding(0, 0,0, 10);
-
-							LinearLayout smallLayout2=new LinearLayout(getBaseContext());
-							smallLayout2.setOrientation(LinearLayout.VERTICAL);
-							smallLayout2.setLayoutParams(params);
-							smallLayout2.setPadding(0, 0,0, -20);
-							smallLayout.addView(smallLayout2);
-							smallLayout2.addView(button);
-							LinearLayout smallLayout3=new LinearLayout(getBaseContext());
-							smallLayout3.setOrientation(LinearLayout.VERTICAL);
-							smallLayout3.setLayoutParams(params2);
-							smallLayout3.setPadding(24, 0,24, 0);
-							smallLayout.addView(smallLayout3);
-							smallLayout3.addView(text);
-
-							mLayout.addView(smallLayout);*/
 						}
 					}
 					//pullToRefreshView.onRefreshComplete();
