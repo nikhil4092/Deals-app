@@ -43,7 +43,7 @@ public class ChineseDeal extends GlobalActionBar {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.chinese_deal);
+		setContentView(R.layout.chinese_deal2);
 
 		final ProgressDialog progressDialog = new ProgressDialog(ChineseDeal.this);
 		progressDialog.setMessage("Getting deals...");
