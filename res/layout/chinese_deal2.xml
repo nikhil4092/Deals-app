@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content" >
+    
+    <TextView
+	    android:id="@+id/DealType"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="5dp"
+	    android:background="#ffffff"
+	    android:textColor="#000000"
+	    android:text=""
+	    android:gravity="center"
+	    android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/dealRecycleView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ChineseDeal2" />
+    
+    <TextView
+	    android:id="@+id/noDeals"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="5dp"
+	    android:background="#ffffff"
+	    android:textColor="#bababa"
+	    android:text=""
+	    android:gravity="center"
+	    android:textAppearance="?android:attr/textAppearanceMedium" />
+   
+</LinearLayout>

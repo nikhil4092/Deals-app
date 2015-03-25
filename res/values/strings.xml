@@ -10,8 +10,8 @@
     <string name="title_activity_indian_cuisine">IndianCuisine</string>
     <string name="title_activity_deal_page">DealPage</string>
     <string name="about_waverr">Waverr is India\'s first live deal engine. A place where you find great deals from your favourite restaurants nearby. Discover great food and get an incentive to do so! We believe in quality rather than quantity and we make sure that we get the best deals from our partners and not any run of the mill deals. So every time you are hungry, don\'t forget to fire up the Waverr app because you never know, you might find a deal that you just cannot resist!</string>
-	<string name="contact_us">We would love to hear from you.\nGet in touch with us at contact@waverr.in\nYou can also visit us at waverr.in</string>
-    
+    <string name="contact_us">We would love to hear from you.\nGet in touch with us at contact@waverr.in\nYou can also visit us at waverr.in</string>
+
     <string-array name="items">
         <item>Name</item>
         <item>Name</item>
@@ -48,5 +48,6 @@
     <string name="waverr_logo">Waverr logo</string>
     <string name="test_text">This is a test Text for the current button</string>
     <string name="refresh">Refresh deals</string>
+    <string name="title_activity_chinese_deal2">ChineseDeal2</string>
 
 </resources>

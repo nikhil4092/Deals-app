@@ -498,6 +498,9 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*
 									// TODO Auto-generated method stub
 									actual.setDateTimeByMillis(millisUntilFinished);
 							//dealactivetest=true;
+
+									//dealactivetest=true;
+
 									String text = "Deal ends in\n"
 											+ actual.days + "d "
 											+ actual.hours + "h "
