@@ -59,7 +59,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	String dtext;
 	boolean login = false;
 	Deal deal;
-	boolean dealExpired = false;
+	static boolean dealExpired = false;
 	boolean dealStarted = false;
 	String dealString;
 	ImageView main;
@@ -433,7 +433,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		}
 	}
 
-	private void startTimer() {
+	public void startTimer() {
 		final long startMillis = start.getTimeInMillis();
 		final long endMillis = end.getTimeInMillis();
 
@@ -497,6 +497,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 								public void onTick(long millisUntilFinished) {
 									// TODO Auto-generated method stub
 									actual.setDateTimeByMillis(millisUntilFinished);
+									dealactivetest=true;
 									String text = "Deal ends in\n"
 											+ actual.days + "d "
 											+ actual.hours + "h "
@@ -522,6 +523,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		}.execute(new String[] {"http://waverr.in/getcurrenttime.php"});
 	}
 
+	
 	private void getRestaurantDetails() {
 		String[] restaurantUrl = {
 				"http://waverr.in/getrestaurantlocation.php",
