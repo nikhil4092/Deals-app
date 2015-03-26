@@ -32,8 +32,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,11 +40,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView.ScaleType;
-import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
@@ -84,15 +79,14 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 	private DealAdapter bestAdapter;
 	private RecyclerView locationRecyclerView;
 	private DealAdapter locationAdapter;
+	private RecyclerView restaurantRecyclerView;
+	private RestaurantAdapter restaurantAdapter;
+	private ArrayList<Restaurant> restaurants;
 	boolean login=true;
+	private TextView displayRestaurant;
 
 	private ArrayList<Deal> bestDeals;
 	private ArrayList<Deal> locationDeals;
-
-	private ArrayList<TextView> latesttexts;
-	private ArrayList<ImageButton> latestbuttons;
-	private ArrayList<Deal> latestdeals;
-
 
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
@@ -233,6 +227,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		
 		bestDeals = new ArrayList<>();
 		locationDeals = new ArrayList<>();
+		restaurants = new ArrayList<>();
 		//getDealsByDistance();
 
 		/*GetDistance sample = new GetDistance();
@@ -709,150 +704,63 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		progressDialog.setCancelable(true);
 		progressDialog.show();
 
-		final LinearLayout mLayout = (LinearLayout) findViewById(R.id.allrestaurants);
-		mLayout.removeAllViews();
+		restaurantRecyclerView = (RecyclerView) findViewById(R.id.RestaurantRecycleView);
+		restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+		restaurantRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-		latestbuttons = new ArrayList<>();
-		latestdeals = new ArrayList<>();
-		latesttexts = new ArrayList<>();
-
-		mLayout.setGravity(Gravity.CENTER);
-		final DisplayMetrics display = mLayout.getResources().getDisplayMetrics();
-
+		displayRestaurant = (TextView) findViewById(R.id.resUnavailable);
+		displayRestaurant.setTextSize(25);
+		displayRestaurant.setTextColor(Color.parseColor("#fe5335"));
+		Typeface typeface = Typeface.createFromAsset(getAssets(),"fonts/script.ttf");
+		displayRestaurant.setTypeface(typeface);
+		displayRestaurant.setText("Deals by Restaurants");
+		
 		JSONObtainer obtainer = new JSONObtainer() {
 			@Override
 			protected void onPostExecute(JSONArray array) {
 
 				final String things[] = {
-						"Restaurant Name"
+						"Restaurant Name",
+						"Restaurant ID"
+						//"url",
 				};
 
 				try {
 					if(array==null){
-						LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-						TextView text = new TextView(getBaseContext());
 						boolean network=isNetworkAvailable();
 						if(network==false)
 						{
-							text.setText("Please check your internet connection and try again.");
+							displayRestaurant.setText("Please check your internet connection and try again.");
 						}
 						//text.setText(newDeal.getDetails());
 						else
 						{
-							text.setText("No deals currently. Please reload or check back later");
+							displayRestaurant.setText("Congratulations... You are selected for Hogwarts School of Witchcraft and Wizardry! Just kidding. :)");
 						}
-						int height = display.heightPixels; 
-						text.setPadding(0, height/3,0, 0);
-						text.setTextColor(Color.parseColor("#a9a9a9"));
-						text.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-						text.setGravity(Gravity.CENTER);
-						latesttexts.add(text);
-
-						LinearLayout smallLayout=new LinearLayout(getBaseContext());
-						smallLayout.setOrientation(LinearLayout.VERTICAL);
-						smallLayout.setLayoutParams(params);
-						smallLayout.setPadding(0, 0,0, 10);
-						smallLayout.addView(text);
-						mLayout.addView(smallLayout);
 					}
 					if(array!=null){
 						for(int i=0; i<array.length(); i++) {
 							final JSONObject object = array.getJSONObject(i);
-
-							Deal newDeal = new Deal();
-
-							newDeal.setRestaurantName(object.getString(things[0]));
-							latestdeals.add(newDeal);
-							//Toast.makeText(getBaseContext(), "Got the object", Toast.LENGTH_SHORT).show();
-							LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-							ImageButton button = new ImageButton(getBaseContext());
-							button.setLayoutParams(params);
-							//button.setImageResource(getResources().getIdentifier("soup"+(i+1), "drawable",getPackageName()));
-							button.setScaleType(ScaleType.FIT_XY);
-							button.setBackgroundColor(Color.TRANSPARENT);
-							button.setAdjustViewBounds(true);
-							latestbuttons.add(button);
-
-							System.gc();
-
-							button.setOnClickListener(new View.OnClickListener() {
-
-								@Override
-								public void onClick(View v) {
-									// TODO Auto-generated method stub
-									Intent intent = new Intent(getBaseContext(), com.project.waverr.ChineseDeal.class);
-									//Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
-									try {
-										intent.putExtra("restaurant", object.getString(things[0]));
-									} catch (JSONException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									intent.putExtra("login", login);
-									startActivity(intent);
-								}
-							});
-
-							TextView text = new TextView(getBaseContext());
-							text.setText(object.getString(things[0]));
-							text.setBackgroundResource(R.drawable.deal_details);
-							text.setPadding(15,25, 15, 25);
-							text.setTextSize(15);
-							text.setTextColor(Color.WHITE);
-							text.setLayoutParams(params);
-							text.setOnClickListener(new View.OnClickListener() {
-
-								@Override
-								public void onClick(View v) {
-									// TODO Auto-generated method stub
-									Intent intent = new Intent("com.project.waverr.CHINESECUISINE");
-									//Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
-									try {
-										intent.putExtra("restaurant", object.getString(things[0]));
-									} catch (JSONException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									intent.putExtra("login", login);
-									startActivity(intent);
-								}
-							});
-							latesttexts.add(text);
-							LayoutParams params2 = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-							//FrameLayout smallLayout = new FrameLayout(getBaseContext());
-							LinearLayout smallLayout=new LinearLayout(getBaseContext());
-							smallLayout.setOrientation(LinearLayout.VERTICAL);
-							smallLayout.setLayoutParams(params);
-							smallLayout.setPadding(0, 0,0, 30);
-
-							LinearLayout smallLayout2=new LinearLayout(getBaseContext());
-							smallLayout2.setOrientation(LinearLayout.VERTICAL);
-							smallLayout2.setLayoutParams(params);
-							smallLayout2.setPadding(0, 0,0, -20);
-							smallLayout.addView(smallLayout2);
-							smallLayout2.addView(button);
-							LinearLayout smallLayout3=new LinearLayout(getBaseContext());
-							smallLayout3.setOrientation(LinearLayout.VERTICAL);
-							smallLayout3.setLayoutParams(params2);
-							smallLayout3.setPadding(24, 0,24, 0);
-							smallLayout.addView(smallLayout3);
-							smallLayout3.addView(text);
-
-							mLayout.addView(smallLayout);
+							Restaurant newRestaurant;
+							String name = (object.getString(things[0]));
+							//String url = (object.getString(things[1]));
+							String id = (object.getString(things[1]));
+							newRestaurant = new Restaurant(name, id, null);
+							restaurants.add(newRestaurant);
 						}
 					}
-					//pullToRefreshView.onRefreshComplete();
+					restaurantAdapter.notifyDataSetChanged();
 					progressDialog.dismiss();
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-
 		};
 
 		obtainer.execute(url);
-
+		restaurantAdapter = new RestaurantAdapter(restaurants, R.layout.restaurant_list, this);
+		restaurantRecyclerView.setAdapter(restaurantAdapter);
 	}
 	public void startTime(){
 

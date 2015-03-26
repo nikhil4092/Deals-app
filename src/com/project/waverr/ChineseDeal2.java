@@ -21,7 +21,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ChineseDeal2 extends GlobalActionBar {
@@ -60,10 +59,6 @@ public class ChineseDeal2 extends GlobalActionBar {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		//if (!mNavigationDrawerFragment.isDrawerOpen()) {
-			// Only show items in the action bar relevant to this screen
-			// if the drawer is not showing. Otherwise, let the drawer
-			// decide what to show in the action bar.
 			MenuInflater inflater = getMenuInflater();
 			inflater.inflate(R.menu.chinese_deal, menu);
 			
@@ -73,9 +68,6 @@ public class ChineseDeal2 extends GlobalActionBar {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.refresh_deal) {
 			finish();
@@ -116,7 +108,7 @@ public class ChineseDeal2 extends GlobalActionBar {
 		dialog.setMessage("Getting deals...");
 		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		dialog.setIndeterminate(true);
-		dialog.setCancelable(false);
+		dialog.setCancelable(true);
 		dialog.show();
 		
 		JSONObtainer obtainer = new JSONObtainer() {
