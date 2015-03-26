@@ -86,7 +86,7 @@
                                             android:padding="7dp"
                                             android:text=""
                                             android:textAppearance="?android:attr/textAppearanceLarge"
-                                            android:textColor="#ff5335" />
+                                            android:textColor="#2b2b2b" />
 
                                         <ImageButton
                                             android:id="@+id/share"
@@ -117,7 +117,7 @@
 						            android:text=""
 						            android:background="#ffffff"
 						            android:padding="7dp"
-						            android:textColor="#000000"
+						            android:textColor="#9a9a9a"
 						            android:textAppearance="?android:attr/textAppearanceMedium" />
 
 						        <TextView
@@ -125,7 +125,7 @@
 						            android:layout_width="wrap_content"
 						            android:layout_height="wrap_content"
 						            android:text=""
-						            android:textColor="#000000"
+						            android:textColor="#9a9a9a"
 						            android:padding="7dp"
 						            android:textAppearance="?android:attr/textAppearanceMedium" />
 						        
@@ -134,7 +134,7 @@
 						            android:layout_width="match_parent"
 						            android:layout_height="wrap_content"
 						            android:text=""
-						            android:textColor="#000000"
+						            android:textColor="#9a9a9a"
 						            android:background="#ffffff"
 						            android:padding="7dp"
 						            android:textStyle="bold"
@@ -191,7 +191,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_weight="2"
-                                            android:textColor="#000000"
+                                            android:textColor="#9a9a9a"
                                             android:text=""
                                             android:clickable="true"
                                             android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -226,7 +226,7 @@
 									        android:layout_width="fill_parent"
 									        android:layout_weight="1"
 									        android:layout_height="wrap_content"
-									        android:textColor="#ff5335"
+									        android:textColor="#9a9a9a"
 									        android:textStyle="bold"
 									        android:text=""
 									        android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -316,7 +316,7 @@
         android:textColor="#ffffff"
         android:textStyle="bold"
         android:background="#00c15b"
-        android:text="Activate Deal" />
+        android:text="Activate Deal >" />
     
 </LinearLayout>
 

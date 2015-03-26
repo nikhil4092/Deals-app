@@ -2,12 +2,15 @@ package com.project.waverr;
 
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
-<<<<<<< HEAD
+import android.graphics.Color;
 import android.graphics.Typeface;
-=======
 import android.content.Intent;
->>>>>>> 3abd0144c1fd3f020f02319308e63c5e24367d55
+import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,7 +28,11 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
     private List<Deal> deals;
     private int rowLayout;
     private Context mContext;
-
+    DateTime start;
+	DateTime end;
+	boolean activeDeal=false;
+	
+	
     public DealAdapter(List<Deal> deals, int rowLayout, Context context) {
         this.deals = deals;
         this.rowLayout = rowLayout;
@@ -37,6 +44,8 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(rowLayout, viewGroup, false);
         Deal deal = deals.get(i);
         Gson gson = new Gson();
+        start = deal.getStartDateTime();
+		end = deal.getEndDateTime();
         final String dealString = gson.toJson(deal);
         
         v.setOnClickListener(new OnClickListener() {
@@ -177,8 +186,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
 		viewHolder.time.setTypeface(typeface);
         viewHolder.time.setText(stimear[0]+":"+stimear[1]+" "+stimear[2]+"\nto\n"+etimear[0]+":"+etimear[1]+" "+
         etimear[2]);
-        viewHolder.restaurantName.setTextSize(20);
-       
+        viewHolder.restaurantName.setTextSize(20);     
 		viewHolder.restaurantName.setTypeface(typeface);
         viewHolder.restaurantName.setText(deal.getRestaurantName());
         Picasso.with(mContext)
@@ -186,6 +194,17 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
         .placeholder(R.drawable.placeholder_fetching)
         .error(R.drawable.placeholderimage)
         .into(viewHolder.dealImage);
+        startTimer(viewHolder);
+        if(activeDeal==true)
+        	{Picasso.with(mContext)
+	        .load(R.drawable.greenglow)
+	        .into(viewHolder.active);}
+        else
+        {
+        	
+        }
+        activeDeal=false;
+        
     }
 
     @Override
@@ -199,7 +218,8 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
         public TextView date;
         public TextView time;
         public TextView restaurantName;
-        
+        public ImageView active;
+    	
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -208,8 +228,80 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
             date = (TextView) itemView.findViewById(R.id.dealDate);
             time = (TextView) itemView.findViewById(R.id.dealTime);
             restaurantName = (TextView) itemView.findViewById(R.id.restaurantName);
-
+            active= (ImageView)itemView.findViewById(R.id.ActiveDeal);
             
         }
     }
+    public void startTimer(final ViewHolder viewHolder) {
+		final long startMillis = start.getTimeInMillis();
+		final long endMillis = end.getTimeInMillis();
+
+		new JSONObtainer() {
+			DateTime current = new DateTime();
+
+			@Override
+			protected void onProgressUpdate(Void... voids) {
+				
+			}
+
+			@Override
+			protected void onPostExecute(JSONArray array) {
+				if(array!=null) {
+					try {
+						JSONObject object = array.getJSONObject(0);
+						current.setDate(object.getString("date"));
+						current.setTime(object.getString("time"));
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					long currentMillis = current.getTimeInMillis();
+
+					final long timeUntilStart, timeUntilEnd;
+
+					if(startMillis > currentMillis)
+						timeUntilStart = startMillis - currentMillis;
+					else
+						timeUntilStart = 0;
+					if(endMillis > currentMillis)
+						timeUntilEnd = endMillis - currentMillis;
+					else
+						timeUntilEnd = 0;
+
+					new CountDownTimer(timeUntilStart, 1000) {
+						final DateTime actual = new DateTime();
+
+						@Override
+						public void onTick(long millisUntilFinished) {
+							// TODO Auto-generated method stub
+							actual.setDateTimeByMillis(millisUntilFinished);
+						}
+
+						@Override
+						public void onFinish() {
+							// TODO Auto-generated method stub
+							activeDeal=true;
+							new CountDownTimer(timeUntilEnd, 1000) {
+
+								@Override
+								public void onTick(long millisUntilFinished) {
+									// TODO Auto-generated method stub
+									actual.setDateTimeByMillis(millisUntilFinished);
+									
+								}
+
+								@Override
+								public void onFinish() {
+									// TODO Auto-generated method stub
+									activeDeal=false;
+									//activate.setEnabled(false);
+								}
+							}.start();
+						}
+					}.start();
+				}
+			}
+		}.execute(new String[] {"http://waverr.in/getcurrenttime.php"});
+	}
+
 }

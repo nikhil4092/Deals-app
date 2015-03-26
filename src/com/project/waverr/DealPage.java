@@ -106,13 +106,23 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		restname=(TextView)findViewById(R.id.placeName);
 		restname.setTextSize(20);
 		restname.setTypeface(typeface);
+		typeface = Typeface.createFromAsset(getAssets(),"fonts/Oswald-Regular.ttf");
 		dealtext=(TextView)findViewById(R.id.theDeal);
-		dealtext.setTextSize(16);
+		dealtext.setTextSize(20);
 		dealtext.setTypeface(typeface);
 		duration = (TextView) findViewById(R.id.timeLimit);
+		duration.setTextSize(16);
+		duration.setTypeface(typeface);
+		typeface = Typeface.createFromAsset(getAssets(),"fonts/Oswald-Light.ttf");
 		instructions = (TextView) findViewById(R.id.instructions);
+		instructions.setTextSize(16);
+		instructions.setTypeface(typeface);
 		finePrint = (TextView) findViewById(R.id.fine_print);
+		finePrint.setTextSize(16);
+		finePrint.setTypeface(typeface);
 		placeDetails = (TextView) findViewById(R.id.namefulladdress);
+		placeDetails.setTextSize(20);
+		placeDetails.setTypeface(typeface);
 		placeDetails.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -122,6 +132,8 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 			}
 		});
 		restaurantInfo = (TextView) findViewById(R.id.RestoIntro);
+		restaurantInfo.setTextSize(16);
+		restaurantInfo.setTypeface(typeface);
 		findViewById(R.id.get_directions).setOnClickListener(this);
 		findViewById(R.id.button_call).setOnClickListener(this);
 		findViewById(R.id.share).setOnClickListener(this);
@@ -380,7 +392,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		activate.setText("Activate Deal");
+		activate.setText("Activate Deal  >");
 	}
 
 	@Override
@@ -643,7 +655,6 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 	}
 	void goStillAhead() {
 		restname.setText(deal.getRestaurantName());
-		restname.setTypeface(null, Typeface.BOLD);
 		dealtext.setText(dtext);
 		duration.setText("The deal is valid from "+start.getDateTime()+" to "+end.getDateTime());
 		finePrint.setText("Fine Print:\n"+deal.getRestaurantFinePrint());

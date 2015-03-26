@@ -21,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ChineseDeal2 extends GlobalActionBar {
@@ -32,6 +33,7 @@ public class ChineseDeal2 extends GlobalActionBar {
 	private TextView type;
 	private String restaurantName;
 	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,7 +42,7 @@ public class ChineseDeal2 extends GlobalActionBar {
 		Bundle b=getIntent().getExtras();
         s=b.getString("cuisine");
         restaurantName=b.getString("restaurant");
-
+        
 		mRecyclerView = (RecyclerView)findViewById(R.id.dealRecycleView);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 		mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -99,14 +101,14 @@ public class ChineseDeal2 extends GlobalActionBar {
 			url[0]="http://waverr.in/getdealparametersrest.php";
 			url[1]="restaurant";
 			url[2]=restaurantName;
-			type.setText(restaurantName+" Deals");
+			type.setText(restaurantName);
 		}
 		else
 		{
 			url[0]="http://waverr.in/getdealparameters.php";
 			url[1]="cuisine";
 			url[2]=s;
-			type.setText(s+" Deals");
+			type.setText(s);
 		}
 		
 		deals = new ArrayList<>();

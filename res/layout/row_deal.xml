@@ -19,13 +19,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:weightSum="3" >
+            android:weightSum="40" >
 
             <ImageView
                 android:id="@+id/dealImage"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
-                android:layout_weight="1"
+                android:layout_weight="13"
                 android:background="@drawable/circle"
                 android:padding="3dp"
                 android:scaleType="centerCrop" />
@@ -34,14 +34,11 @@
                 android:id="@+id/dealDate"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
-                android:layout_weight="1"
+                android:layout_weight="12"
                 android:background="?android:selectableItemBackground"
-<<<<<<< HEAD
                 android:clickable="true"
                 android:focusable="true"
-=======
                 android:gravity="center"
->>>>>>> 3abd0144c1fd3f020f02319308e63c5e24367d55
                 android:padding="3dp"
                 android:text=""
                 android:textColor="#9a9a9a"
@@ -51,18 +48,23 @@
                 android:id="@+id/dealTime"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
-                android:layout_weight="1"
+                android:layout_weight="13"
                 android:background="?android:selectableItemBackground"
-<<<<<<< HEAD
+
                 android:clickable="true"
                 android:focusable="true"
-=======
                 android:gravity="center"
->>>>>>> 3abd0144c1fd3f020f02319308e63c5e24367d55
                 android:padding="3dp"
                 android:text=""
                 android:textColor="#9a9a9a"
                 android:textSize="20sp" />
+            <ImageView
+                android:id="@+id/ActiveDeal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:padding="3dp"
+                android:scaleType="centerCrop" />
         </LinearLayout>
 
         <TextView
@@ -70,32 +72,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:selectableItemBackground"
-<<<<<<< HEAD
+
             android:clickable="true"
             android:focusable="true"
             android:gravity="left"
             android:padding="3dp"
             android:textColor="#2b2b2b"
             android:textSize="20sp" />
-=======
-            android:gravity="center"
-            android:padding="3dp"
-            android:textColor="#2b2b2b"
-            android:textSize="16sp" />
 
->>>>>>> 3abd0144c1fd3f020f02319308e63c5e24367d55
+
         <TextView
             android:id="@+id/dealText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:selectableItemBackground"
-<<<<<<< HEAD
+
             android:clickable="true"
             android:focusable="true"
             android:gravity="left"
-=======
-            android:gravity="center"
->>>>>>> 3abd0144c1fd3f020f02319308e63c5e24367d55
             android:padding="3dp"
             android:textColor="#9a9a9a"
             android:textSize="18sp" />
