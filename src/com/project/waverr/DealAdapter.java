@@ -3,15 +3,21 @@ package com.project.waverr;
 import java.util.List;
 
 import android.content.Context;
+<<<<<<< HEAD
 import android.graphics.Typeface;
+=======
+import android.content.Intent;
+>>>>>>> 3abd0144c1fd3f020f02319308e63c5e24367d55
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
@@ -29,6 +35,20 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(rowLayout, viewGroup, false);
+        Deal deal = deals.get(i);
+        Gson gson = new Gson();
+        final String dealString = gson.toJson(deal);
+        
+        v.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent("com.project.waverr.DEALPAGE");
+				intent.putExtra("deal", dealString);
+				mContext.startActivity(intent);
+			}
+		});
         return new ViewHolder(v);
         
     }
@@ -191,6 +211,5 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
 
             
         }
-
     }
 }
