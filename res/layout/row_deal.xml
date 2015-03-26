@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:orientation="horizontal"
     card_view:cardCornerRadius="5dp" >
 
@@ -24,9 +26,9 @@
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
+                android:background="@drawable/circle"
                 android:padding="3dp"
-                android:scaleType="centerCrop"
-                android:background="@drawable/circle" />
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/dealDate"
@@ -34,8 +36,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="?android:selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
                 android:gravity="center"
                 android:padding="3dp"
                 android:text=""
@@ -48,8 +48,6 @@
                 android:layout_height="100dp"
                 android:layout_weight="1"
                 android:background="?android:selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
                 android:gravity="center"
                 android:padding="3dp"
                 android:text=""
@@ -62,19 +60,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
             android:gravity="center"
             android:padding="3dp"
             android:textColor="#2b2b2b"
             android:textSize="16sp" />
+
         <TextView
             android:id="@+id/dealText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
             android:gravity="center"
             android:padding="3dp"
             android:textColor="#9a9a9a"

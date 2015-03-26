@@ -29,7 +29,8 @@ public class ChineseDeal2 extends GlobalActionBar {
 	private DealAdapter mAdapter;
 	private ArrayList<Deal> deals;
 	private String s;
-	private TextView text,type;
+	private TextView type;
+	private String restaurantName;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,17 +39,16 @@ public class ChineseDeal2 extends GlobalActionBar {
 		
 		Bundle b=getIntent().getExtras();
         s=b.getString("cuisine");
+        restaurantName=b.getString("restaurant");
 
 		mRecyclerView = (RecyclerView)findViewById(R.id.dealRecycleView);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 		mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-		text = (TextView) findViewById(R.id.noDeals);
 		type = (TextView) findViewById(R.id.DealType);
 		type.setTextSize(25);
 		type.setTextColor(Color.parseColor("#fe5335"));
 		Typeface typeface = Typeface.createFromAsset(getAssets(),"fonts/script.ttf");
 		type.setTypeface(typeface);
-		type.setText(s);
 		getDeals();
 
 		mAdapter = new DealAdapter(deals, R.layout.row_deal, this);
@@ -94,6 +94,21 @@ public class ChineseDeal2 extends GlobalActionBar {
 				"http://waverr.in/getdealparameters.php",
 				"cuisine", s
 		};
+		if (restaurantName!=null)
+		{
+			url[0]="http://waverr.in/getdealparametersrest.php";
+			url[1]="restaurant";
+			url[2]=restaurantName;
+			type.setText(restaurantName+" Deals");
+		}
+		else
+		{
+			url[0]="http://waverr.in/getdealparameters.php";
+			url[1]="cuisine";
+			url[2]=s;
+			type.setText(s+" Deals");
+		}
+		
 		deals = new ArrayList<>();
 		final ProgressDialog dialog = new  ProgressDialog(this);
 		dialog.setMessage("Getting deals...");

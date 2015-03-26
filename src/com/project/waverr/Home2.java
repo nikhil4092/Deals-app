@@ -53,9 +53,7 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.project.waverr.SimpleGestureFilter.SimpleGestureListener;
-import com.squareup.picasso.Picasso;
 
 public class Home2 extends ActionBarActivity implements
 NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChangeListener, SimpleGestureListener{
@@ -82,17 +80,19 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 	private boolean firstTimeNearbyClicked;
 	private boolean firstTimeLocationClicked;
 	private boolean firstTimeRestClicked;
-	private RecyclerView mRecyclerView;
-	private DealAdapter mAdapter;
+	private RecyclerView bestRecyclerView;
+	private DealAdapter bestAdapter;
+	private RecyclerView locationRecyclerView;
+	private DealAdapter locationAdapter;
 	boolean login=true;
 
-	final ArrayList<Deal> latestdeals = new ArrayList<Deal>();
-	final ArrayList<ImageButton> latestbuttons = new ArrayList<>();
-	final ArrayList<TextView> latesttexts = new ArrayList<>();
+	private ArrayList<Deal> bestDeals;
+	private ArrayList<Deal> locationDeals;
 
-	final ArrayList<Deal> deals = new ArrayList<Deal>();
-	final ArrayList<ImageButton> buttons = new ArrayList<>();
-	final ArrayList<TextView> texts = new ArrayList<>();
+	private ArrayList<TextView> latesttexts;
+	private ArrayList<ImageButton> latestbuttons;
+	private ArrayList<Deal> latestdeals;
+
 
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
@@ -149,7 +149,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		x.setTextSize(15);
 		x.setTextColor(Color.parseColor("#424242"));
 
-			
+
 		specs = th.newTabSpec("Restaurants");
 		specs.setContent(R.id.tab2);
 		specs.setIndicator("Restaurants");
@@ -173,7 +173,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		x = (TextView) th.getTabWidget().getChildAt(3).findViewById(android.R.id.title);
 		x.setTextSize(15);
 		x.setTextColor(Color.parseColor("#424242"));
-		
+
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
 		getTitle();
@@ -230,14 +230,17 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		firstTimeNearbyClicked = true;
 		firstTimeRestClicked = true;
 		firstTimeLocationClicked = true;
+		
+		bestDeals = new ArrayList<>();
+		locationDeals = new ArrayList<>();
 		//getDealsByDistance();
 
 		/*GetDistance sample = new GetDistance();
 		float distance = sample.getDistance(13.013758, 74.798322, 13.004930, 74.792860);
 		Toast.makeText(this, Float.toString(distance), Toast.LENGTH_LONG).show();*/
 	}
-	
-	
+
+
 
 	/*private void checkStuff() {
 		if(((String) global.getCity()).compareTo("Location Off")==0) {
@@ -324,7 +327,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 				getBestDeals();
 			else if(th.getCurrentTab()==2)
 				getDealsByDistance();
-			
+
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -421,7 +424,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-		
+
 		try{
 			super.onResume();
 		} catch(java.lang.NullPointerException e ){
@@ -473,7 +476,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		}
 		if(current==3 && firstTimeLocationClicked) {
 			firstTimeLocationClicked = false;
-		getDealsByDistance();
+			getDealsByDistance();
 		}
 	}
 
@@ -506,9 +509,6 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 	}
 
 	private void getDealsByDistance() {
-		final ArrayList<Deal> deals = new ArrayList<Deal>();
-		final ArrayList<ImageButton> buttons = new ArrayList<>();
-		final ArrayList<TextView> texts = new ArrayList<>();
 
 		LocationManager locationManager;
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -551,6 +551,18 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 					"http://waverr.in/getdealparameters.php"
 			};
 
+			locationRecyclerView = (RecyclerView)findViewById(R.id.NearbyDealRecycleView);
+			locationRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+			locationRecyclerView.setItemAnimator(new DefaultItemAnimator());
+			type = (TextView) findViewById(R.id.NearbyDealType);
+			type.setTextSize(25);
+			type.setTextColor(Color.parseColor("#fe5335"));
+			Typeface typeface = Typeface.createFromAsset(getAssets(),"fonts/script.ttf");
+			type.setTypeface(typeface);
+			type.setText("Nearby Deals");
+
+			locationDeals.clear();
+
 			final ProgressDialog progressDialog = new ProgressDialog(this);
 			progressDialog.setMessage("Getting deals...");
 			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -580,124 +592,96 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							"Cuisine",
 					};
 
-					final LinearLayout mLayout = (LinearLayout) findViewById(R.id.nearby);
+					//final LinearLayout mLayout = (LinearLayout) findViewById(R.id.nearby);
 
 					try {
 
-						for(int i=0; i<array.length(); i++) {
-							JSONObject object = array.getJSONObject(i);
-							Deal newDeal = new Deal();
-							newDeal.setID(object.getString(things[0]));
-							newDeal.setRestaurantID(object.getString(things[1]));
-							newDeal.setRestaurantName(object.getString(things[2]));
-							newDeal.setPercentageDiscount(object.getInt(things[3]));
-							newDeal.setAmountDiscount(object.getInt(things[4]));
-							newDeal.setFreebie(object.getString(things[5]));
-							newDeal.setCanvasText(object.getString(things[6]));
-							newDeal.setMinimumAmount(object.getInt(things[7]));
-							DateTime start = new DateTime();
-							start.setDate(object.getString(things[8]));
-							start.setTime(object.getString(things[10]));
-							DateTime end = new DateTime();
-							end.setDate(object.getString(things[9]));
-							end.setTime(object.getString(things[11]));
-							newDeal.setStartDateTime(start);
-							newDeal.setEndDateTime(end);
-							newDeal.setCuisine(object.getString(things[12]));
-
-							final Location restaurantLocation = new Location("database");
-							String[] url = {
-									"http://waverr.in/getrestaurantlocation.php",
-									"restaurantname", newDeal.getRestaurantName()
-							};
-
-							JSONObtainer locationObtainer = new JSONObtainer() {
-								@Override
-								protected void onPostExecute(JSONArray array) {
-									//Toast.makeText(getBaseContext(), "Getting location", Toast.LENGTH_SHORT).show();
-									JSONObject object;
-									try {
-										object = array.getJSONObject(0);
-									} catch (JSONException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-										object = null;
-									}
-
-									String[] coords = null;
-									try {
-										coords = object.getString("Coordinates").split(",");
-									} catch (JSONException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									restaurantLocation.setLatitude(Float.parseFloat(coords[0]));
-									restaurantLocation.setLongitude(Float.parseFloat(coords[1]));
-
-									//Toast.makeText(getBaseContext(), coords[0]+","+coords[1], Toast.LENGTH_SHORT).show();
-								}
-							};
-							locationObtainer.execute(url);
-
-							newDeal.setDistanceFromUser(GetDistance.getValue(location.getLatitude(),
-									location.getLongitude(),
-									restaurantLocation.getLatitude(),
-									restaurantLocation.getLongitude()));
-
-							deals.add(newDeal);
-							//Toast.makeText(getBaseContext(), "Got the deal!", Toast.LENGTH_SHORT).show();	
-						}
-
-						Collections.sort(deals,new Comparator<Deal>() {
-							@Override
-							public int compare(Deal lhs, Deal rhs) {
-								// TODO Auto-generated method stub
-								return (int) (lhs.getDistanceFromUser() - rhs.getDistanceFromUser());
+						if(array==null){
+							boolean network=isNetworkAvailable();
+							if(network==false)
+							{
+								type.setText("Please check your internet connection and try again.");
 							}
-						});
+							//text.setText(newDeal.getDetails());
+							else
+							{
+								type.setText("No Deals Currently. Please reload or check back later.");
+							}
+						}
+						else {
+							for(int i=0; i<array.length(); i++) {
+								JSONObject object = array.getJSONObject(i);
+								Deal newDeal = new Deal();
+								newDeal.setID(object.getString(things[0]));
+								newDeal.setRestaurantID(object.getString(things[1]));
+								newDeal.setRestaurantName(object.getString(things[2]));
+								newDeal.setPercentageDiscount(object.getInt(things[3]));
+								newDeal.setAmountDiscount(object.getInt(things[4]));
+								newDeal.setFreebie(object.getString(things[5]));
+								newDeal.setCanvasText(object.getString(things[6]));
+								newDeal.setMinimumAmount(object.getInt(things[7]));
+								DateTime start = new DateTime();
+								start.setDate(object.getString(things[8]));
+								start.setTime(object.getString(things[10]));
+								DateTime end = new DateTime();
+								end.setDate(object.getString(things[9]));
+								end.setTime(object.getString(things[11]));
+								newDeal.setStartDateTime(start);
+								newDeal.setEndDateTime(end);
+								newDeal.setCuisine(object.getString(things[12]));
 
-						for(Deal newDeal : deals) {
-							LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-							Gson gson = new Gson();
+								final Location restaurantLocation = new Location("database");
+								String[] url = {
+										"http://waverr.in/getrestaurantlocation.php",
+										"restaurantname", newDeal.getRestaurantName()
+								};
 
-							ImageButton button = new ImageButton(getBaseContext());
-							button.setLayoutParams(params);
-							button.setImageResource(R.drawable.biriyani);
-							button.setScaleType(ScaleType.FIT_XY);
-							button.setBackgroundColor(Color.TRANSPARENT);
-							button.setAdjustViewBounds(true);
-							final String deal = gson.toJson(newDeal);
-							if(deal==null)
-								Toast.makeText(getBaseContext(), "JSON didn't work!", Toast.LENGTH_SHORT).show();
-							button.setOnClickListener(new View.OnClickListener() {
+								JSONObtainer locationObtainer = new JSONObtainer() {
+									@Override
+									protected void onPostExecute(JSONArray array) {
+										//Toast.makeText(getBaseContext(), "Getting location", Toast.LENGTH_SHORT).show();
+										JSONObject object;
+										try {
+											object = array.getJSONObject(0);
+										} catch (JSONException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+											object = null;
+										}
 
+										String[] coords = null;
+										try {
+											coords = object.getString("Coordinates").split(",");
+										} catch (JSONException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+										restaurantLocation.setLatitude(Float.parseFloat(coords[0]));
+										restaurantLocation.setLongitude(Float.parseFloat(coords[1]));
+
+										//Toast.makeText(getBaseContext(), coords[0]+","+coords[1], Toast.LENGTH_SHORT).show();
+									}
+								};
+								locationObtainer.execute(url);
+
+								newDeal.setDistanceFromUser(GetDistance.getValue(location.getLatitude(),
+										location.getLongitude(),
+										restaurantLocation.getLatitude(),
+										restaurantLocation.getLongitude()));
+
+								locationDeals.add(newDeal);
+								//Toast.makeText(getBaseContext(), "Got the deal!", Toast.LENGTH_SHORT).show();	
+							}
+
+							Collections.sort(locationDeals, new Comparator<Deal>() {
 								@Override
-								public void onClick(View v) {
+								public int compare(Deal lhs, Deal rhs) {
 									// TODO Auto-generated method stub
-									Intent intent = new Intent(getBaseContext(), com.project.waverr.DealPage.class);
-									Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
-									intent.putExtra("deal", deal);
-									//global.setDeal(newDeal);
-									startActivity(intent);
+									return (int) (lhs.getDistanceFromUser() - rhs.getDistanceFromUser());
 								}
 							});
-							buttons.add(button);
-							TextView text = new TextView(getBaseContext());
-							//text.setText(newDeal.getDetails());
-							text.setText("This is just some text for testing");
-							text.setBackgroundColor(getResources().getColor(R.color.abc_search_url_text_normal));
-							text.setLayoutParams(params);
-							texts.add(text);
-
-							LinearLayout smallLayout = new LinearLayout(getBaseContext());
-							smallLayout.setOrientation(LinearLayout.VERTICAL);
-							smallLayout.setLayoutParams(params);
-							smallLayout.setPadding(4, 0, 4, 0);
-							smallLayout.addView(button);
-							smallLayout.addView(text);
-
-							mLayout.addView(smallLayout);
 						}
+						locationAdapter.notifyDataSetChanged();
 						progressDialog.dismiss();
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
@@ -706,12 +690,11 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 				}
 			};
 			obtainer.execute(url);
+			locationAdapter = new DealAdapter(locationDeals, R.layout.row_deal, this);
+			locationRecyclerView.setAdapter(locationAdapter);
 		}
-
 		else
 			Toast.makeText(this, "Nope!", Toast.LENGTH_SHORT).show();
-
-
 	}
 
 	private void getAllRestaurants() {
@@ -728,10 +711,11 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 
 		final LinearLayout mLayout = (LinearLayout) findViewById(R.id.allrestaurants);
 		mLayout.removeAllViews();
-		latestbuttons.clear();
-		latestdeals.clear();
-		latesttexts.clear();
-		
+
+		latestbuttons = new ArrayList<>();
+		latestdeals = new ArrayList<>();
+		latesttexts = new ArrayList<>();
+
 		mLayout.setGravity(Gravity.CENTER);
 		final DisplayMetrics display = mLayout.getResources().getDisplayMetrics();
 
@@ -775,12 +759,9 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 						for(int i=0; i<array.length(); i++) {
 							final JSONObject object = array.getJSONObject(i);
 
-							Gson gson = new Gson();
 							Deal newDeal = new Deal();
-							
+
 							newDeal.setRestaurantName(object.getString(things[0]));
-							DateTime start = new DateTime();
-							DateTime end = new DateTime();
 							latestdeals.add(newDeal);
 							//Toast.makeText(getBaseContext(), "Got the object", Toast.LENGTH_SHORT).show();
 							LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -791,9 +772,8 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							button.setBackgroundColor(Color.TRANSPARENT);
 							button.setAdjustViewBounds(true);
 							latestbuttons.add(button);
-							
+
 							System.gc();
-							final String deal = gson.toJson(newDeal);
 
 							button.setOnClickListener(new View.OnClickListener() {
 
@@ -812,23 +792,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 									startActivity(intent);
 								}
 							});
-							/*String things[] = {
-								"ID",
-								"Restaurant ID",
-								"Restaurant Name",
-								"Percentage Discount",
-								"Amount Discount",
-								"Freebie",
-								"CanvasText",
-								"Min Purchase Amount",
-								"Deal Start Date",
-								"Deal End Date",
-								"Start Time",
-								"End Time",
-								"Cuisine",
-						};*/
 
-							//text.setText(newDeal.getDetails());
 							TextView text = new TextView(getBaseContext());
 							text.setText(object.getString(things[0]));
 							text.setBackgroundResource(R.drawable.deal_details);
@@ -841,7 +805,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 								@Override
 								public void onClick(View v) {
 									// TODO Auto-generated method stub
-									Intent intent = new Intent(getBaseContext(), com.project.waverr.ChineseDeal.class);
+									Intent intent = new Intent("com.project.waverr.CHINESECUISINE");
 									//Toast.makeText(getBaseContext(), deal, Toast.LENGTH_SHORT).show();
 									try {
 										intent.putExtra("restaurant", object.getString(things[0]));
@@ -888,102 +852,102 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		};
 
 		obtainer.execute(url);
-		
+
 	}
-public void startTime(){
-	
-	
-	final long startMillis = start.getTimeInMillis();
-	final long endMillis = end.getTimeInMillis();
+	public void startTime(){
 
-	new JSONObtainer() {
-		DateTime current = new DateTime();
 
-		@Override
-		protected void onProgressUpdate(Void... voids) {
-			
-		}
+		final long startMillis = start.getTimeInMillis();
+		final long endMillis = end.getTimeInMillis();
 
-		@Override
-		protected void onPostExecute(JSONArray array) {
-			if(array!=null) {
-				try {
-					JSONObject object = array.getJSONObject(0);
-					current.setDate(object.getString("date"));
-					current.setTime(object.getString("time"));
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				long currentMillis = current.getTimeInMillis();
+		new JSONObtainer() {
+			DateTime current = new DateTime();
 
-				final long timeUntilStart, timeUntilEnd;
+			@Override
+			protected void onProgressUpdate(Void... voids) {
 
-				if(startMillis > currentMillis)
-					timeUntilStart = startMillis - currentMillis;
-				else
-					timeUntilStart = 0;
-				if(endMillis > currentMillis)
-					timeUntilEnd = endMillis - currentMillis;
-				else
-					timeUntilEnd = 0;
-
-				
-				new CountDownTimer(timeUntilStart, 1000) {
-					final DateTime actual = new DateTime();
-
-					@Override
-					public void onTick(long millisUntilFinished) {
-						// TODO Auto-generated method stub
-						actual.setDateTimeByMillis(millisUntilFinished);
-						
-						
-					}
-
-					@Override
-					public void onFinish() {
-						// TODO Auto-generated method stub
-						activedealtest=true;
-						new CountDownTimer(timeUntilEnd, 1000) {
-
-							@Override
-							public void onTick(long millisUntilFinished) {
-								// TODO Auto-generated method stub
-								actual.setDateTimeByMillis(millisUntilFinished);
-								
-							
-							}
-
-							@Override
-							public void onFinish() {
-								// TODO Auto-generated method stub
-								
-							}
-						}.start();
-					}
-				}.start();
 			}
-		}
-	}.execute(new String[] {"http://waverr.in/getcurrenttime.php"});
-}
-public static boolean hasstarted(){
-	
-	return activedealtest;
-	
-}
+
+			@Override
+			protected void onPostExecute(JSONArray array) {
+				if(array!=null) {
+					try {
+						JSONObject object = array.getJSONObject(0);
+						current.setDate(object.getString("date"));
+						current.setTime(object.getString("time"));
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					long currentMillis = current.getTimeInMillis();
+
+					final long timeUntilStart, timeUntilEnd;
+
+					if(startMillis > currentMillis)
+						timeUntilStart = startMillis - currentMillis;
+					else
+						timeUntilStart = 0;
+					if(endMillis > currentMillis)
+						timeUntilEnd = endMillis - currentMillis;
+					else
+						timeUntilEnd = 0;
+
+
+					new CountDownTimer(timeUntilStart, 1000) {
+						final DateTime actual = new DateTime();
+
+						@Override
+						public void onTick(long millisUntilFinished) {
+							// TODO Auto-generated method stub
+							actual.setDateTimeByMillis(millisUntilFinished);
+
+
+						}
+
+						@Override
+						public void onFinish() {
+							// TODO Auto-generated method stub
+							activedealtest=true;
+							new CountDownTimer(timeUntilEnd, 1000) {
+
+								@Override
+								public void onTick(long millisUntilFinished) {
+									// TODO Auto-generated method stub
+									actual.setDateTimeByMillis(millisUntilFinished);
+
+
+								}
+
+								@Override
+								public void onFinish() {
+									// TODO Auto-generated method stub
+
+								}
+							}.start();
+						}
+					}.start();
+				}
+			}
+		}.execute(new String[] {"http://waverr.in/getcurrenttime.php"});
+	}
+	public static boolean hasstarted(){
+
+		return activedealtest;
+
+	}
 
 	private void getBestDeals() {
 
-		mRecyclerView = (RecyclerView)findViewById(R.id.dealRecycleView);
-		mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-		mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+		bestRecyclerView = (RecyclerView)findViewById(R.id.BestDealRecycleView);
+		bestRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+		bestRecyclerView.setItemAnimator(new DefaultItemAnimator());
 		type = (TextView) findViewById(R.id.DealType);
 		type.setTextSize(25);
 		type.setTextColor(Color.parseColor("#fe5335"));
 		Typeface typeface = Typeface.createFromAsset(getAssets(),"fonts/script.ttf");
 		type.setTypeface(typeface);
 		type.setText("Top Deals");
-		
+
 		String[] url = {
 				"http://waverr.in/getbest.php",
 		};
@@ -994,10 +958,8 @@ public static boolean hasstarted(){
 		progressDialog.setIndeterminate(true);
 		progressDialog.setCancelable(true);
 		progressDialog.show();
-		
-		deals.clear();
-		buttons.clear();
-		texts.clear();
+
+		bestDeals.clear();
 
 		JSONObtainer obtainer = new JSONObtainer() {
 			@Override
@@ -1037,7 +999,6 @@ public static boolean hasstarted(){
 						for(int i=0; i<array.length(); i++) {
 							JSONObject object = array.getJSONObject(i);
 
-							Gson gson = new Gson();
 							Deal newDeal = new Deal();
 							newDeal.setID(object.getString(things[0]));
 							newDeal.setRestaurantID(object.getString(things[1]));
@@ -1057,12 +1018,10 @@ public static boolean hasstarted(){
 							newDeal.setEndDateTime(end);
 							newDeal.setCuisine(object.getString(things[12]));
 							newDeal.setImageURL(object.getString(things[13]));
-							deals.add(newDeal);
-							
+							bestDeals.add(newDeal);
 						}
 					}
-					//pullToRefreshView.onRefreshComplete();
-					mAdapter.notifyDataSetChanged();
+					bestAdapter.notifyDataSetChanged();
 					progressDialog.dismiss();
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -1071,10 +1030,9 @@ public static boolean hasstarted(){
 			}
 
 		};
-
 		obtainer.execute(url);
-		mAdapter = new DealAdapter(deals, R.layout.row_deal, this);
-		mRecyclerView.setAdapter(mAdapter);
+		bestAdapter = new DealAdapter(bestDeals, R.layout.row_deal, this);
+		bestRecyclerView.setAdapter(bestAdapter);
 	}
 
 	private boolean isNetworkAvailable() {

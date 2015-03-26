@@ -8,7 +8,8 @@
 
     <!--
          As the main content view, the view below consumes the entire
-         space available using match_parent in both dimensions. -->
+         space available using match_parent in both dimensions.
+    -->
 
     <FrameLayout
         android:id="@+id/container"
@@ -106,7 +107,7 @@
 
                             <TabWidget
                                 android:id="@android:id/tabs"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" >
                             </TabWidget>
                         </HorizontalScrollView>
@@ -128,7 +129,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" >
 
-                                   <LinearLayout
+                                    <LinearLayout
                                         android:id="@+id/dealpage"
                                         android:layout_width="fill_parent"
                                         android:layout_height="0dp"
@@ -145,7 +146,7 @@
                                             android:background="#0000"
                                             android:scaleType="fitXY"
                                             android:src="@drawable/fastfood" />
-                                        
+
                                         <ImageButton
                                             android:id="@+id/cuisine4"
                                             android:layout_width="fill_parent"
@@ -157,7 +158,6 @@
                                             android:scaleType="fitXY"
                                             android:src="@drawable/drinks" />
 
-                                             
                                         <ImageButton
                                             android:id="@+id/cuisine6"
                                             android:layout_width="fill_parent"
@@ -168,7 +168,7 @@
                                             android:background="#0000"
                                             android:scaleType="fitXY"
                                             android:src="@drawable/northindian" />
-                                        
+
                                         <ImageButton
                                             android:id="@+id/cuisine2"
                                             android:layout_width="fill_parent"
@@ -179,7 +179,6 @@
                                             android:background="#0000"
                                             android:scaleType="fitXY"
                                             android:src="@drawable/italian" />
-                                   
 
                                         <ImageButton
                                             android:id="@+id/cuisine3"
@@ -213,7 +212,7 @@
                                             android:background="#0000"
                                             android:scaleType="fitXY"
                                             android:src="@drawable/chinesenew" />
-                                        
+
                                         <ImageButton
                                             android:id="@+id/cuisine8"
                                             android:layout_width="fill_parent"
@@ -224,7 +223,7 @@
                                             android:background="#0000"
                                             android:scaleType="fitXY"
                                             android:src="@drawable/south_indian" />
-                                        
+
                                         <ImageButton
                                             android:id="@+id/cuisine9"
                                             android:layout_width="fill_parent"
@@ -235,7 +234,7 @@
                                             android:background="#0000"
                                             android:scaleType="fitXY"
                                             android:src="@drawable/kebabs" />
-                                        
+
                                         <ImageButton
                                             android:id="@+id/cuisine10"
                                             android:layout_width="fill_parent"
@@ -250,84 +249,96 @@
                                 </ScrollView>
                             </LinearLayout>
 
+                            <LinearLayout
+                                android:id="@+id/tab2"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical" >
 
-                                <LinearLayout
-                                    android:id="@+id/tab2"
+                                <ScrollView
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content" >
+
+                                    <LinearLayout
+                                        android:id="@+id/allrestaurants"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="4dp"
+                                        android:layout_marginRight="4dp"
+                                        android:orientation="vertical" >
+                                    </LinearLayout>
+                                </ScrollView>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/tab3"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical" >
+
+                                <TextView
+                                    android:id="@+id/DealType"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical" >
-                                
-                                    <ScrollView
-    									android:layout_width="fill_parent"
-    									android:layout_height="wrap_content" >
-        
-										<LinearLayout
-									    	android:id="@+id/allrestaurants"
-		    								android:layout_width="fill_parent"
-		    								android:layout_height="wrap_content"
-	    									android:layout_marginLeft="4dp"
-		    								android:layout_marginRight="4dp"
-		    								android:orientation="vertical" >
+                                    android:background="#ffffff"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:text=""
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textColor="#000000" />
 
-										</LinearLayout>
-									</ScrollView>
-                                </LinearLayout>
+                                <android.support.v7.widget.RecyclerView
+                                    android:id="@+id/BestDealRecycleView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    tools:context=".ChineseDeal2" />
 
-                                <LinearLayout
-                                    android:id="@+id/tab3"
+                                <TextView
+                                    android:id="@+id/noDeals"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical" >
-										
-                                    <TextView
-	    android:id="@+id/DealType"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:padding="5dp"
-	    android:background="#ffffff"
-	    android:textColor="#000000"
-	    android:text=""
-	    android:gravity="center"
-	    android:textAppearance="?android:attr/textAppearanceMedium" />
-    
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/dealRecycleView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ChineseDeal2" />
-    
-    <TextView
-	    android:id="@+id/noDeals"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:padding="5dp"
-	    android:background="#ffffff"
-	    android:textColor="#bababa"
-	    android:text=""
-	    android:gravity="center"
-	    android:textAppearance="?android:attr/textAppearanceMedium" />
-                                </LinearLayout>
-                                <LinearLayout
-                                    android:id="@+id/tab4"
+                                    android:background="#ffffff"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:text=""
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textColor="#bababa" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/tab4"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical" >
+
+                                <TextView
+                                    android:id="@+id/NearbyDealType"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical" >
-                                
-                                    <ScrollView
-    									android:layout_width="fill_parent"
-    									android:layout_height="wrap_content" >
-        
-										<LinearLayout
-									    	android:id="@+id/nearby"
-		    								android:layout_width="fill_parent"
-		    								android:layout_height="wrap_content"
-	    									android:layout_marginLeft="4dp"
-		    								android:layout_marginRight="4dp"
-		    								android:orientation="vertical" >
+                                    android:background="#ffffff"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:text=""
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textColor="#000000" />
 
-										</LinearLayout>
-									</ScrollView>
-                                </LinearLayout>
+                                <android.support.v7.widget.RecyclerView
+                                    android:id="@+id/NearbyDealRecycleView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    tools:context=".ChineseDeal2" />
+
+                                <TextView
+                                    android:id="@+id/NearbyNoDeals"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#ffffff"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:text=""
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textColor="#bababa" />
+                            </LinearLayout>
                         </FrameLayout>
                     </LinearLayout>
                 </TabHost>
@@ -340,10 +351,12 @@
          this as a sliding drawer on the left side for left-to-right
          languages and on the right side for right-to-left languages.
          If you're not building against API 17 or higher, use
-         android:layout_gravity="left" instead. -->
+         android:layout_gravity="left" instead.
+    -->
     <!--
          The drawer is given a fixed width in dp and extends the full height of
-         the container. -->
+         the container.
+    -->
     <!--
 	<LinearLayout 
 	    android:id="@+id/navigation_drawer"
@@ -361,7 +374,8 @@
 		    android:layout_weight="1"
 			android:layout_margin="4dp"
 			android:adjustViewBounds="true"
-			android:src="@drawable/cuisine2" /> -->
+			android:src="@drawable/cuisine2" />
+    -->
 
     <fragment
         android:id="@+id/navigation_drawer"

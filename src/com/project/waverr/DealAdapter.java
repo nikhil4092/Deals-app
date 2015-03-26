@@ -3,13 +3,16 @@ package com.project.waverr;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
@@ -27,6 +30,20 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(rowLayout, viewGroup, false);
+        Deal deal = deals.get(i);
+        Gson gson = new Gson();
+        final String dealString = gson.toJson(deal);
+        
+        v.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent("com.project.waverr.DEALPAGE");
+				intent.putExtra("deal", dealString);
+				mContext.startActivity(intent);
+			}
+		});
         return new ViewHolder(v);
     }
 
@@ -73,6 +90,5 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
             time = (TextView) itemView.findViewById(R.id.dealTime);
             restaurantName = (TextView) itemView.findViewById(R.id.restaurantName);
         }
-
     }
 }
