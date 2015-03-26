@@ -64,6 +64,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*
 	String dealString;
 	ImageView main;
 	ImageView about;
+	Typeface typeface;
 
 
 	DateTime start;
@@ -101,10 +102,14 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*
 		ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
 		ImagePagerAdapter adapter = new ImagePagerAdapter();
 		viewPager.setAdapter(adapter);
-
+		typeface = Typeface.createFromAsset(getAssets(),"fonts/Oswald-Light.ttf");
 		th=(TabHost)findViewById(R.id.tabhost1);
 		restname=(TextView)findViewById(R.id.placeName);
+		restname.setTextSize(20);
+		restname.setTypeface(typeface);
 		dealtext=(TextView)findViewById(R.id.theDeal);
+		dealtext.setTextSize(16);
+		dealtext.setTypeface(typeface);
 		duration = (TextView) findViewById(R.id.timeLimit);
 		instructions = (TextView) findViewById(R.id.instructions);
 		finePrint = (TextView) findViewById(R.id.fine_print);
