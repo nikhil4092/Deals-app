@@ -16,6 +16,16 @@ public class DateTime {
 	public int minutes;
 	public int seconds;
 	
+	public String getDateString() {
+		return dateString;
+	}
+	public String getDateProper() {
+		String[] dateSplit = dateString.split("-");
+		return dateSplit[2]+"-"+dateSplit[1]+"-"+dateSplit[0];
+	}
+	public String getTimeString() {
+		return timeString;
+	}
 	public void setDate(String date) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		this.dateString = date;

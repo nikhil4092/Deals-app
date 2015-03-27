@@ -26,10 +26,9 @@
             <ImageView
                 android:id="@+id/RestImage"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:scaleType="centerInside"
-                android:background="@drawable/circle"
-                android:padding="3dp" />
+                android:layout_height="150dp"
+                android:scaleType="fitXY"
+                android:background="@drawable/circle" />
 
             <TextView
                 android:id="@+id/restaurantNametext"

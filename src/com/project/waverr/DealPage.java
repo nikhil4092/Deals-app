@@ -1,9 +1,5 @@
 package com.project.waverr;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -38,14 +34,14 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-//import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.project.waverr.SimpleGestureFilter.SimpleGestureListener;
 import com.squareup.picasso.Picasso;
 
-public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*OnMapReadyCallback,*/ OnClickListener, SimpleGestureListener{
+public class DealPage extends GlobalActionBar implements OnTabChangeListener, OnMapReadyCallback, OnClickListener, SimpleGestureListener{
 
 	TabHost th;
 	TextView x, restname, dealtext, duration, instructions, finePrint;
@@ -277,7 +273,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*
 
 	}
 
-/*	@Override
+	@Override
 	public void onMapReady(GoogleMap map) {
 		// TODO Auto-generated method stub
 
@@ -285,7 +281,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*
 		map.addMarker(new MarkerOptions()
 		.position(new LatLng(latitude, longitude))
 		.title("Location"));
-	}*/
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -309,7 +305,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*
 			if(dealExpired == true) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder.setTitle("Deal expired");
-				builder.setMessage("Sorry... The deal has expired. Please have a look at other deals.");
+				builder.setMessage("Sorry... The deal has expired for today. Please check back tomorrow.");
 				builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
 
 					@Override
@@ -456,14 +452,11 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*
 	public void startTimer() {
 		final long startMillis = start.getTimeInMillis();
 		final long endMillis = end.getTimeInMillis();
-
-		final Time startTime = deal.getStartTime();
-		final Time endTime = deal.getEndTime();
 		
 		new JSONObtainer() {
 			DateTime current = new DateTime();
-			Date currentDate;
-			Time currentTime;
+			DateTime properStart = new DateTime();
+			DateTime properEnd = new DateTime();
 
 			@Override
 			protected void onProgressUpdate(Void... voids) {
@@ -479,23 +472,30 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*
 						current.setDate(object.getString("date"));
 						current.setTime(object.getString("time"));
 						
-						currentDate = (Date) new SimpleDateFormat("yyyy-MM-dd").parse(object.getString("date"));
-						currentTime = Time.valueOf(object.getString("time"));
-					
-					} catch (JSONException | ParseException e) {
+						properStart.setDate(object.getString("date"));
+						properStart.setTime(start.getTimeString());
+						
+						properEnd.setDate(object.getString("date"));
+						properEnd.setTime(end.getTimeString());
+					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					long currentMillis = current.getTimeInMillis();
+					long properStartMillis = properStart.getTimeInMillis();
+					long properEndMillis = properEnd.getTimeInMillis();
 
 					final long timeUntilStart, timeUntilEnd;
 
 					if(startMillis > currentMillis)
 						timeUntilStart = startMillis - currentMillis;
+					else if(endMillis > currentMillis && properStartMillis > currentMillis)
+						timeUntilStart = properStartMillis - currentMillis;
 					else
 						timeUntilStart = 0;
-					if(endMillis > currentMillis)
-						timeUntilEnd = endMillis - currentMillis;
+					
+					if(endMillis > currentMillis && properEndMillis > currentMillis)
+						timeUntilEnd = properEndMillis - currentMillis;
 					else
 						timeUntilEnd = 0;
 
@@ -541,7 +541,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*
 								@Override
 								public void onFinish() {
 									// TODO Auto-generated method stub
-									String text = "Deal\nExpired!";
+									String text = "Deal Expired\nFor Today";
 									timerText.setText(text);
 									dealExpired = true;
 									//activate.setEnabled(false);
@@ -669,7 +669,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*
 	void goStillAhead() {
 		restname.setText(deal.getRestaurantName());
 		dealtext.setText(dtext);
-		duration.setText("The deal is valid from "+start.getDateTime()+" to "+end.getDateTime());
+		duration.setText("The deal is valid from "+start.getDateProper()+" to "+end.getDateProper()+", "+start.getTimeString()+" to "+end.getTimeString()+".");
 		finePrint.setText("Fine Print:\n"+deal.getRestaurantFinePrint());
 		placeDetails.setText("Address:\n"+deal.getRestaurantAddress());
 		restaurantPhoneNumber = deal.getRestaurantNumber();
@@ -682,7 +682,7 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*
 		longitude = Double.parseDouble(latlng[1]);
 
 		MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.the_map);
-	//	mapFragment.getMapAsync(this);
+		mapFragment.getMapAsync(this);
 	}
 
 	private void closeActivity() {

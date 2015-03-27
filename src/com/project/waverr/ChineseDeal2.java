@@ -31,7 +31,7 @@ public class ChineseDeal2 extends GlobalActionBar {
 	private String s;
 	private TextView type;
 	private String restaurantName;
-	
+	public String typeSelected;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +94,7 @@ public class ChineseDeal2 extends GlobalActionBar {
 			url[1]="restaurant";
 			url[2]=restaurantName;
 			type.setText(restaurantName);
+			typeSelected=restaurantName;
 		}
 		else
 		{
@@ -101,6 +102,7 @@ public class ChineseDeal2 extends GlobalActionBar {
 			url[1]="cuisine";
 			url[2]=s;
 			type.setText(s);
+			typeSelected=restaurantName;
 		}
 		
 		deals = new ArrayList<>();
@@ -142,7 +144,7 @@ public class ChineseDeal2 extends GlobalActionBar {
 						//text.setText(newDeal.getDetails());
 						else
 						{
-							type.setText("No "+s+" Deals Currently. Please reload or check back later.");
+							type.setText("No "+typeSelected+" Deals Currently. Please reload or check back later.");
 						}
 						
 					}

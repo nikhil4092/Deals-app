@@ -19,13 +19,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 	private List<Restaurant> restaurants;
 	private int rowLayout;
 	private Context mContext;
-	
+
 	public RestaurantAdapter(List<Restaurant> restaurants, int rowLayout, Context context) {
 		this.restaurants = restaurants;
 		this.rowLayout = rowLayout;
 		this.mContext = context;
 	}
-	
+
 	@Override
 	public int getItemCount() {
 		// TODO Auto-generated method stub
@@ -40,8 +40,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 		Typeface typeface = Typeface.createFromAsset(mContext.getAssets(),"fonts/Oswald-Light.ttf");
 		viewHolder.name.setTypeface(typeface);
 		viewHolder.name.setText(restaurant.getName());
+		String url = restaurant.getUrl().isEmpty() ? null : restaurant.getUrl();
 		Picasso.with(mContext)
-		.load(restaurant.getUrl())
+		.load(url)
 		.placeholder(R.drawable.placeholder_fetching)
 		.error(R.drawable.placeholderimage)
 		.into(viewHolder.image);
@@ -63,7 +64,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 		View v = LayoutInflater.from(viewGroup.getContext()).inflate(rowLayout, viewGroup, false);
 		return new ViewHolder(v);
 	}
-	
+
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		public TextView name;
 		public ImageView image;

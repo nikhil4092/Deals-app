@@ -6,7 +6,6 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,7 +24,9 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
 	private Context mContext;
 	DateTime start;
 	DateTime end;
-
+	DateTime current;
+	DateTime properStart;
+	DateTime properEnd;
 
 	public DealAdapter(List<Deal> deals, int rowLayout, Context context) {
 		this.deals = deals;
@@ -218,51 +219,19 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
 		final long startMillis = start.getTimeInMillis();
 		final long endMillis = end.getTimeInMillis();
 
-		Calendar c = Calendar.getInstance();
-		long currentMillis = c.getTimeInMillis()+330*60*1000;
-
-		final long timeUntilStart, timeUntilEnd;
+		Calendar calendar = Calendar.getInstance();
+		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		long currentMillis = System.currentTimeMillis();
 
 		if(startMillis > currentMillis)
-			timeUntilStart = startMillis - currentMillis;
+			viewHolder.active.setImageResource(R.drawable.redglow);
+		else if(hour >= start.hours && hour <= end.hours)
+			viewHolder.active.setImageResource(R.drawable.greenglow);
 		else
-			timeUntilStart = 0;
-		if(endMillis > currentMillis)
-			timeUntilEnd = endMillis - currentMillis;
-		else
-			timeUntilEnd = 0;
+			viewHolder.active.setImageResource(R.drawable.redglow);
+		
+		if(endMillis < currentMillis)
+			viewHolder.active.setImageResource(R.drawable.redglow);
 
-		new CountDownTimer(timeUntilStart, 1000) {
-			final DateTime actual = new DateTime();
-
-			@Override
-			public void onTick(long millisUntilFinished) {
-				// TODO Auto-generated method stub
-				actual.setDateTimeByMillis(millisUntilFinished);
-			}
-
-			@Override
-			public void onFinish() {
-				// TODO Auto-generated method stub
-				if(timeUntilEnd!=0)
-					viewHolder.active.setImageResource(R.drawable.greenglow);
-				new CountDownTimer(timeUntilEnd, 1000) {
-
-					@Override
-					public void onTick(long millisUntilFinished) {
-						// TODO Auto-generated method stub
-						actual.setDateTimeByMillis(millisUntilFinished);
-
-					}
-
-					@Override
-					public void onFinish() {
-						// TODO Auto-generated method stub
-						viewHolder.active.setImageResource(R.drawable.redglow);
-						//activate.setEnabled(false);
-					}
-				}.start();
-			}
-		}.start();
 	}
 }

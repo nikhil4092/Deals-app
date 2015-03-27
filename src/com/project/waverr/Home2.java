@@ -716,8 +716,8 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 
 				final String things[] = {
 						"Restaurant Name",
-						"Restaurant ID"
-						//"url",
+						"Restaurant ID",
+						"url"
 				};
 
 				try {
@@ -738,9 +738,9 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 							final JSONObject object = array.getJSONObject(i);
 							Restaurant newRestaurant;
 							String name = (object.getString(things[0]));
-							//String url = (object.getString(things[1]));
+							String url = (object.getString(things[2]));
 							String id = (object.getString(things[1]));
-							newRestaurant = new Restaurant(name, id, null);
+							newRestaurant = new Restaurant(name, id, url);
 							restaurants.add(newRestaurant);
 						}
 					}
