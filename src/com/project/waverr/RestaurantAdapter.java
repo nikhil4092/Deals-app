@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 	public void onBindViewHolder(ViewHolder viewHolder, int i) {
 		// TODO Auto-generated method stub
 		final Restaurant restaurant = restaurants.get(i);
+		viewHolder.name.setTextSize(20);
+		Typeface typeface = Typeface.createFromAsset(mContext.getAssets(),"fonts/Oswald-Light.ttf");
+		viewHolder.name.setTypeface(typeface);
 		viewHolder.name.setText(restaurant.getName());
 		Picasso.with(mContext)
 		.load(restaurant.getUrl())
