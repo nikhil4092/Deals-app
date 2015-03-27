@@ -1,5 +1,9 @@
 package com.project.waverr;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -453,8 +457,13 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 		final long startMillis = start.getTimeInMillis();
 		final long endMillis = end.getTimeInMillis();
 
+		final Time startTime = deal.getStartTime();
+		final Time endTime = deal.getEndTime();
+		
 		new JSONObtainer() {
 			DateTime current = new DateTime();
+			Date currentDate;
+			Time currentTime;
 
 			@Override
 			protected void onProgressUpdate(Void... voids) {
@@ -469,7 +478,11 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, On
 						JSONObject object = array.getJSONObject(0);
 						current.setDate(object.getString("date"));
 						current.setTime(object.getString("time"));
-					} catch (JSONException e) {
+						
+						currentDate = (Date) new SimpleDateFormat("yyyy-MM-dd").parse(object.getString("date"));
+						currentTime = Time.valueOf(object.getString("time"));
+					
+					} catch (JSONException | ParseException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}

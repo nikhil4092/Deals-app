@@ -1,5 +1,8 @@
 package com.project.waverr;
 
+import java.sql.Date;
+import java.sql.Time;
+
 
 public class Deal {
 	
@@ -12,6 +15,35 @@ public class Deal {
 	int minimumAmount;
 	DateTime start;
 	DateTime end;
+	Date startDate;
+	Date endDate;
+	Time startTime;
+	Time endTime;
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+	public Time getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(Time startTime) {
+		this.startTime = startTime;
+	}
+	public Time getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(Time endTime) {
+		this.endTime = endTime;
+	}
+
 	String cuisine;
 	String dealID;
 	double distanceFromUser;
