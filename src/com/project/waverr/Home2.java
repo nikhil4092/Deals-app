@@ -1,8 +1,6 @@
 package com.project.waverr;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,19 +15,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,7 +41,6 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.project.waverr.SimpleGestureFilter.SimpleGestureListener;
 
@@ -73,12 +67,9 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 	GlobalClass global;
 	private SimpleGestureFilter detector;
 	private boolean firstTimeNearbyClicked;
-	private boolean firstTimeLocationClicked;
 	private boolean firstTimeRestClicked;
 	private RecyclerView bestRecyclerView;
 	private DealAdapter bestAdapter;
-	private RecyclerView locationRecyclerView;
-	private DealAdapter locationAdapter;
 	private RecyclerView restaurantRecyclerView;
 	private RestaurantAdapter restaurantAdapter;
 	private ArrayList<Restaurant> restaurants;
@@ -86,8 +77,12 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 	private TextView displayRestaurant;
 
 	private ArrayList<Deal> bestDeals;
-	private ArrayList<Deal> locationDeals;
-
+	
+	/*private ArrayList<Deal> locationDeals;
+	private boolean firstTimeLocationClicked;
+	private RecyclerView locationRecyclerView;
+	private DealAdapter locationAdapter;*/
+	
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
 	 * navigation drawer.
@@ -160,13 +155,13 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		x.setTextSize(15);
 		x.setTextColor(Color.parseColor("#424242"));
 
-		specs = th.newTabSpec("Nearby");
+		/*specs = th.newTabSpec("Nearby");
 		specs.setContent(R.id.tab4);
 		specs.setIndicator("Nearby");
 		th.addTab(specs);
 		x = (TextView) th.getTabWidget().getChildAt(3).findViewById(android.R.id.title);
 		x.setTextSize(15);
-		x.setTextColor(Color.parseColor("#424242"));
+		x.setTextColor(Color.parseColor("#424242"));*/
 
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
@@ -223,11 +218,11 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		detector = new SimpleGestureFilter(this, this);
 		firstTimeNearbyClicked = true;
 		firstTimeRestClicked = true;
-		firstTimeLocationClicked = true;
+		//firstTimeLocationClicked = true;
 		
 		bestDeals = new ArrayList<>();
-		locationDeals = new ArrayList<>();
 		restaurants = new ArrayList<>();
+		//locationDeals = new ArrayList<>();
 		//getDealsByDistance();
 
 		/*GetDistance sample = new GetDistance();
@@ -320,8 +315,8 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 				getAllRestaurants();
 			else if(th.getCurrentTab()==2)
 				getBestDeals();
-			else if(th.getCurrentTab()==2)
-				getDealsByDistance();
+			/*else if(th.getCurrentTab()==2)
+				getDealsByDistance();*/
 
 		}
 		return super.onOptionsItemSelected(item);
@@ -469,10 +464,10 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 			firstTimeNearbyClicked = false;
 			getBestDeals();
 		}
-		if(current==3 && firstTimeLocationClicked) {
+		/*if(current==3 && firstTimeLocationClicked) {
 			firstTimeLocationClicked = false;
 			getDealsByDistance();
-		}
+		}*/
 	}
 
 	@Override
@@ -503,7 +498,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		//Toast.makeText(this, "Double Tap", Toast.LENGTH_SHORT).show();
 	}
 
-	private void getDealsByDistance() {
+	/*private void getDealsByDistance() {
 
 		LocationManager locationManager;
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -690,7 +685,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		}
 		else
 			Toast.makeText(this, "Nope!", Toast.LENGTH_SHORT).show();
-	}
+	}*/
 
 	private void getAllRestaurants() {
 		String[] url = {
@@ -705,7 +700,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 		progressDialog.show();
 
 		restaurantRecyclerView = (RecyclerView) findViewById(R.id.RestaurantRecycleView);
-		restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+		restaurantRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 		restaurantRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
 		displayRestaurant = (TextView) findViewById(R.id.resUnavailable);

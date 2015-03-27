@@ -7,8 +7,10 @@ import java.util.Date;
 
 public class DateTime {
 	long inMillis;
-	String date;
-	String time;
+	String dateString;
+	String timeString;
+	Date date;
+	Time time;
 	public int days;
 	public int hours;
 	public int minutes;
@@ -16,10 +18,11 @@ public class DateTime {
 	
 	public void setDate(String date) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		this.date = date;
+		this.dateString = date;
 		Date temp;
 		try {
 			temp = format.parse(date);
+			this.date = temp;
 			inMillis += temp.getTime();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -29,8 +32,9 @@ public class DateTime {
 	}
 	
 	public void setTime(String time) {
-		this.time = time;
+		this.timeString = time;
 		Time temp = Time.valueOf(time);
+		this.time = temp;
 		inMillis += temp.getTime();
 		convertTime();
 	}
@@ -51,12 +55,20 @@ public class DateTime {
 	}
 	
 	public String getDateTime() {
-		String[] dateSplit = date.split("-");
+		String[] dateSplit = dateString.split("-");
 		return dateSplit[2]+"-"+dateSplit[1]+"-"+dateSplit[0]+" "+time;
 	}
 	
 	public void setDateTimeByMillis(long millis) {
 		inMillis = millis;
 		convertTime();
+	}
+	
+	public Date getDate() {
+		return date;
+	}
+	
+	public Time getTime() {
+		return time;
 	}
 }

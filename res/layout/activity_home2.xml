@@ -302,41 +302,6 @@
                                     android:textAppearance="?android:attr/textAppearanceMedium"
                                     android:textColor="#bababa" />
                             </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/tab4"
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical" >
-
-                                <TextView
-                                    android:id="@+id/NearbyDealType"
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:background="#ffffff"
-                                    android:gravity="center"
-                                    android:padding="5dp"
-                                    android:text=""
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:textColor="#000000" />
-
-                                <android.support.v7.widget.RecyclerView
-                                    android:id="@+id/NearbyDealRecycleView"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    tools:context=".ChineseDeal2" />
-
-                                <TextView
-                                    android:id="@+id/NearbyNoDeals"
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:background="#ffffff"
-                                    android:gravity="center"
-                                    android:padding="5dp"
-                                    android:text=""
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:textColor="#bababa" />
-                            </LinearLayout>
                         </FrameLayout>
                     </LinearLayout>
                 </TabHost>
