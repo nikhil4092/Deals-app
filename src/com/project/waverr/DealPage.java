@@ -413,12 +413,10 @@ public class DealPage extends GlobalActionBar implements OnTabChangeListener, /*
 			//th.setCurrentTab(currentTab+1);
 			break;
 		}
-		//Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onDoubleTap() {
-		//Toast.makeText(this, "Double Tap", Toast.LENGTH_SHORT).show();
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {

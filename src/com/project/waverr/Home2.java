@@ -722,16 +722,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 
 				try {
 					if(array==null){
-						boolean network=isNetworkAvailable();
-						if(network==false)
-						{
-							displayRestaurant.setText("Please check your internet connection and try again.");
-						}
-						//text.setText(newDeal.getDetails());
-						else
-						{
-							displayRestaurant.setText("Congratulations... You are selected for Hogwarts School of Witchcraft and Wizardry! Just kidding. :)");
-						}
+						displayRestaurant.setText("Please check your internet connection and try again.");
 					}
 					if(array!=null){
 						for(int i=0; i<array.length(); i++) {

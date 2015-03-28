@@ -165,13 +165,13 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
 		if(st1<=12)
 			stimear[2]="AM";
 		else {
-			stimear[0]=""+(st1-12);
+			stimear[0]=""+String.format("%02d", st1-12);
 			stimear[2]="PM";
 		}
 		if(st2<=12)
 			etimear[2]="AM";
 		else {
-			etimear[0]=""+(st2-12);
+			etimear[0]=""+String.format("%02d", st2-12);
 			etimear[2]="PM";
 		}
 		viewHolder.time.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -222,14 +222,18 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
 		Calendar calendar = Calendar.getInstance();
 		int hour = calendar.get(Calendar.HOUR_OF_DAY);
 		long currentMillis = System.currentTimeMillis();
+		int correctStartHours = (start.hours+11)%24;
+		int correctEndHours = (end.hours+11)%24;
 
-		if(startMillis > currentMillis)
+		if(startMillis > currentMillis) {
 			viewHolder.active.setImageResource(R.drawable.redglow);
-		else if(hour >= start.hours && hour <= end.hours)
+		}
+			
+		else if(currentMillis < endMillis && hour >= correctStartHours && hour < correctEndHours)
 			viewHolder.active.setImageResource(R.drawable.greenglow);
-		else
+		else {
 			viewHolder.active.setImageResource(R.drawable.redglow);
-		
+		}	
 		if(endMillis < currentMillis)
 			viewHolder.active.setImageResource(R.drawable.redglow);
 
