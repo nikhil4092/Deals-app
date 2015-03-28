@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -165,13 +166,13 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
 		if(st1<=12)
 			stimear[2]="AM";
 		else {
-			stimear[0]=""+(st1-12);
+			stimear[0]=""+String.format("%02d", st1-12);
 			stimear[2]="PM";
 		}
 		if(st2<=12)
 			etimear[2]="AM";
 		else {
-			etimear[0]=""+(st2-12);
+			etimear[0]=""+String.format("%02d", st2-12);
 			etimear[2]="PM";
 		}
 		viewHolder.time.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -220,15 +221,23 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
 		final long endMillis = end.getTimeInMillis();
 
 		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.HOUR_OF_DAY, -5);
+		calendar.add(Calendar.MINUTE, -30);
+		//calendar.
 		int hour = calendar.get(Calendar.HOUR_OF_DAY);
 		long currentMillis = System.currentTimeMillis();
 
-		if(startMillis > currentMillis)
+		if(startMillis > currentMillis) {
+			Toast.makeText(mContext, "startMillis > currentMillis", Toast.LENGTH_SHORT).show();
 			viewHolder.active.setImageResource(R.drawable.redglow);
-		else if(hour >= start.hours && hour <= end.hours)
+		}
+			
+		else if(currentMillis < endMillis && hour >= start.hours && hour <= end.hours)
 			viewHolder.active.setImageResource(R.drawable.greenglow);
-		else
+		else {
 			viewHolder.active.setImageResource(R.drawable.redglow);
+			Toast.makeText(mContext, "In between. Current: "+hour+" Start: "+start.hours+" End: "+end.hours, Toast.LENGTH_SHORT).show();
+		}
 		
 		if(endMillis < currentMillis)
 			viewHolder.active.setImageResource(R.drawable.redglow);
