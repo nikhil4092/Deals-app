@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -221,24 +220,20 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
 		final long endMillis = end.getTimeInMillis();
 
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.HOUR_OF_DAY, -5);
-		calendar.add(Calendar.MINUTE, -30);
-		//calendar.
 		int hour = calendar.get(Calendar.HOUR_OF_DAY);
 		long currentMillis = System.currentTimeMillis();
+		int correctStartHours = (start.hours+11)%24;
+		int correctEndHours = (end.hours+11)%24;
 
 		if(startMillis > currentMillis) {
-			Toast.makeText(mContext, "startMillis > currentMillis", Toast.LENGTH_SHORT).show();
 			viewHolder.active.setImageResource(R.drawable.redglow);
 		}
 			
-		else if(currentMillis < endMillis && hour >= start.hours && hour <= end.hours)
+		else if(currentMillis < endMillis && hour >= correctStartHours && hour < correctEndHours)
 			viewHolder.active.setImageResource(R.drawable.greenglow);
 		else {
 			viewHolder.active.setImageResource(R.drawable.redglow);
-			Toast.makeText(mContext, "In between. Current: "+hour+" Start: "+start.hours+" End: "+end.hours, Toast.LENGTH_SHORT).show();
-		}
-		
+		}	
 		if(endMillis < currentMillis)
 			viewHolder.active.setImageResource(R.drawable.redglow);
 

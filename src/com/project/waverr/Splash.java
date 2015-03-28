@@ -49,7 +49,6 @@ public class Splash extends Activity implements ConnectionCallbacks, OnConnectio
 			@Override
 			public void onFinish() {
 				// TODO Auto-generated method stub
-				//Toast.makeText(getBaseContext(), "Timer done", Toast.LENGTH_SHORT).show();
 				goAhead();
 			}
 		}.start();
@@ -93,15 +92,12 @@ public class Splash extends Activity implements ConnectionCallbacks, OnConnectio
 	}
 	
 	private void goAheadWithGoogle() {
-		//Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 		if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
 			Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
 			String personName = currentPerson.getDisplayName();
 			Image personPhoto = currentPerson.getImage();
 			String personGooglePlusProfile = currentPerson.getUrl();
 			String personEmail = Plus.AccountApi.getAccountName(mGoogleApiClient);
-
-			//Toast.makeText(this, personName+","+personEmail, Toast.LENGTH_SHORT).show();
 
 			global.setPersonName(personName);
 			global.setPersonPhoto(personPhoto);
