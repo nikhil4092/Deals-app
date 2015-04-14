@@ -62,15 +62,6 @@ public class JSONFunctions {
 		//parse json data
 		try{
 			jArray = new JSONArray(result);
-			/* for(int i=0;i<jArray.length();i++){
-                    JSONObject json_data = jArray.getJSONObject(i);
-                    Log.i("log_tag","id: "+json_data.getInt("id")+
-                            ", name: "+json_data.getString("name")+
-                            ", sex: "+json_data.getInt("sex")+
-                            ", birthyear: "+json_data.getInt("birthyear")
-                    );
-            }*/
-
 		}catch(JSONException e){
 			Log.e("log_tag", "Error parsing data "+e.toString());
 		}

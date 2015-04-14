@@ -162,14 +162,18 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
 		String[] etimear = etime.split(":");
 		int st1= Integer.parseInt(stimear[0]);
 		int st2= Integer.parseInt(etimear[0]);
-		if(st1<=12)
+		if(st1<12)
 			stimear[2]="AM";
+		else if(st1==12)
+			stimear[2]="PM";
 		else {
 			stimear[0]=""+String.format("%02d", st1-12);
 			stimear[2]="PM";
 		}
-		if(st2<=12)
+		if(st2<12)
 			etimear[2]="AM";
+		else if(st2==12)
+			etimear[2]="PM";
 		else {
 			etimear[0]=""+String.format("%02d", st2-12);
 			etimear[2]="PM";
@@ -217,25 +221,31 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
 	}
 	public void startTimer(final ViewHolder viewHolder) {
 		final long startMillis = start.getTimeInMillis();
-		final long endMillis = end.getTimeInMillis();
+		//final long endMillis = end.getTimeInMillis();
 
 		Calendar calendar = Calendar.getInstance();
 		int hour = calendar.get(Calendar.HOUR_OF_DAY);
-		long currentMillis = System.currentTimeMillis();
+		long currentMillis = calendar.getTimeInMillis();
 		int correctStartHours = (start.hours+11)%24;
 		int correctEndHours = (end.hours+11)%24;
 
 		if(startMillis > currentMillis) {
+			//Toast.makeText(mContext, "Not started", Toast.LENGTH_SHORT).show();
 			viewHolder.active.setImageResource(R.drawable.redglow);
+			viewHolder.active.setVisibility(View.INVISIBLE);
 		}
 			
-		else if(currentMillis < endMillis && hour >= correctStartHours && hour < correctEndHours)
+		else if(hour >= correctStartHours && hour < correctEndHours)
 			viewHolder.active.setImageResource(R.drawable.greenglow);
 		else {
+			//Toast.makeText(mContext, "Between: Current: "+hour+" Start: "+correctStartHours+" End: "+correctEndHours, Toast.LENGTH_SHORT).show();
 			viewHolder.active.setImageResource(R.drawable.redglow);
+			viewHolder.active.setVisibility(View.INVISIBLE);
 		}	
-		if(endMillis < currentMillis)
+		/*if(endMillis < currentMillis) {
+			Toast.makeText(mContext, "Over", Toast.LENGTH_SHORT).show();
 			viewHolder.active.setImageResource(R.drawable.redglow);
+		}*/
 
 	}
 }
