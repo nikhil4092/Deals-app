@@ -178,6 +178,14 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
 			etimear[0]=""+String.format("%02d", st2-12);
 			etimear[2]="PM";
 		}
+		if(stimear[0].equals("00"))
+		{
+			stimear[0]="12";
+		}
+		if(etimear[0].equals("00"))
+		{
+			etimear[0]="12";
+		}
 		viewHolder.time.setGravity(Gravity.CENTER_HORIZONTAL);
 		viewHolder.time.setTextSize(20);
 		viewHolder.time.setTypeface(typeface);

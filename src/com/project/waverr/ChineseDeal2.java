@@ -102,7 +102,7 @@ public class ChineseDeal2 extends GlobalActionBar {
 			url[1]="cuisine";
 			url[2]=s;
 			type.setText(s);
-			typeSelected=restaurantName;
+			typeSelected=s;
 		}
 		
 		deals = new ArrayList<>();

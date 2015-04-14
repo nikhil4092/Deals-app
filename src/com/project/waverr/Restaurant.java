@@ -23,6 +23,9 @@ public class Restaurant {
 		this.url = url;
 	}
 	
+	public void seturl(String url){
+		this.url = url;
+	}
 
 	public void setName(String name) {
 		this.name = name;

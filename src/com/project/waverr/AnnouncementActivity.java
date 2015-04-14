@@ -7,12 +7,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class AnnouncementActivity extends GlobalActionBar {
 
@@ -20,12 +23,18 @@ public class AnnouncementActivity extends GlobalActionBar {
 	private RecyclerView mRecyclerView;
 	private AnnouncementAdapter mAdapter;
 	private ArrayList<Restaurant> restaurants;
+	TextView announcementhead;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_announcement);
-
+		Typeface typeface = Typeface.createFromAsset(getAssets(),"fonts/script.ttf");
+		announcementhead = (TextView)findViewById(R.id.Announcement);
+		announcementhead.setTextColor(Color.parseColor("#fe5335"));
+		announcementhead.setTypeface(typeface);
+		announcementhead.setTextSize(25);
+		announcementhead.setText("Announcements");
 		progressDialog = new ProgressDialog(this);
 		progressDialog.setMessage("Checking for announcements...");
 		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -54,7 +63,8 @@ public class AnnouncementActivity extends GlobalActionBar {
 					String[] things = {
 							"Restaurant ID",
 							"Restaurant Name",
-							"announcements"
+							"announcements",
+							"url"
 					};
 
 					for(int i=0; i<array.length(); i++) {
@@ -62,10 +72,12 @@ public class AnnouncementActivity extends GlobalActionBar {
 						String restName = object.getString(things[1]);
 						String[] announcements = object.getString(things[2]).split("~");
 						String announcement = announcements[announcements.length-1];
+						String url = object.getString(things[3]);
 						if(!announcement.isEmpty()) {
 							Restaurant restaurant = new Restaurant();
 							restaurant.setName(restName);
 							restaurant.setAnnouncements(announcement);
+							restaurant.seturl(url);
 							restaurants.add(restaurant);
 						}
 					}
