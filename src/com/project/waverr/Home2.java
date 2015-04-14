@@ -319,6 +319,8 @@ NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener ,OnTabChange
 				getDealsByDistance();*/
 
 		}
+		if(id == R.id.announcements)
+			startActivity(new Intent(this, com.project.waverr.AnnouncementActivity.class));
 		return super.onOptionsItemSelected(item);
 	}
 

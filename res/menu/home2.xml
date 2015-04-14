@@ -14,4 +14,10 @@
         android:title="@string/refresh"
         android:icon="@drawable/ic_action_refresh"
         app:showAsAction="always" />
+    
+    <item
+        android:id="@+id/announcements"
+        android:title="@string/announcements"
+        android:icon="@drawable/ic_action_bell"
+        app:showAsAction="ifRoom" />
 </menu>

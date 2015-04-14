@@ -49,5 +49,7 @@
     <string name="test_text">This is a test Text for the current button</string>
     <string name="refresh">Refresh deals</string>
     <string name="title_activity_chinese_deal2">ChineseDeal2</string>
+    <string name="announcements">Announcements</string>
+    <string name="title_activity_announcement">Announcements</string>
 
 </resources>
