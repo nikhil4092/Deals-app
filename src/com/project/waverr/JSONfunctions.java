@@ -36,7 +36,7 @@ public class JSONfunctions {
 			int i;
 			for(i=1; i+1<url.length; i++)
 				nameValuePairs.add(new BasicNameValuePair(url[i], url[i+1]));
-			nameValuePairs.add(new BasicNameValuePair("pass", "Waverr2015"));
+			nameValuePairs.add(new BasicNameValuePair("Pass", "********"));
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			HttpResponse response = httpclient.execute(httppost);
 			HttpEntity entity = response.getEntity();
